@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'  # 指定 Django 中消息框架的存储后端
 
 ROOT_URLCONF = 'CUMT.urls'
 
@@ -79,11 +80,15 @@ WSGI_APPLICATION = 'CUMT.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+      'default': {
+          'ENGINE': 'django.db.backends.mysql',
+          'NAME': 'cumtdata',  # 数据库名字
+          'USER': 'root',
+          'PASSWORD': 'root',
+          'HOST': '127.0.0.1',  # 那台机器安装了MySQL
+          'PORT': 3306,
+      }
+  }
 
 
 # Password validation
