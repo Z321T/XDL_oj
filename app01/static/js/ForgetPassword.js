@@ -28,5 +28,8 @@ function submitRequest() {
             console.error(error);
         }
     });
+
+    alert('您的请求已提交管理员确认');
+    hideConfirmationModal();  // 隐藏 Modal
 }
 
