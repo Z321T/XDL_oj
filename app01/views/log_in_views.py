@@ -7,7 +7,7 @@ from app01.models import Student, Teacher, Administrators
 def log_in(request):
     if request.method == 'POST':
         # 获取表单提交的用户名和密码
-        username = request.POST['username']
+        username = request.POST['studentID']
         password = request.POST['password']
 
         # 使用Django的authenticate函数验证用户,根据用户类型选择相应的认证方式
