@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Required meta tags -->
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Majestic Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="./home_student(origin)_files/materialdesignicons.min.css">
+  <link rel="stylesheet" href="./home_student(origin)_files/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <link rel="stylesheet" href="./home_student(origin)_files/dataTables.bootstrap4.css">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="./home_student(origin)_files/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="home_student(origin)_files/favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+
+<style type="text/css">/* Chart.js */
+@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}</style></head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
+          <a class="navbar-brand brand-logo-mini" href="https://majestic.bootmb.com/index.html"><img src="./home_student(origin)_files/logo-mini.svg" alt="logo"></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-sort-variant"></span>
+          </button>
+        </div>  
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav mr-lg-4 w-100">
+          <li class="nav-item nav-search d-none d-lg-block w-100">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="search">
+                  <i class="mdi mdi-magnify"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
+            </div>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown mr-1">
+            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+              <i class="mdi mdi-message-text mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+              <p class="mb-0 font-weight-normal float-left dropdown-header">消息</p>
+              <a class="dropdown-item">
+                <div class="item-thumbnail">
+                    <img src="./home_student(origin)_files/face4.jpg" alt="image" class="profile-pic">
+                </div>
+                <!--可替换消息-->
+                <div class="item-content flex-grow">
+                  <h6 class="ellipsis font-weight-normal">张三
+                  </h6>
+                  <p class="font-weight-light small-text text-muted mb-0">
+                   2.2完成作业
+                  </p>
+                </div>
+              </a>
+              <a class="dropdown-item">
+                <div class="item-thumbnail">
+                    <img src="./home_student(origin)_files/face2.jpg" alt="image" class="profile-pic">
+                </div>
+                <div class="item-content flex-grow">
+                  <h6 class="ellipsis font-weight-normal">李四
+                  </h6>
+                  <p class="font-weight-light small-text text-muted mb-0">
+                   4.5期中考试
+                  </p>
+                </div>
+              </a>
+              <a class="dropdown-item">
+                <div class="item-thumbnail">
+                    <img src="./home_student(origin)_files/face3.jpg" alt="image" class="profile-pic">
+                </div>
+                <div class="item-content flex-grow">
+                  <h6 class="ellipsis font-weight-normal"> Johnson
+                  </h6>
+                  <p class="font-weight-light small-text text-muted mb-0">
+                    Upcoming board meeting
+                  </p>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown mr-4">
+            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
+              <i class="mdi mdi-bell mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+              <p class="mb-0 font-weight-normal float-left dropdown-header">公告</p>
+              <a class="dropdown-item">
+                <div class="item-thumbnail">
+                  <div class="item-icon bg-success">
+                    <i class="mdi mdi-information mx-0"></i>
+                  </div>
+                </div>
+              <!--可替换消息-->
+                <div class="item-content">
+                  <h6 class="font-weight-normal">Application Error</h6>
+                  <p class="font-weight-light small-text mb-0 text-muted">
+                    Just now
+                  </p>
+                </div>
+              </a>
+              <a class="dropdown-item">
+                <div class="item-thumbnail">
+                  <div class="item-icon bg-warning">
+                    <i class="mdi mdi-settings mx-0"></i>
+                  </div>
+                </div>
+                <div class="item-content">
+                  <h6 class="font-weight-normal">设置</h6>
+                  <p class="font-weight-light small-text mb-0 text-muted">
+                    Private message
+                  </p>
+                </div>
+              </a>
+              <a class="dropdown-item">
+                <div class="item-thumbnail">
+                  <div class="item-icon bg-info">
+                    <i class="mdi mdi-account-box mx-0"></i>
+                  </div>
+                </div>
+                <div class="item-content">
+                  <h6 class="font-weight-normal">New user registration</h6>
+                  <p class="font-weight-light small-text mb-0 text-muted">
+                    2 days ago
+                  </p>
+                </div>
+              </a>
+            </div>
+          </li>
+
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+              <span class="nav-profile-name">用户名</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item">
+                <i class="mdi mdi-settings text-primary"></i>
+                设置
+              </a>
+              <a class="dropdown-item">
+                <i class="mdi mdi-logout text-primary"></i>
+                退出登录
+              </a>
+            </div>
+          </li>
+        </ul>
+
+       
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">我的作业</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="ui-basic">
+              <i class="mdi mdi-circle-outline menu-icon"></i>
+              <span class="menu-title">我的练习</span>
+              <i class="menu-arrow"></i>
+            </a>
+           
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="mdi mdi-view-headline menu-icon"></i>
+              <span class="menu-title">我的考试</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="mdi mdi-chart-pie menu-icon"></i>
+              <span class="menu-title">学情分析</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+              <i class="mdi mdi-account menu-icon"></i>
+              <span class="menu-title">个人中心</span>
+              <i class="menu-arrow"></i>
+            </a>
+           
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="d-flex justify-content-between flex-wrap">
+                <div class="d-flex align-items-end flex-wrap">
+                  <div class="mr-md-3 mr-xl-5">
+                    <h2>Welcome to CUMT-OJ</h2>
+                    <p class="mb-md-0">你的代码学习助手</p>
+                  </div>
+                 
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="row d-flex" id="proBanner">
+            <div class="col-md-12 grid-margin">
+              <div class="card bg-gradient-primary border-0">
+                <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body dashboard-tabs p-0">
+                 
+                  <div class="tab-content py-0 px-0">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                      <div class="d-flex flex-wrap justify-content-xl-between">
+                        
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">已完成</small>
+                            <h5 class="mr-2 mb-0">90</h5>
+                          </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">未完成</small>
+                            <h5 class="mr-2 mb-0">12</h5>
+                          </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">作业查重率</small>
+                            <h5 class="mr-2 mb-0">详情</h5>
+                          </div>
+                        </div>
+                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">教师评语</small>
+                            <h5 class="mr-2 mb-0">....</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+                      <div class="d-flex flex-wrap justify-content-xl-between">
+                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">Start date</small>
+                            <div class="dropdown">
+                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="https://majestic.bootmb.com/#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
+                              </a>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      
+                        
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="purchases" role="tabpanel" aria-labelledby="purchases-tab">
+                      <div class="d-flex flex-wrap justify-content-xl-between">
+                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">Start date</small>
+                            <div class="dropdown">
+                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="https://majestic.bootmb.com/#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
+                              </a>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
+                                <a class="dropdown-item" href="https://majestic.bootmb.com/#">12 Aug 2018</a>
+                                <a class="dropdown-item" href="https://majestic.bootmb.com/#">22 Sep 2018</a>
+                                <a class="dropdown-item" href="https://majestic.bootmb.com/#">21 Oct 2018</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">作业列表</p>
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                            <!-- 添加了 style 属性 -->
+                            <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6"></div>
+                                    <div class="col-sm-12 col-md-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Status report: activate to sort column ascending" style="width: 220.837px;">截止时间</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布人</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- 表格内容不变 -->
+                                                <tr role="row" class="odd">
+                                                  <td class="sorting_1">Alvin Fisher</td>
+                                                  <td>Ui design completed</td>
+                                                  <td>East Mayra</td>
+                                                  <td>$23230</td>
+                                                  
+                                              </tr><tr role="row" class="even">
+                                                  <td class="sorting_1">Betty Hunt</td>
+                                                  <td>Ui design not completed</td>
+                                                  <td>Lake Sandrafort</td>
+                                                  <td>$571</td>
+                                                  
+                                              </tr><tr role="row" class="odd">
+                                                  <td class="sorting_1">Emily Cunningham</td>
+                                                  <td>support</td>
+                                                  <td>Makennaton</td>
+                                                  <td>$939</td>
+                                               
+                                              </tr><tr role="row" class="even">
+                                                  <td class="sorting_1">Ernest Wade</td>
+                                                  <td>Levelled up</td>
+                                                  <td>West Fidelmouth</td>
+                                                  <td>$484</td>
+                                                  
+                                              </tr><tr role="row" class="odd">
+                                                  <td class="sorting_1">Jacob Kennedy</td>
+                                                  <td>New project</td>
+                                                  <td>Cletaborough</td>
+                                                  <td>$314</td>
+                                                  
+                                              </tr><tr role="row" class="even">
+                                                  <td class="sorting_1">Jeremy Ortega</td>
+                                                  <td>Levelled up</td>
+                                                  <td>Catalinaborough</td>
+                                                  <td>$790</td>
+                                                  
+                                              </tr><tr role="row" class="odd">
+                                                  <td class="sorting_1">Minnie Farmer</td>
+                                                  <td>support</td>
+                                                  <td>Agustinaborough</td>
+                                                  <td>$30</td>
+                                                
+                                              </tr><tr role="row" class="even">
+                                                  <td class="sorting_1">Myrtie Lambert</td>
+                                                  <td>Ui design completed</td>
+                                                  <td>Cassinbury</td>
+                                                  <td>$36</td>
+                                                
+                                              </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5"></div>
+                                    <div class="col-sm-12 col-md-7"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            
+           
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="./home_student(origin)_files/vendor.bundle.base.js.下载"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="./home_student(origin)_files/Chart.min.js.下载"></script>
+  <script src="./home_student(origin)_files/jquery.dataTables.js.下载"></script>
+  <script src="./home_student(origin)_files/dataTables.bootstrap4.js.下载"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="./home_student(origin)_files/off-canvas.js.下载"></script>
+  <script src="./home_student(origin)_files/hoverable-collapse.js.下载"></script>
+  <script src="./home_student(origin)_files/template.js.下载"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="./home_student(origin)_files/dashboard.js.下载"></script>
+  <script src="./home_student(origin)_files/data-table.js.下载"></script>
+  <script src="./home_student(origin)_files/jquery.dataTables(1).js.下载"></script>
+  <script src="./home_student(origin)_files/dataTables.bootstrap4(1).js.下载"></script>
+  <!-- End custom js for this page-->
+  <script src="./home_student(origin)_files/jquery.cookie.js.下载" type="text/javascript"></script>
+
+
+
+
+</body></html>
