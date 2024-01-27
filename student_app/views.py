@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from app01.models import Student, Teacher, Administrators
+from student_app.models import Student
+from teacher_app.models import Teacher
+from administrator_app.models import Administrators
 from django.http import JsonResponse
 
 # Create your views here.

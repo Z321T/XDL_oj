@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
-import app01.apps
+import  os
+import student_app.apps, teacher_app.apps, administrator_app
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 注册
+    'student_app.apps.StudentConfig',
+    'teacher_app.apps.TeacherAppConfig',
+    'administrator_app.apps.AdministratorAppConfig'
 
-    'app01.apps.App01Config', #注册app01
+
 ]
 
 MIDDLEWARE = [
@@ -59,7 +63,7 @@ ROOT_URLCONF = 'CUMT.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': []  #不使用默认templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -126,6 +130,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+SSTATICFILES_DIRS = ['static']
+
+
+# 没有登录时跳转的URL
+LOGIN_URL = '/log/in/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
