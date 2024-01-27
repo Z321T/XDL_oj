@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from app01.models import Student, Teacher, Administrators
+from django.http import JsonResponse
 
 # Create your views here.
 def log_in(request):
     if request.method == 'POST':
         # 获取表单提交的用户名和密码
-        username = request.POST['studentID']
+        username = request.POST['username']
         password = request.POST['password']
 
         # 使用Django的authenticate函数验证用户,根据用户类型选择相应的认证方式
@@ -22,9 +23,17 @@ def log_in(request):
         if user is not None:
             # 用户验证成功，登录用户
             login(request, user)
-            return redirect('home')  # 重定向到登录后的首页，你需要替换 'home' 为你实际的URL
+            return JsonResponse({'status': 'success', 'message': '登录成功'})
         else:
-            # 用户验证失败，显示错误消息
-            messages.error(request, '用户名或密码不正确')
+            # 用户验证失败，显示不同的错误消息
+            error_message = 'Password is incorrect'
+            if not Student.objects.filter(student_id=username).exists() and \
+                    not Teacher.objects.filter(teacher_id=username).exists() and \
+                    not Administrators.objects.filter(admin_id=username).exists():
+                error_message = 'Username is incorrect'
+
+            messages.error(request, error_message)
+            return JsonResponse({'status': 'error', 'message': error_message})
+
 
     return render(request, "log_in.html")
