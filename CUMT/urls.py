@@ -24,10 +24,10 @@ urlpatterns = [
     #学生使用界面
     path('student/', include('student_app.urls')),
     # path('home/student/', home_student_views.***, name='')
-    #教师使用界面
-    path('teacher/', include('teacher_app.urls')),
-    #超级管理员使用界面
-    path('administrator/', include('administrator_app'))
+    # #教师使用界面
+    # path('teacher/', include('teacher_app.urls')),
+    # #超级管理员使用界面
+    # path('administrator/', include('administrator_app'))
 
 ]
 

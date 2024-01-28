@@ -5,6 +5,6 @@ app_name = 'student_app'
 
 urlpatterns = [
     # 学生使用界面
-    # path('home/student/', home_student_views.***, name='')
-
+    path('home/', views.home, name='home'),
+    # path('home/',)
 ]

@@ -23,7 +23,7 @@ function performLogin() {
                 if (response.status === 'success') {
                     alert(response.message);
                     // 成功登录后的其他逻辑，例如重定向到下一个页面
-                    window.location.href = '/next_page/';  // 替换成你想要的URL
+                    window.location.href = '/student/home/';  // 替换成你想要的URL
                 }
                 else {
                     alert(response.message);
