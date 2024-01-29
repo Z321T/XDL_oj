@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Administrator(models.Model):
     name = models.CharField(verbose_name="姓名", max_length=6)

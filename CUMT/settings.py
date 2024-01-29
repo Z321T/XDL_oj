@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     # 注册
     'student_app.apps.StudentConfig',
     'teacher_app.apps.TeacherAppConfig',
-    'administrator_app.apps.AdministratorAppConfig'
+    'administrator_app.apps.AdministratorAppConfig',
+    "score_app.apps.ScoreAppConfig"
 
 
 ]

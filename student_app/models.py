@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 # class Exam(models.Model):
 class Student(models.Model):
@@ -14,6 +15,9 @@ class Student(models.Model):
         (2, "女"),
     )
     gender = models.SmallIntegerField(verbose_name="性别", choices=gender_choices, null=True, blank=True)
+
+    # 添加外键字段，表示每个学生属于一个教师
+    teacher = models.ForeignKey('teacher_app.Teacher', verbose_name="教师", on_delete=models.SET_NULL, null=True, blank=True)
 
 
 

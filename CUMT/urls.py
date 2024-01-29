@@ -16,16 +16,21 @@ Including another URLconf
 """
 from django.urls import path, include
 import student_app.views
+import teacher_app.views
+import administrator_app.views
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+
     #统一登录界面
     path('log/in/', student_app.views.log_in, name='log_in'),  # 这里的 name='log_in'与模板中的 {% url 'log_in' %} 匹配
+
     #学生使用界面
     path('student/', include('student_app.urls')),
     # path('home/student/', home_student_views.***, name='')
+
     # #教师使用界面
     # path('teacher/', include('teacher_app.urls')),
+
     # #超级管理员使用界面
     # path('administrator/', include('administrator_app'))
 

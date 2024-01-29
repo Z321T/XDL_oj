@@ -6,6 +6,7 @@ from teacher_app.models import Teacher
 from administrator_app.models import Administrator
 from django.http import JsonResponse
 
+
 # Create your views here.
 def log_in(request):
     if request.method == 'POST':
@@ -44,6 +45,7 @@ def log_in(request):
             return JsonResponse({'status': 'error', 'message': error_message})
 
     return render(request, "log_in.html")
+
 
 def home(request):
     return render(request, "home_student(origin).html")
