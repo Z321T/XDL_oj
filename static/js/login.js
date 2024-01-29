@@ -20,11 +20,22 @@ function performLogin() {
             data: JSON.stringify({username: username, password: password}),
             success: function (response) {
                 // 处理后端响应
-                if (response.status === 'success') {
-                    alert(response.message);
+                if (response.status === 'success') 
+                {
+                    alert(登录成功);
                     // 成功登录后的其他逻辑，例如重定向到下一个页面
+<<<<<<< Updated upstream
                     window.location.href = '/student/home/';  // 替换成你想要的URL
+=======
+                    if(response.message.includes('they are students'))
+                    window.location.href = '';  // 替换成你想要的URL
+                    else if(response.message.includes('they are teachers'))
+                    window.location.href='';
+                    else if(response.message,includes('they are adminstators'))
+                    window.location.href='';
+>>>>>>> Stashed changes
                 }
+
                 else {
                     alert(response.message);
                     // 检查特定的错误条件
