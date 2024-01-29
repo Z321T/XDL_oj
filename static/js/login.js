@@ -4,7 +4,6 @@ function performLogin() {
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
 
-
     if (password.trim() === "") {
         // 密码为空，显示密码为空的模态框
         $('#emptyPasswordModal').modal('show');
@@ -23,16 +22,13 @@ function performLogin() {
                 if (response.status === 'success') 
                 {
                     alert(登录成功);
-                    // 成功登录后的其他逻辑，例如重定向到下一个页面
-
-                    window.location.href = '/student/home/';  // 替换成你想要的URL
-
-                    if(response.message.includes('they are students'))
-                    window.location.href = '';  // 替换成你想要的URL
-                    else if(response.message.includes('they are teachers'))
-                    window.location.href='';
-                    else if(response.message,includes('they are adminstators'))
-                    window.location.href='';
+                    // 成功登录后,重定向到下一个页面
+                    if(response.message.includes('student'))
+                    window.location.href = 'student/home';
+                    else if(response.message.includes('teacher'))
+                    window.location.href='teacher/home';
+                    else if(response.message.includes('administrator'))
+                    window.location.href='administrator/home';
 
                 }
 
