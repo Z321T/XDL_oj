@@ -24,16 +24,16 @@ function performLogin() {
                 {
                     alert(登录成功);
                     // 成功登录后的其他逻辑，例如重定向到下一个页面
-<<<<<<< Updated upstream
+
                     window.location.href = '/student/home/';  // 替换成你想要的URL
-=======
+
                     if(response.message.includes('they are students'))
                     window.location.href = '';  // 替换成你想要的URL
                     else if(response.message.includes('they are teachers'))
                     window.location.href='';
                     else if(response.message,includes('they are adminstators'))
                     window.location.href='';
->>>>>>> Stashed changes
+
                 }
 
                 else {
