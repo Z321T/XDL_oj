@@ -24,11 +24,11 @@ function performLogin() {
                     alert(登录成功);
                     // 成功登录后,重定向到下一个页面
                     if(response.message.includes('student'))
-                    window.location.href = 'student/home';
+                    window.location.href = 'student/home/';
                     else if(response.message.includes('teacher'))
-                    window.location.href='teacher/home';
+                    window.location.href='teacher/home/';
                     else if(response.message.includes('administrator'))
-                    window.location.href='administrator/home';
+                    window.location.href='administrator/home/';
 
                 }
 
