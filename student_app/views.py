@@ -48,6 +48,6 @@ def log_in(request):
 
 
 def home(request):
-    return render(request, "home_student(origin).html")
+    return render(request, "home_student.html")
 
 
