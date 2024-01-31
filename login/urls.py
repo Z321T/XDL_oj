@@ -5,6 +5,6 @@ app_name = 'login'
 
 urlpatterns = [
     # 登录界面
-    path('log/in/', views.log_in, name='log_in')
+    path('', views.log_in, name='log_in')
 
 ]
