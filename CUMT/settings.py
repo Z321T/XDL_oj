@@ -18,6 +18,7 @@ import student_app.apps, teacher_app.apps, administrator_app
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -64,8 +65,7 @@ ROOT_URLCONF = 'CUMT.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,8 +130,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 
 
 # 没有登录时跳转的URL
@@ -141,3 +147,20 @@ LOGIN_URL = '/log/in/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+# settings.py 文件中的静态文件查找器设置
+STATICFILES_FINDERS = [
+    # FileSystemFinder 用于在你在 STATICFILES_DIRS 设置中指定的目录中查找静态文件。
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+
+    # AppDirectoriesFinder 用于在每个安装了的应用的 "static" 子目录中查找静态文件。
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
+
+
+

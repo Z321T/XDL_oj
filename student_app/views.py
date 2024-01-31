@@ -44,7 +44,7 @@ def log_in(request):
             # messages.error(request, error_message)
             return JsonResponse({'status': 'error', 'message': error_message})
 
-    return render(request, "log_in.html")
+    return render(request,"log_in.html")
 
 
 def home(request):
