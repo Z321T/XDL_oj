@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'student_app.apps.StudentConfig',
     'teacher_app.apps.TeacherAppConfig',
     'administrator_app.apps.AdministratorAppConfig',
-    "score_app.apps.ScoreAppConfig"
+    "score_app.apps.ScoreAppConfig",
+    "login.apps.LoginConfig"
 
 
 ]
