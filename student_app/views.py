@@ -11,4 +11,10 @@ from django.http import JsonResponse
 def home_student(request):
     return render(request, 'home_student.html')
 
+def practice_student(request):
+    return render(request, 'practice_student.html')
+
+def test_student(request):
+    return render(request, 'test_student.html')
+
 

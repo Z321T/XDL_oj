@@ -4,7 +4,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <!-- Required meta tags -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>学生主页</title>
+  <title>我的考试</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{% static 'student_app/css/materialdesignicons.min.css' %}">
   <link rel="stylesheet" href="{% static 'student_app/css/vendor.bundle.base.css' %}">
@@ -14,6 +14,7 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="{% static 'student_app/css/style.css' %}">
+   <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
 
@@ -25,13 +26,13 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
-        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
           <a class="navbar-brand brand-logo" href="#"><img src="{% static 'student_app/photo/logo.svg' %}" alt="logo"></a>
           <a class="navbar-brand brand-logo-mini" href="#"><img src="{% static 'student_app/photo/logo-mini.svg' %}" alt="logo"></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
-        </div>  
+        </div>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <ul class="navbar-nav mr-lg-4 w-100">
@@ -209,7 +210,7 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          
+
           <div class="row">
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between flex-wrap">
@@ -286,84 +287,67 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12 stretch-card">
+
+            <div class=" stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">作业列表</p>
-                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                    <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                        <div class="row"><div class="col-sm-12 col-md-6">
+                  <p class="card-title">考试列表</p>
+                  <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                      <div class="table-responsive">
+    <div class="card-container">
+        <!-- 示例卡片 -->
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+           
+            <div class="card-item">发布人: $23230</div>
+        </div>
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+            
+            <div class="card-item">发布人: $23230</div>
+        </div>
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+           
+            <div class="card-item">发布人: $23230</div>
+        </div>
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+           
+            <div class="card-item">发布人: $23230</div>
+        </div>
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+            <div class="card-item">发布人: $23230</div>
+        </div>
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+            
+            <div class="card-item">发布人: $23230</div>
+        </div>
+        <div class="card">
+            <div class="card-item card-title">期中考试r</div>
+            <div class="card-item">考试时间: Ui design completed</div>
+            
+            <div class="card-item">发布人: $23230</div>
+        </div>
 
-                        </div><div class="col-sm-12 col-md-6">
+        <!-- 根据需要复制更多卡片 -->
+    </div>
+</div>
 
-                        </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
-                                           <thead>
-                                                  <tr role="row">
-                                                         <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 168px;">题目</th>
-                                                                            <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Status report: activate to sort column ascending" style="width: 221px;">截止时间</th>
-                                                                            <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 156px;">发布时间</th>
-                                                                            <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 7px;">发布人</th>
-                                                                        </tr>
-                                           </thead>
-                                            <tbody>
-                                                <tr role="row" class="odd">
-                                                  <td class="sorting_1">Alvin Fisher</td>
-                                                  <td>Ui design completed</td>
-                                                  <td>East Mayra</td>
-                                                  <td>$23230</td>
 
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Betty Hunt</td>
-                                                  <td>Ui design not completed</td>
-                                                  <td>Lake Sandrafort</td>
-                                                  <td>$571</td>
+                 </div>
+                </div>
+              </div>
+            </div>
 
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Emily Cunningham</td>
-                                                  <td>support</td>
-                                                  <td>Makennaton</td>
-                                                  <td>$939</td>
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Ernest Wade</td>
-                                                  <td>Levelled up</td>
-                                                  <td>West Fidelmouth</td>
-                                                  <td>$484</td>
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Jacob Kennedy</td>
-                                                  <td>New project</td>
-                                                  <td>Cletaborough</td>
-                                                  <td>$314</td>
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Jeremy Ortega</td>
-                                                  <td>Levelled up</td>
-                                                  <td>Catalinaborough</td>
-                                                  <td>$790</td>
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Minnie Farmer</td>
-                                                  <td>support</td>
-                                                  <td>Agustinaborough</td>
-                                                  <td>$30</td>
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Myrtie Lambert</td>
-                                                  <td>Ui design completed</td>
-                                                  <td>Cassinbury</td>
-                                                  <td>$36</td>
-
-                                              </tr>
-                                           </tbody>
-                                        </table>
-                               </div>
-                        </div>
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
