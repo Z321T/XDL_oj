@@ -15,7 +15,7 @@ function performLogin() {
     }
     else {
         $.ajax({
-            url: loginUrl,  // 后端处理登录的API端点
+            url: '',  // 后端处理登录的API端点
             method: 'POST',
             contentType: 'application/json',
             headers: {
