@@ -1,6 +1,7 @@
 from django.urls import path
 from login import views
 from django.contrib.staticfiles.views import serve
+
 app_name = 'login'
 
 urlpatterns = [
