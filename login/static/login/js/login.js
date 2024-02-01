@@ -15,9 +15,12 @@ function performLogin() {
     }
     else {
         $.ajax({
-            url: 'login/',  // 后端处理登录的API端点
+            url: loginUrl,  // 后端处理登录的API端点
             method: 'POST',
             contentType: 'application/json',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')  // 从cookie中获取CSRF令牌的值
+            },
             data: JSON.stringify({username: username, password: password}),
             success: function (response) {
                 // 处理后端响应
