@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.urls import path, include
 from login import views as login_views
+from django.contrib import admin
 import student_app.views
 import teacher_app.views
 import administrator_app.views
