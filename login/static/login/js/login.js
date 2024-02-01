@@ -15,12 +15,13 @@ function performLogin() {
     }
     else {
         $.ajax({
-            url: loginUrl,  // 后端处理登录的API端点
+            url: '',  // 后端处理登录的API端点
             method: 'POST',
             contentType: 'application/json',
             headers: {
-                'X-CSRFToken': getCookie('csrftoken')  // 从cookie中获取CSRF令牌的值
+                'X-CSRFToken': getCookie('csrftoken')
             },
+
             data: JSON.stringify({username: username, password: password}),
             success: function (response) {
                 // 处理后端响应
@@ -56,3 +57,20 @@ function performLogin() {
         });
     }
 }
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // 判断cookie是否以指定的name开头
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
