@@ -8,10 +8,12 @@ function performLogin() {
         // 密码为空，显示密码为空的模态框
         $('#emptyPasswordModal').modal('show');
         return; // 不执行后续的AJAX请求
-    } else if (username.trim() === "") {
+    }
+    else if (username.trim() === "") {
         $('#emptyusernameModal').modal('show');
         return; // 不执行后续的AJAX请求
-    } else {
+    }
+    else {
         $.ajax({
             url: 'log/in/',  // 替换成后端处理登录的API端点
             method: 'POST',
