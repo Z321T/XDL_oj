@@ -15,7 +15,7 @@ function performLogin() {
     }
     else {
         $.ajax({
-            url: 'log/in/',  // 替换成后端处理登录的API端点
+            url: 'login/',  // 替换成后端处理登录的API端点
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({username: username, password: password}),

@@ -16,10 +16,10 @@ Including another URLconf
 """
 
 from django.urls import path, include
-from login import views as login_views
-import student_app.views
-import teacher_app.views
-import administrator_app.views
+# from login import views as login_views
+# import student_app.views
+# import teacher_app.views
+# import administrator_app.views
 
 urlpatterns = [
 
