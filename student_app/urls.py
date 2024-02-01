@@ -1,10 +1,11 @@
+# student_app/urls.py
 from django.urls import path
-from student_app import views
-
-app_name = 'student_app'
+from .views import home_student
+from django.contrib.staticfiles.views import serve
 
 urlpatterns = [
-    # 学生使用界面
-    path('home/', views.home, name='student_home'),
-    # path('home/',)
+    path('home/', home_student, name='home_student'),
+    path('static/<path:path>', serve),
 ]
+
+

@@ -8,7 +8,7 @@ from django.http import JsonResponse
 
 
 # Create your views here.
-def home(request):
-    return render(request, "home_student.html")
+def home_student(request):
+    return render(request, 'home_student.html')
 
 
