@@ -1,11 +1,13 @@
 import json
-from django.contrib.auth import authenticate, login
+
+from django.contrib.auth import login, authenticate
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
+from administrator_app.models import Administrator
 from student_app.models import Student
 from teacher_app.models import Teacher
-from administrator_app.models import Administrator
 
 
 # Create your views here.
