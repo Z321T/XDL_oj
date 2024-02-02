@@ -1,18 +1,21 @@
+import json
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt
 from student_app.models import Student
 from teacher_app.models import Teacher
 from administrator_app.models import Administrator
 
 
 # Create your views here.
+@csrf_exempt  # 这里添加了csrf_exempt装饰器，因为Ajax请求可能不包含csrf令牌
 def log_in(request):
     if request.method == 'POST':
         # 获取表单提交的用户名和密码
-        username = request.POST['username']
-        password = request.POST['password']
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
 
         # 使用Django的authenticate函数验证用户,根据用户类型选择相应的认证方式
         user = None
@@ -24,7 +27,7 @@ def log_in(request):
         elif Teacher.objects.filter(teacher_id=username).exists():
             user = authenticate(request, teacher_id=username, password=password)
             user_type = 'teacher'
-        elif Administrator.objects.filter(teacher_id=username).exists():
+        elif Administrator.objects.filter(admin_id=username).exists():
             user = authenticate(request, admin_id=username, password=password)
             user_type = 'administrator'
         else:

@@ -7,7 +7,7 @@ class Student(models.Model):
     student_id = models.CharField(verbose_name="学号", max_length=8)
     password = models.CharField(verbose_name="密码", max_length=32)
     class_num = models.CharField(verbose_name="班级", max_length=32, blank=True)
-    email = models.EmailField(verbose_name="电子邮件", unique=True, blank=True)
+    email = models.EmailField(verbose_name="电子邮件", unique=True, null=True, blank=True)
 
     gender_choices = (
         (1, "男"),

@@ -4,6 +4,8 @@ function performLogin() {
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
 
+    console.log('Sending data to backend:', {username: username, password: password});
+
     if (username.trim() === "") {
         // 账号为空，显示账号为空的模态框
         $('#emptyusernameModal').modal('show');
@@ -15,7 +17,7 @@ function performLogin() {
     }
     else {
         $.ajax({
-            url: '',  // 后端处理登录的API端点
+            url: '/login/',  // 后端处理登录的API端点
             method: 'POST',
             contentType: 'application/json',
             headers: {
