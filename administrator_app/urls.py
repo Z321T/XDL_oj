@@ -1,7 +1,7 @@
 from django.urls import path
-from administrator_app import views
 from .views import home_administrator
 from django.contrib.staticfiles.views import serve
+from django.contrib import admin
 
 app_name = 'administrator_app'
 

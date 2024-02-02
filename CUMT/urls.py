@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.urls import path, include
-
+from django.contrib import admin
 
 urlpatterns = [
 
@@ -29,8 +29,9 @@ urlpatterns = [
     # 教师使用界面
     path('teacher/', include('teacher_app.urls')),
 
-    # #超级管理员使用界面
-    path('administrator/', include('administrator_app.urls'))
-
+    # 超级管理员使用界面
+    path('administrator/', include('administrator_app.urls')),
+    # include('administrator_app.urls')
+    path('admin/', admin.site.urls),
 ]
 

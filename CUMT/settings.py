@@ -139,17 +139,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 
-
-# 没有登录时跳转的URL
+# 没有登录时跳转的url
 LOGIN_URL = '/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
 
 
 # settings.py 文件中的静态文件查找器设置
@@ -162,5 +158,6 @@ STATICFILES_FINDERS = [
 ]
 
 
-
+# 超级管理员设置
+AUTH_USER_MODEL = 'administrator_app.Administrator'
 
