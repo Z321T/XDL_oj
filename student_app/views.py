@@ -17,4 +17,7 @@ def practice_student(request):
 def test_student(request):
     return render(request, 'test_student.html')
 
+def profile_student(request):
+    return render(request, 'profile_student.html')
+
 
