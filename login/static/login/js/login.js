@@ -17,7 +17,7 @@ function performLogin() {
     }
     else {
         $.ajax({
-            url: '/login/',  // 后端处理登录的API端点
+            url: 'login/',  // 后端处理登录的API端点
             method: 'POST',
             contentType: 'application/json',
             headers: {
@@ -32,11 +32,14 @@ function performLogin() {
                     alert('登录成功');
                     // 成功登录后,重定向到下一个页面
                     if(response.message.includes('student'))
-                    window.location.href = 'student/home/';
+                        // window.location.href = window.location.origin + '/student/home/';
+                        window.location.href = '/student/home/';
                     else if(response.message.includes('teacher'))
-                    window.location.href='teacher/home/';
+                        // window.location.href = window.location.origin + '/teacher/home/';
+                        window.location.href='/teacher/home/';
                     else if(response.message.includes('administrator'))
-                    window.location.href='administrator/home/';
+                        // window.location.href = window.location.origin + '/administrator/home/';
+                        window.location.href='/administrator/home/';
 
                 }
 
