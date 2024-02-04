@@ -18,7 +18,6 @@ import student_app.apps, teacher_app.apps, administrator_app
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -139,8 +138,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 
-# # 没有登录时跳转的url
-# LOGIN_URL = '/login/'
+# 没有登录时跳转的url
+LOGIN_URL = '/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -162,9 +161,9 @@ STATICFILES_FINDERS = [
 # AUTH_USER_MODEL = 'administrator_app.Administrator'
 
 
-# 密码加密设置
-PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.Argon2PasswordHasher',
-]
+# # 密码加密设置
+# PASSWORD_HASHERS = [
+#     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+#     'django.contrib.auth.hashers.Argon2PasswordHasher',
+# ]
 

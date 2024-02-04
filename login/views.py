@@ -56,13 +56,6 @@ def log_in(request):
         if user is not None:
             # 用户验证成功，登录用户
             login(request, user)
-            # 根据用户类型重定向到不同的主页
-            # if user_type == 'student':
-            #     return redirect('/student/home/')
-            # elif user_type == 'teacher':
-            #     return redirect('/teacher/home/')
-            # elif user_type == 'administrator':
-            #     return redirect('/administrator/home/')
             return JsonResponse({'status': 'success', 'message': user_type})
         else:
             # 用户验证失败，显示不同的错误消息
