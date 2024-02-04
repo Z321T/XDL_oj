@@ -8,6 +8,6 @@ app_name = 'login'
 urlpatterns = [
     # 登录界面
     path('', views.log_in, name='log_in'),
-    path('student/home/', home_student, name='home_student'),
+    # path('student/home/', home_student, name='home_student'),
     path('static/<path:path>', serve),
 ]
