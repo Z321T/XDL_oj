@@ -11,7 +11,7 @@ $(document).ready(function() {
             $('#class').val(data.class_num);
             $('#email').val(data.email);
         });
-    }, 50000000);  // 每5秒获取一次学生信息
+    }, 500000000000);  // 每5秒获取一次学生信息
 }
 
 
