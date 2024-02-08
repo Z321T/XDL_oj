@@ -56,6 +56,7 @@ def log_in(request):
         if user is not None:
             # 用户验证成功，登录用户
             login(request, user)
+            request.session['user_id'] = user.name  # 保存用户id
             return JsonResponse({'status': 'success', 'message': user_type})
         else:
             # 用户验证失败，显示不同的错误消息

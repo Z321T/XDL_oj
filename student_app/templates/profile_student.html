@@ -271,13 +271,14 @@
     <div class="profile-info">
         <label for="name">姓名</label>
         <input type="text" id="name" placeholder="姓名">
-        <label for="student-number">学号</label>
-        <input type="text" id="student-number" placeholder="学号">
-        <label for="college">学院</label>
-        <input type="text" id="college" placeholder="学院">
+        <label for="student_id">学号</label>
+        <input type="text" id="student_id" placeholder="学号">
+        <label for="class">班级</label>
+        <input type="text" id="class" placeholder="班级">
+        <label for="email">邮箱</label>
+        <input type="text" id="email" placeholder="邮箱">
         <div class="button-container">
             <button class="button">修改</button>
-            <button class="button">保存</button>
         </div>
     </div>
 </div>
@@ -303,4 +304,5 @@
   <script type="text/javascript" src="{% static 'student_app/js/dataTables.bootstrap4(1).js' %}"></script>
   <!-- End custom js for this page-->
   <script src="{% static 'student_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
+  <script src="{% static 'student_app/js/student_info.js' %}"></script>
 </body></html>
