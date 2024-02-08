@@ -9,6 +9,7 @@ class Teacher(models.Model):
     # department = models.CharField(verbose_name="部门", max_length=16, null=True, blank=True)
     email = models.EmailField(verbose_name="电子邮件", unique=True, null=True, blank=True)
     phone_num = models.IntegerField(verbose_name="电话号码", null=True)
+    last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
 
     gender_choices = (
         (1, "男"),

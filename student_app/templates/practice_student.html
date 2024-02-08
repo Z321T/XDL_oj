@@ -1,33 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>我的练习</title>
-</head>
-<body>
 {% load static %}
 <!DOCTYPE html>
 
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <!-- Required meta tags -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>学生练习</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="{% static 'student_app/css/materialdesignicons.min.css' %}">
-  <link rel="stylesheet" href="{% static 'student_app/css/vendor.bundle.base.css' %}">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <link rel="stylesheet" href="{% static 'student_app/css/dataTables.bootstrap4.css' %}">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="{% static 'student_app/css/style.css' %}">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Required meta tags -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>学生练习</title>
+        <!-- plugins:css -->
+        <link rel="stylesheet" href="{% static 'student_app/css/materialdesignicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'student_app/css/vendor.bundle.base.css' %}">
+        <!-- endinject -->
+        <!-- plugin css for this page -->
+        <link rel="stylesheet" href="{% static 'student_app/css/dataTables.bootstrap4.css' %}">
+        <!-- End plugin css for this page -->
+        <!-- inject:css -->
+        <link rel="stylesheet" href="{% static 'student_app/css/style.css' %}">
 
-    <!-- endinject -->
-  <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
+        <!-- endinject -->
+        <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
 
+        <style type="text/css">/* Chart.js */
+            @keyframes chartjs-render-animation{
+                from{opacity:.99}
+                to{opacity:1}}
+            .chartjs-render-monitor{animation:chartjs-render-animation 1ms}
+            .chartjs-size-monitor,
+            .chartjs-size-monitor-expand,
+            .chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}
+            .chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}
+            .chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}
+        </style>
+        <script>
+        function redirectToHome() {
+            window.location.href = "/student/home/"
+        }
 
-<style type="text/css">/* Chart.js */
-@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}</style></head>
+        function redirectToPractice() {
+            window.location.href = "/student/practice/";
+        }
+
+        function redirectToTest() {
+            window.location.href = "/student/test/";
+        }
+
+        function redirectToProfile() {
+            window.location.href = "/student/profile/"
+        }
+
+    </script>
+    </head>
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
@@ -178,13 +200,13 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item ">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">我的作业</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" data-toggle="collapse" href="#" >
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPractice()">
               <i class="mdi mdi-circle-outline menu-icon"></i>
               <span class="menu-title">我的练习</span>
               <i class="menu-arrow"></i>
@@ -192,7 +214,7 @@
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" onclick="redirectToTest()">
               <i class="mdi mdi-view-headline menu-icon"></i>
               <span class="menu-title">我的考试</span>
             </a>
@@ -204,14 +226,11 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" onclick="redirectToProfile()">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">个人中心</span>
             </a>
           </li>
-
-
-
         </ul>
       </nav>
       <!-- partial -->

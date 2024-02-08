@@ -16,21 +16,23 @@ Including another URLconf
 """
 
 from django.urls import path, include
-
+from django.contrib import admin
 
 urlpatterns = [
 
     # 统一登录界面
     path('login/', include('login.urls')),
 
-    # 学生使用界面 path('student/', include('student_app.urls')),
+    # 学生使用界面
     path('student/', include('student_app.urls')),
 
     # 教师使用界面
     path('teacher/', include('teacher_app.urls')),
 
-    # #超级管理员使用界面
-    path('administrator/', include('administrator_app.urls'))
+    # 超级管理员使用界面
+    path('administrator/', include('administrator_app.urls')),
 
+    # include('administrator_app.urls')
+    path('admin/', admin.site.urls),
 ]
 
