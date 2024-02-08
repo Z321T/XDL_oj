@@ -1,6 +1,4 @@
 from django.db import models
-# from django.contrib.auth.hashers import make_password
-# from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
@@ -21,10 +19,8 @@ class Student(models.Model):
     # 添加外键字段，表示每个学生属于一个教师
     teacher = models.ForeignKey('teacher_app.Teacher', verbose_name="教师", on_delete=models.SET_NULL, null=True, blank=True)
 
-    # def save(self, *args, **kwargs):
-    #     # 在保存之前使用 make_password 函数加密密码
-    #     self.password = make_password(self.password)
-    #     super().save(*args, **kwargs)
+
+
 
 
 

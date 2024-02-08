@@ -1,11 +1,19 @@
 $(document).ready(function() {
+
+    getStudentInfo();  // 页面加载时获取学生信息
+
     // 获取学生信息并显示
-    $.get('/student_info/', function(data) {
-        $('#name').val(data.name);
-        $('#student_id').val(data.student_id);
-        $('#class').val(data.class_num);
-        $('#email').val(data.email);
-    });
+    function getStudentInfo() {
+    setInterval(function() {
+        $.get('/student/profile/', function(data) {
+            $('#name').val(data.name);
+            $('#student_id').val(data.student_id);
+            $('#class').val(data.class_num);
+            $('#email').val(data.email);
+        });
+    }, 50000000);  // 每5秒获取一次学生信息
+}
+
 
     // 修改按钮点击事件
     $('.button').click(function() {
@@ -19,7 +27,7 @@ $(document).ready(function() {
             var class_num = $('#class').val();
             var email = $('#email').val();
             $.ajax({
-                url: '/student_info/',
+                url: '',
                 method: 'POST',
                 contentType: 'application/json',
                 headers: {
