@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib import messages
 from student_app.models import Student
@@ -21,29 +22,39 @@ def practice_student(request):
 def test_student(request):
     return render(request, 'test_student.html')
 
+def coding_student(request):
+    return render(request, 'coding_student.html')
+
+
 
 def profile_student(request):
     if request.method == 'GET':
         user_name = request.session.get('user_id')  # 获取用户名
         if user_name is not None:
-            student = Student.objects.get(name=user_name)
-            return render(request, 'profile_student.html', {'student': student})
+            try:
+                student = Student.objects.get(name=user_name)
+                return render(request, 'profile_student.html', {'student': student})
+            except ObjectDoesNotExist:
+                return HttpResponse('User not found', status=404)
         else:
-            # 如果 GET 请求中 user_name 为 None，返回一个错误信息或重定向
-            return HttpResponse('User not found', status=404)  # 举例返回404错误
+            return HttpResponse('User not found', status=404)
+
     elif request.method == 'POST':
-        data = json.loads(request.body)
-        user_name = request.session.get('user_id')  # 获取用户名
-        student = Student.objects.get(name=user_name)
-        student.name = data['name']
-        student.student_id = data['student_id']
-        student.class_num = data['class']
-        student.email = data['email']
-        student.save()
-        return JsonResponse({'status': 'success'})
+        try:
+            data = json.loads(request.body)
+            user_name = request.session.get('user_id')  # 获取用户名
+            student = Student.objects.get(name=user_name)
+            student.name = data['name']
+            student.student_id = data['student_id']
+            student.class_num = data['class']
+            student.email = data['email']
+            student.save()
+            return JsonResponse({'status': 'success'})
+        except (json.JSONDecodeError, KeyError, ObjectDoesNotExist) as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
     else:
-        # 如果请求方法既不是GET也不是POST，返回一个错误信息或重定向
-        return HttpResponse('Method not allowed', status=405)  # 举例返回405错误
+        return HttpResponse('Method not allowed', status=405)
 # def profile_student(request):
 #     return render(request, 'profile_student.html')
 
