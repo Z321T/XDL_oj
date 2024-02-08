@@ -22,6 +22,10 @@ $(document).ready(function() {
                 url: '/student_info/',
                 method: 'POST',
                 contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+
                 data: JSON.stringify({name: name, student_id: student_id, class: class_num, email: email}),
                 success: function(data) {
                     if (data.status === 'success') {
