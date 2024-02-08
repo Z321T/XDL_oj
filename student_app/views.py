@@ -7,6 +7,7 @@ from teacher_app.models import Teacher
 from administrator_app.models import Administrator
 from django.http import HttpResponse, JsonResponse
 from .forms import StudentForm
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -23,58 +24,26 @@ def test_student(request):
 
 
 def profile_student(request):
-    if request.method == 'GET':
-        user_name = request.session.get('user_id')  # 获取用户名
-        if user_name is not None:
-            student = Student.objects.get(name=user_name)
-            return render(request, 'profile_student.html', {'student': student})
-        else:
-            # 如果 GET 请求中 user_name 为 None，返回一个错误信息或重定向
-            return HttpResponse('User not found', status=404)  # 举例返回404错误
-    elif request.method == 'POST':
-        data = json.loads(request.body)
-        user_name = request.session.get('user_id')  # 获取用户名
+    user_name = request.session.get('user_id')  # 获取用户名
+    try:
         student = Student.objects.get(name=user_name)
-        student.name = data['name']
-        student.student_id = data['student_id']
-        student.class_num = data['class']
-        student.email = data['email']
-        student.save()
-        return JsonResponse({'status': 'success'})
+    except ObjectDoesNotExist:
+        messages.error(request, 'Student does not exist')
+        return redirect('login')  # replace 'login' with the name of your login view
+
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('home_student')
+        else:
+            # 如果表单无效，将错误信息返回到模板
+            return render(request, 'profile_student.html', {'form': form})
     else:
-        # 如果请求方法既不是GET也不是POST，返回一个错误信息或重定向
-        return HttpResponse('Method not allowed', status=405)  # 举例返回405错误
-# def profile_student(request):
-#     return render(request, 'profile_student.html')
+        form = StudentForm(instance=student)
+    return render(request, 'profile_student.html', {'form': form})
 
 
-# def profile_student(request):
-#     user_name = request.session.get('user_id')  # 获取用户名
-#     student = Student.objects.get(name=user_name)
-#     if request.method == 'POST':
-#         form = StudentForm(request.POST, instance=student)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Profile updated successfully')
-#             return redirect('profile_student')
-#     else:
-#         form = StudentForm(instance=student)
-#     return render(request, 'profile_student.html', {'form': form})
 
-# def student_info(request):
-#     if request.method == 'GET':
-#         user_name = request.session.get('user_id')  # 获取用户名
-#         if user_name is not None:
-#             student = Student.objects.get(name=user_name)
-#             return JsonResponse({'name': student.name, 'student_id': student.student_id, 'class': student.class_num, 'email': student.email})
-#
-#     elif request.method == 'POST':
-#         data = json.loads(request.body)
-#         user_name = request.session.get('user_id')  # 获取用户名
-#         student = Student.objects.get(name=user_name)
-#         student.name = data['name']
-#         student.student_id = data['student_id']
-#         student.class_num = data['class']
-#         student.email = data['email']
-#         student.save()
-#         return JsonResponse({'status': 'success'}, status=200)
+
