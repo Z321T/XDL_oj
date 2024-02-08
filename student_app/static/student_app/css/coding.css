@@ -1,0 +1,76 @@
+ /* Add your custom CSS styles here */
+    .container-flex {
+      display: flex;
+      flex: 1;
+    }
+
+    .problem-container, .editor-container {
+      flex: 1;
+      height: 100vh;
+      overflow: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    border:2px solid purple;
+    border-radius:10px;
+
+
+    }
+
+
+
+    /* 调试器样式 */
+.debugger {
+  position:absolute;
+  bottom: 0;
+  width: 100%;
+  height: 33.33%; /* 调试器的高度 */
+  background-color:white; /* 调试器的背景颜色 */
+  border-top: 2px solid purple; /* 上边框 */
+
+  display: none; /* 默认隐藏 */
+  z-index: 999; /* 确保调试器在最顶层 */
+}
+.debugger-button {
+  position:fixed;
+    bottom:3px;
+  right: 10px; /* 或其他适当的右侧位置 */
+  width: 50px; /* 设置按钮宽度 */
+  height: 30px; /* 设置按钮高度 */
+  border-radius: 25%; /* 圆角矩形 */
+  background-color: mediumpurple; /* 按钮背景颜色 */
+  border: 1px solid #ccc; /* 去除边框 */
+  outline: none; /* 去除默认轮廓 */
+  cursor: pointer; /* 光标样式为手型 */
+   transition: background-color 0.3s ease; /* 添加过渡效果 */
+}
+.debugger-button:hover {
+  background-color: #6a0dad; /* 深紫色 */
+}
+   /* 切换按钮样式 */
+.toggle-buttons {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc; /* 上边框 */
+  padding: 1px;
+  border-radius: 10px 10px 10px 10px; /* 圆角矩形样式，上方左右两个角 */
+  background-color: mediumpurple; /* 按钮背景颜色 */
+}
+
+/* 单个按钮样式 */
+.toggle-buttons button {
+  padding: 2px 10px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+    border-right: 1px solid #ccc;
+}
+
+/* 按钮激活状态的样式 */
+.toggle-buttons button:focus {
+  background-color: purple; /* 激活状态背景颜色 */
+}
+
+
+    .panel {
+      /* Panel styles go here */
+    }

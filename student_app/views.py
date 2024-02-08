@@ -19,5 +19,6 @@ def test_student(request):
 
 def profile_student(request):
     return render(request, 'profile_student.html')
-
+def coding_student(request):
+    return render(request, 'coding_student.html')
 
