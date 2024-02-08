@@ -34,7 +34,8 @@ def student_info(request):
 
     elif request.method == 'POST':
         data = json.loads(request.body)
-        student = Student.objects.get(user=request.user)
+        user_name = request.session.get('user_id')  # 获取用户名
+        student = Student.objects.get(name=user_name)
         student.name = data['name']
         student.student_id = data['student_id']
         student.class_num = data['class']
