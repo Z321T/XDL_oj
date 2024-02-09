@@ -36,7 +36,7 @@ def profile_student(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully')
-            return redirect('home_student')
+            return redirect('profile_student')
         else:
             # 如果表单无效，将错误信息返回到模板
             return render(request, 'profile_student.html', {'form': form})
