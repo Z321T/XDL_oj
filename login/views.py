@@ -49,7 +49,7 @@ def log_in(request):
             # user_type = 'administrator'
         else:
             # 用户不存在，返回错误消息
-            error_message = 'Username is incorrect'
+            error_message = 'Userid is incorrect'
             # messages.error(request, error_message)
             return JsonResponse({'status': 'error', 'message': error_message})
 

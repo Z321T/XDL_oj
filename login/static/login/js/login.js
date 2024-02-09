@@ -46,7 +46,7 @@ function performLogin() {
                 else {
                     alert(response.message);
                     // 检查特定的错误条件
-                    if (response.message.includes('Username is incorrect')) {
+                    if (response.message.includes('Userid is incorrect')) {
                         // 显示学号错误模态框
                         $('#usernameErrorModal').modal('show');
                     }
