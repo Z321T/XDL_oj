@@ -23,24 +23,24 @@ def log_in(request):
         user = None
         user_type = None  # 添加用户类型变量
 
-        if Student.objects.filter(student_id=username).exists():
-            user = Student.objects.get(student_id=username)
+        if Student.objects.filter(userid=username).exists():
+            user = Student.objects.get(userid=username)
             if password == user.password:
                 user_type = 'student'
             else:
                 user = None
             # user = authenticate(request, student_id=username, password=password)
             # user_type = 'student'
-        elif Teacher.objects.filter(teacher_id=username).exists():
-            user = Teacher.objects.get(teacher_id=username)
+        elif Teacher.objects.filter(userid=username).exists():
+            user = Teacher.objects.get(userid=username)
             if password == user.password:
                 user_type = 'teacher'
             else:
                 user = None
             # user = authenticate(request, teacher_id=username, password=password)
             # user_type = 'teacher'
-        elif Administrator.objects.filter(admin_id=username).exists():
-            user = Administrator.objects.get(admin_id=username)
+        elif Administrator.objects.filter(userid=username).exists():
+            user = Administrator.objects.get(userid=username)
             if password == user.password:
                 user_type = 'administrator'
             else:
@@ -56,7 +56,7 @@ def log_in(request):
         if user is not None:
             # 用户验证成功，登录用户
             login(request, user)
-            request.session['user_id'] = user.name  # 保存用户id
+            request.session['user_id'] = user.userid  # 保存用户id
             return JsonResponse({'status': 'success', 'message': user_type})
         else:
             # 用户验证失败，显示不同的错误消息

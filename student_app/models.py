@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class Student(models.Model):
     name = models.CharField(verbose_name="姓名", max_length=6)
-    student_id = models.CharField(verbose_name="学号", max_length=8)
+    userid = models.CharField(verbose_name="学号", max_length=8)
     password = models.CharField(verbose_name="密码", max_length=128)
     class_num = models.CharField(verbose_name="班级", max_length=32, blank=True)
     email = models.EmailField(verbose_name="电子邮箱", unique=True, null=True, blank=True)

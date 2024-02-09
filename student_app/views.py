@@ -24,12 +24,12 @@ def test_student(request):
 
 
 def profile_student(request):
-    user_name = request.session.get('user_id')  # 获取用户名
+    user_id = request.session.get('user_id')  # 获取用户名
     try:
-        student = Student.objects.get(name=user_name)
+        student = Student.objects.get(userid=user_id)
     except ObjectDoesNotExist:
         messages.error(request, 'Student does not exist')
-        return redirect('login')  # replace 'login' with the name of your login view
+        return redirect('/login/')  # replace 'login' with the name of your login view
 
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
@@ -45,5 +45,7 @@ def profile_student(request):
     return render(request, 'profile_student.html', {'form': form})
 
 
+def coding_student(request):
+    return render(request, 'coding_student.html')
 
 
