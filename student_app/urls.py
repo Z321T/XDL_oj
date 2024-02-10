@@ -15,6 +15,7 @@ urlpatterns = [
     path('test/', test_student, name='test_student'),
     path('profile/', profile_student, name='profile_student'),
     path('coding/', coding_student, name='coding_student'),
+
     # path('student_info/', student_info, name='student_info'),
 
 
