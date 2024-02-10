@@ -12,6 +12,16 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def home_student(request):
+    # 获取用户id，判断是否是学生用户，若不是则返回登录页面
+    user_id = request.session.get('user_id')
+    if user_id is None:
+        return redirect('/login/')
+    try:
+        student = Student.objects.get(userid=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'The student information is incorrect. Please log in again.')
+        return redirect('/login/')
+
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }

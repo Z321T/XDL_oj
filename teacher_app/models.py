@@ -55,3 +55,15 @@ class Exam(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# 写一个新的模型类，用于存储教师的发布的公告，并是与教师关联的学生可以看到公告
+class Announcement(models.Model):
+    title = models.CharField(verbose_name="公告标题", max_length=255)
+    content = models.TextField(verbose_name="公告内容")
+    published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
+    teacher = models.ForeignKey(Teacher, verbose_name="发布教师", on_delete=models.CASCADE)
+    students = models.ManyToManyField('student_app.Student', verbose_name="接收公告的学生", blank=True)
+
+    def __str__(self):
+        return self.title
