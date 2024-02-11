@@ -4,6 +4,7 @@ from .views import test_teacher
 from .views import profile_teacher
 from .views import notice_teacher
 from .views import repository_teacher
+from .views import class_teacher
 
 from django.contrib.staticfiles.views import serve
 
@@ -18,6 +19,7 @@ urlpatterns = [
     path('profile/', profile_teacher, name='profile_teacher'),
     path('notice/', notice_teacher, name='notice_teacher'),
     path('repository/', repository_teacher, name='repository_teacher'),
+    path('class/', class_teacher, name='class_teacher'),
 
     path('static/<path:path>', serve),
 

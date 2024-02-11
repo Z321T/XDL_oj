@@ -221,7 +221,7 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">作业情况</span>
@@ -235,19 +235,14 @@
             </a>
 
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="mdi mdi-view-headline menu-icon"></i>
-              <span class="menu-title">发布题目</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToNotice()">
               <i class="mdi mdi-chart-pie menu-icon"></i>
-              <span class="menu-title">发通知</span>
+              <span class="menu-title">通知</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">我的题库</span>
@@ -259,6 +254,14 @@
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">个人中心</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+          </li>
+             <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
+              <i class="mdi mdi-account menu-icon"></i>
+              <span class="menu-title">班级管理</span>
               <i class="menu-arrow"></i>
             </a>
 

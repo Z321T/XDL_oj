@@ -48,3 +48,9 @@ def test_teacher(request):
         'user_id': request.session.get('user_id'),
     }
     return render(request, 'test_teacher.html', {'dropdown_menu1': dropdown_menu1})
+
+def class_teacher(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'class_teacher.html', {'dropdown_menu1': dropdown_menu1})

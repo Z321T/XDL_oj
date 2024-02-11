@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'teacher_app/css/style.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'teacher_app/css/profile.css' %}">
 
     <style type="text/css">/* Chart.js */
         @keyframes chartjs-render-animation{
@@ -73,7 +74,7 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">作业情况</span>
@@ -101,7 +102,7 @@
             </a>
 
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">个人中心</span>
@@ -109,12 +110,28 @@
             </a>
 
           </li>
+             <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
+              <i class="mdi mdi-account menu-icon"></i>
+              <span class="menu-title">班级管理</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+          </li>
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+       <div class="profile-card">
+        <div class="profile-image">
+            <img src="your-avatar.png" alt="头像">
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">提交</button>
+        </form>
+     </div>
 
-          </div>
 
 
 
@@ -122,16 +139,12 @@
 
 
 
-
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
 
         <!-- partial -->
-      </div>
-      <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
+      <!-- main-panel ends -->
   </div>
+    <!-- page-body-wrapper ends -->
 
   <!-- container-scroller -->
 
