@@ -33,7 +33,8 @@ class Exercise(models.Model):
 
 
 class ExerciseQuestion(models.Model):
-    exercise = models.ForeignKey(Exercise, verbose_name="练习", on_delete=models.CASCADE, related_name='questions')
+    exercise = models.ForeignKey(Exercise, verbose_name="练习", on_delete=models.CASCADE,
+                                 related_name='questions', null=True)
     content = models.TextField(verbose_name="题目内容")
 
     def __str__(self):
@@ -54,7 +55,8 @@ class Exam(models.Model):
 
 
 class ExamQuestion(models.Model):
-    exam = models.ForeignKey(Exam, verbose_name="考试", on_delete=models.CASCADE, related_name='questions')
+    exam = models.ForeignKey(Exam, verbose_name="考试", on_delete=models.CASCADE,
+                             related_name='questions', null=True)
     content = models.TextField(verbose_name="题目内容")
 
     def __str__(self):
