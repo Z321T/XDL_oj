@@ -2,6 +2,13 @@ from django.db import models
 
 
 # Create your models here.
+class Class(models.Model):
+    name = models.CharField(verbose_name="班级名称", max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 class Teacher(models.Model):
     name = models.CharField(verbose_name="姓名", max_length=6)
     userid = models.CharField(verbose_name="教工号", max_length=10)
@@ -10,12 +17,7 @@ class Teacher(models.Model):
     email = models.EmailField(verbose_name="电子邮件", unique=True, null=True, blank=True)
     phone_num = models.IntegerField(verbose_name="电话号码", null=True)
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
-
-    gender_choices = (
-        (1, "男"),
-        (2, "女"),
-    )
-    gender = models.SmallIntegerField(verbose_name="性别", choices=gender_choices, null=True, blank=True)
+    classes_assigned = models.ManyToManyField(Class, verbose_name="所教班级", blank=True)
 
 
 class Exercise(models.Model):
@@ -64,6 +66,7 @@ class Announcement(models.Model):
     published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
     teacher = models.ForeignKey(Teacher, verbose_name="发布教师", on_delete=models.CASCADE)
     students = models.ManyToManyField('student_app.Student', verbose_name="接收公告的学生", blank=True)
+    class_to_notify = models.ForeignKey(Class, verbose_name="接收公告的班级", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
