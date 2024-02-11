@@ -75,7 +75,7 @@ def test_teacher(request):
     return render(request, 'test_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
 
-# 处理发布公告的视图函数
+# 处理发布公告的视图函数，未完成版本
 def send_announcement(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -86,11 +86,10 @@ def send_announcement(request):
         teacher = Teacher.objects.get(userid=request.session.get('user_id'))  # 获取当前登录的教师
         class_to_notify = Class.objects.get(id=class_id)
 
-        students = Student.objects.filter(class_assigned=class_to_notify)
         announcement = Announcement(title=title, content=content, published_at=published_at,
                                     teacher=teacher, class_to_notify=class_to_notify)
         announcement.save()
-        announcement.students.set(students)
+
         return JsonResponse({'message': 'Announcement sent successfully.'})
     else:
         return render(request, 'send_announcement.html')
