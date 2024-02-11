@@ -21,11 +21,13 @@ def home_teacher(request):
     }
     return render(request, 'home_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
+
 def notice_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
     return render(request, 'notice_teacher.html', {'dropdown_menu1': dropdown_menu1})
+
 
 def profile_teacher(request):
     dropdown_menu1 = {
@@ -39,6 +41,7 @@ def repository_teacher(request):
         'user_id': request.session.get('user_id'),
     }
     return render(request, 'repository_teacher.html', {'dropdown_menu1': dropdown_menu1})
+
 
 def test_teacher(request):
     dropdown_menu1 = {

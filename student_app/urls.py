@@ -7,7 +7,9 @@ from .views import practice_student
 from .views import test_student
 from .views import profile_student
 from .views import coding_student
-# from .views import student_info
+
+
+app_name = 'student_app'
 
 urlpatterns = [
     path('home/', home_student, name='home_student'),
