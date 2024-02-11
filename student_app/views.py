@@ -1,13 +1,11 @@
 import json
 from django.shortcuts import render, redirect
-
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+
 from student_app.models import Student
 from teacher_app.models import Teacher
-from administrator_app.models import Administrator
-from django.http import HttpResponse, JsonResponse
 from .forms import StudentForm
-from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
