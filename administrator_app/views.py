@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from administrator_app.models import Administrator
 from django.core.exceptions import ObjectDoesNotExist
+
+from administrator_app.models import Administrator
+from administrator_app.forms import AdministratorForm
 
 
 # Create your views here.
@@ -21,6 +23,7 @@ def home_administrator(request):
     }
     return render(request, 'home_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
+
 def notice_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -32,7 +35,25 @@ def profile_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    return render(request, 'profile_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+    user_id = request.session.get('user_id')  # 获取用户
+    try:
+        administrator = Administrator.objects.get(userid=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Administrator does not exist')
+        return redirect('/login/')
+    if request.method == 'POST':
+        form = AdministratorForm(request.POST, instance=administrator)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('profile_administrator')
+        else:
+            messages.error(request, 'Profile update failed')
+            return redirect('profile_administrator')
+    else:
+        form = AdministratorForm(instance=administrator)
+    return render(request, 'profile_administrator.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
 
 
 def repository_administrator(request):
@@ -48,11 +69,13 @@ def test_administrator(request):
     }
     return render(request, 'test_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
+
 def class_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
     return render(request, 'class_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
 
 def plagiarism_administrator(request):
     dropdown_menu1 = {
@@ -60,11 +83,13 @@ def plagiarism_administrator(request):
     }
     return render(request, 'plagiarism_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
+
 def information_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
     return render(request, 'information_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
 
 def problems_administrator(request):
     dropdown_menu1 = {
