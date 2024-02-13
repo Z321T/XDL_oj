@@ -20,3 +20,48 @@ def home_administrator(request):
         'user_id': request.session.get('user_id'),
     }
     return render(request, 'home_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+def notice_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'notice_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+
+def profile_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'profile_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+
+def repository_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'repository_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+
+def test_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'test_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+def class_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'class_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+def plagiarism_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'plagiarism_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+def information_administrator(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+    return render(request, 'information_administrator.html', {'dropdown_menu1': dropdown_menu1})
