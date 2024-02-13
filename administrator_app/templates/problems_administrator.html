@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>通知</title>
+    <title>题库管理</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'administrator_app/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'administrator_app/css/vendor.bundle.base.css' %}">
@@ -61,7 +61,6 @@
         table {
 
     width: 100%; /* 表格宽度填满容器 */
-            height: 80%;
     border-collapse: collapse; /* 边框合并为单一线条 */
     text-align: left; /* 文本左对齐 */
     margin-top: 10px; /* 与上方内容的间距 */
@@ -72,68 +71,101 @@ th, td {
     padding: 8px; /* 单元格内边距 */
 }
 
+td{
+     height: 30px; /* 例如，固定行高为50px */
+}
+
 thead {
     background-color: #f2f2f2; /* 表头背景颜色 */
 }
 
-
-        /* 居中容器的样式，包含书签和方框 */
-.centered-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%); /* 调整为居中 */
+.container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0; /* 根据需要调整书签和方框之间的间距 */
-     max-height: 700px; /* 设置表格的最大高度 */
-    overflow-y: auto; /* 内容超出时显示垂直滚动条 */
-    border:2px solid purple; /* 可选，添加边框以便更清晰地看到表格的边界 */
+    height: 100vh;
+}
+.container-roll{
+    max-height: 70vh;
+    overflow-y:auto;
+    width: 100%;
+}
+
+ .update-container {
+    text-align: left;
+    margin-top: 50px;
+            margin-left:10px;
+}
+ #urlInput {
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid purple;
     border-radius: 10px;
 }
 
-          .tabs {
-              position: relative;
-
-    z-index: 2; /* 书签在方框之上 */
-               display: flex;
-    background-color: #ffffff;
-    border-radius: 10px 10px 0 0; /* 上左和上右圆角 */
-    overflow: hidden; /* 隐藏内部元素溢出的部分，确保书签的边框不会超出圆角 */
+#updateButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.tab-link {
-    background-color: #fff; /* 与方框相同的背景颜色 */
-    border: 1px solid purple; /* 相似的边框样式 */
-    border-radius: 0 5px 0 0; /* 适用于第一个书签 */
-}
-.tab-link.active, .tab-link:hover {
-    background-color: mediumpurple; /* 激活或悬停时的背景颜色 */
+#updateButton:hover {
+    background-color: #0056b3;
 }
 
 
-.tab-link:last-child {
-    border-radius: 0 0 5px 0; /* 适用于最后一个书签 */
+.file-upload-wrapper {
+    width: 200px; /* 根据需要调整文件选择框的宽度 */
 }
 
-.content-box {
-    position: relative;
-    width: 700px; /* 根据需要调整宽度 */
-      max-height: 650px; /* 或根据需要调整，以避免过高覆盖标签 */
-    overflow-y: auto; /* 添加滚动条 */
-    border: 1px solid #ccc;
-    border-radius: 0 0 10px 10px; /* 下左和下右圆角 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果增强立体感 */
-    padding: 20px;
-    background-color: #ffffff;
+.custom-file-input {
+    width: 100%; /* 使输入框填满容器 */
+    height: 40px; /* 调整输入框的高度 */
+    opacity: 0; /* 隐藏原生输入框 */
 }
 
-    .tab-content {
-    display: none; /* 默认隐藏所有内容 */
+.custom-file-label {
+    display: block; /* 使标签占据整行 */
+    margin-left: 10px;
+    width: 100%; /* 使标签填满容器 */
+    padding: 10px; /* 增加内边距以增加点击区域 */
+    background-color: #f8f9fa; /* 背景颜色 */
+    border: 1px solid #ced4da; /* 边框颜色 */
+    border-radius: 0.25rem; /* 圆角 */
+    text-align: left;
+    color: #495057; /* 文本颜色 */
+    cursor: pointer; /* 鼠标悬停时的指针样式 */
+    position: relative; /* 设置相对定位，为伪元素定位做准备 */
+    overflow: hidden; /* 防止内容溢出 */
 }
 
-.tab-content.active {
-    display: block; /* 显示激活的标签内容 */
+.custom-file-label::after {
+    content: "浏览"; /* 添加一个'浏览'按钮 */
+    position: absolute; /* 绝对定位 */
+    top: 0;
+    right: 0;
+    padding: 5px; /* 内边距 */
+    background-color: #007bff; /* 按钮背景颜色 */
+    color: #fff; /* 按钮文本颜色 */
+    border-radius: 0 0.25rem 0.25rem 0; /* 右上角圆角 */
+}
+
+.custom-file-input:active + .custom-file-label::after,
+.custom-file-input:focus + .custom-file-label::after {
+    background-color: #0056b3; /* 点击或聚焦时按钮的背景颜色 */
+}
+
+/* 当文件被选中后，改变标签的内容 */
+.custom-file-input:checked + .custom-file-label::after {
+    content: "已选择"; /* 可以根据需要修改 */
+}
+
+.container-col{
+    display:flex;
+    flex-direction: column;
+    gap:0px
 }
 
 
@@ -217,7 +249,7 @@ thead {
               <i class="menu-arrow"></i>
             </a>
 
-          </li><li class="nav-item ">
+          </li><li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">题库管理</span>
@@ -225,7 +257,7 @@ thead {
             </a>
 
           </li>
-            <li class="nav-item active">
+            <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">教师和学生信息管理</span>
@@ -233,146 +265,148 @@ thead {
             </a>
 
           </li>
-            
-            
+
+
         </ul>
       </nav>
       <!-- partial -->
+        <div class="container">
+            <div class="container-roll">
+        <table id="myTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">题目</th>
+            <th onclick="sortTable(1)">添加时间</th>
+            <th onclick="sortTable(2)">添加人</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>John</td>
+            <td>10A</td>
+            <td>92</td>
+        </tr>
+        <tr>
+            <td>Jane</td>
+            <td>10B</td>
+            <td>88</td>
+        </tr>
+        <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
+         <tr>
+            <td>Doe</td>
+            <td>10A</td>
+            <td>90</td>
+        </tr>
 
-        <div class="centered-container">
-            <div class="tabs">
-                <button class="tab-link" onclick="openTab('content1')">教师</button>
-                <button class="tab-link" onclick="openTab('content2')">学生</button>
+
+
+        <!-- 更多行 -->
+    </tbody>
+</table>
             </div>
-            <div class="content-box">
-                <div id="content1" class="tab-content">
-                    <!-- 表格内容 -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>姓名</th>
-                        <th>工号</th>
-                        <th>学院</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
+         <div class="container-col">
+            <div class="update-container">
 
-                    <!-- 更多行 -->
-                </tbody>
-            </table>
-
-                </div>
-                <div id="content2" class="tab-content" style="display:none;">
-                        <label for="classFilter">选择班级：</label>
-                        <select id="classFilter" onchange="filterClass()">
-                            <option value="all">所有班级</option>
-                            <option value="class1">一班</option>
-                            <option value="class2">二班</option>
-                            <option value="class3">三班</option>
-                            <!-- 更多班级选项 -->
-                        </select>
-
-    <!-- 根据选择的班级显示内容 -->
-                        <div id="classContent">
-
-                            <!-- 班级相关内容将在这里显示 -->
-                        </div>
-               </div>
+                <input type="text" id="urlInput" placeholder="请输入网址...">
+                <button id="updateButton">导入题库</button>
             </div>
+
+           <div class="file-upload-wrapper">
+    <div class="custom-file mb-3">
+        <input type="file" class="custom-file-input" id="codebaseFile">
+        <label class="custom-file-label" for="codebaseFile">选择文件...</label>
+        <button class="btn btn-primary" id="uploadButton">开始导入</button>
+    </div>
+
+</div>
+         </div>
+
+
         </div>
-
-
-
 
         <!-- partial -->
     </div>
@@ -404,49 +438,35 @@ thead {
   <!-- End custom js for this page-->
   <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
 <script>
-    function openTab(tabId) {
-    // 隐藏所有标签内容
-    var tabs = document.getElementsByClassName("tab-content");
-    for (var i = 0; i < tabs.length; i++) {
-        tabs[i].style.display = "none";
-    }
-
-    // 移除所有标签的"active"类
-    var tabLinks = document.getElementsByClassName("tab-link");
-    for (var i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].classList.remove("active");
-    }
-
-    // 显示选中的标签内容，并添加"active"类
-    document.getElementById(tabId).style.display = "block";
-    event.currentTarget.classList.add("active");
-}
-
-function filterClass() {
-    var selectedClass = document.getElementById("classFilter").value;
-    var content = document.getElementById("classContent");
-
-    // 清空当前内容
-    content.innerHTML = '';
-
-    // 根据选择的班级显示相应的内容
-    switch(selectedClass) {
-        case 'class1':
-            content.innerHTML = '<p>一班的相关内容...</p>';
-            break;
-        case 'class2':
-            content.innerHTML = '<p>二班的相关内容...</p>';
-            break;
-        case 'class3':
-            content.innerHTML = '<p>三班的相关内容...</p>';
-            break;
-        default:
-            content.innerHTML = '<p>所有班级的内容...</p>';
+// JavaScript函数用于根据列排序表格
+function sortTable(column) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("myTable");
+    switching = true;
+    // 循环直到没有切换发生
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        // 遍历所有表格行（除了表头）
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            // 获取要比较的两个元素
+            x = rows[i].getElementsByTagName("TD")[column];
+            y = rows[i + 1].getElementsByTagName("TD")[column];
+            // 检查是否应该切换两个元素的位置
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            // 如果有元素需要切换位置，则切换并标记切换完成
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
     }
 }
-
 </script>
-
 
 </body>
 </html>
