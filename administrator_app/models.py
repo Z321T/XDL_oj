@@ -37,6 +37,6 @@ class Administrator(models.Model):
     password = models.CharField(verbose_name="密码", max_length=32)
     # department = models.CharField(verbose_name="部门", max_length=16, null=True, blank=True)
     email = models.EmailField(verbose_name="电子邮件", unique=True, null=True, blank=True)
-    phone_num = models.IntegerField(verbose_name="电话号码", null=True)
+    phone_num = models.CharField(verbose_name="电话号码", max_length=12, null=True)
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
 

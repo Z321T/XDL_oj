@@ -14,7 +14,7 @@ class Teacher(models.Model):
     userid = models.CharField(verbose_name="教工号", max_length=10)
     password = models.CharField(verbose_name="密码", max_length=32)
     email = models.EmailField(verbose_name="电子邮件", unique=True, null=True, blank=True)
-    phone_num = models.IntegerField(verbose_name="电话号码", null=True)
+    phone_num = models.CharField(verbose_name="电话号码", max_length=12, null=True)
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
     classes_assigned = models.ManyToManyField(Class, verbose_name="所教班级", blank=True)
 
