@@ -56,6 +56,7 @@ def profile_teacher(request):
     return render(request, 'profile_teacher.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
 
 
+# 题库管理
 def repository_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -63,6 +64,7 @@ def repository_teacher(request):
     return render(request, 'repository_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 考试情况
 def test_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -70,6 +72,7 @@ def test_teacher(request):
     return render(request, 'test_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 班级管理
 def class_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
