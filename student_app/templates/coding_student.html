@@ -64,8 +64,8 @@
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
-              <!-- 调试器按钮 -->
-  <button class="debugger-button" id="debugBtn" onclick="toggleDebugger()">调试</button>
+              <!-- 提交按钮 -->
+  <button class="debugger-button" id="runCode" onclick="toggleDebugger()">提交</button>
 
         </div>
       </div>
@@ -82,7 +82,7 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">我的作业</span>
@@ -146,7 +146,7 @@
 
               <div id="debugger" class="debugger">
             <!-- 调试信息 -->
-               <p>调试信息</p>
+               <p>运行信息</p>
               </div>
           </div>
 
@@ -201,6 +201,26 @@
             });
         });
     </script>
+
+<script>
+    document.getElementById('runCode').addEventListener('click', function() {
+    var userCode = editor.getValue(); // 假设 editor 是你的 Monaco 编辑器实例
+
+    // 发送 AJAX 请求到后端执行代码
+    fetch('/run-code', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: userCode }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 显示输出、内存占用、执行时间和错误信息
+        document.getElementById('debugger').innerText = `输出: ${data.output}\n内存占用: ${data.memory}\n执行时间: ${data.time}\n错误: ${data.error}`;
+    });
+});
+</script>
 
 
 </body></html>
