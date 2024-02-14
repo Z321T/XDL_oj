@@ -325,8 +325,8 @@
                           <div class="card">
                             <div class="card-body">
                               <p class="card-title">重复提交次数</p>
-                              <div id="cash-deposits-chart-legend" class="d-flex justify-content-center pt-3"></div>
-                              <canvas id="cash-deposits-chart"></canvas><!--动态图-->
+                              <!-- 折线图的容器 -->
+                                <div id="lineChart" style="width: 600px;height:400px;"></div>
                             </div>
                           </div>
                         </div>
@@ -494,12 +494,7 @@
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
 
-
-          </div>
-        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -529,9 +524,12 @@
   <!-- End custom js for this page-->
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
        <script>
-        var myChart = echarts.init(document.getElementById('myChart'));
+           <!-- 折线图的容器 -->
 
-        var option = {
+        var myChart = echarts.init(document.getElementById('myChart'));
+           var lineChart = echarts.init(document.getElementById('lineChart'));
+
+        var chartoption = {
             title: {
                 text: '教师主页饼状图',
                 subtext: '示例',
@@ -565,7 +563,52 @@
             ]
         };
 
-        myChart.setOption(option);
+        // 指定折线图的配置项和数据
+        var lineOption = {
+            title: {
+                text: '',
+                subtext: '纯属虚构'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['最多提交次数','最少提交次数']
+            },
+            xAxis:  {
+                type: 'category',
+                boundaryGap: false,
+                data: {{ line_chart_data.dates|safe }}
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} 次'
+                }
+            },
+            series: [
+                {
+                    name:'提交次数',
+                    type:'line',
+                    data:{{ line_chart_data.values|safe }},
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        lineChart.setOption(lineOption);
+        myChart.setOption(chartoption);
     </script>
 
 </body></html>

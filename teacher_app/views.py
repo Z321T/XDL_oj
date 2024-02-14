@@ -26,9 +26,16 @@ def home_teacher(request):
         'data': [30, 50, 20]
     }
         # 你可以传递一个包含所有信息的上下文字典给模板
+    # 这里是你的数据，通常是从数据库中查询得到的
+    line_chart_data = {
+        'dates': ['1', '2', '3', '4', '5'],
+        'values': [120, 132, 101, 134, 90]
+    }
+
     context = {
         'teacher': teacher,  # 添加 teacher 对象
         'chart_data': chart_data,  # 添加图表数据
+        'line_chart_data': line_chart_data,  # 添加折线图数据
     }
 
     return render(request, 'home_teacher.html', context)
