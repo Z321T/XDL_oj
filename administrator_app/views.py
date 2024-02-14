@@ -7,6 +7,7 @@ from administrator_app.forms import AdministratorForm
 
 
 # Create your views here.
+# 管理员主页
 def home_administrator(request):
     # 获取用户id，若没有登录则返回登录页面
     user_id = request.session.get('user_id')
@@ -24,6 +25,7 @@ def home_administrator(request):
     return render(request, 'home_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 发布通知
 def notice_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -31,6 +33,7 @@ def notice_administrator(request):
     return render(request, 'notice_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 管理员个人中心
 def profile_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
