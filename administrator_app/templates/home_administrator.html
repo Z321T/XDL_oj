@@ -30,6 +30,35 @@
         .chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}
         .chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}
     </style>
+    <script>
+        function redirectToHome() {
+            window.location.href = "/administrator/home/"
+        }
+        function redirectToTest() {
+            window.location.href = "/administrator/test/"
+        }
+        function redirectToNotice() {
+            window.location.href = "/administrator/notice/"
+        }
+        function redirectToInformation() {
+            window.location.href = "/administrator/information/"
+        }
+        function redirectToClass() {
+            window.location.href = "/administrator/class/"
+        }
+        function redirectToPlagiarism() {
+            window.location.href = "/administrator/plagiarism/"
+        }
+        function redirectToProblems() {
+            window.location.href = "/administrator/problems/"
+        }
+        function redirectToProfile() {
+            window.location.href = "/administrator/profile/"
+        }
+        function redirectToRepository() {
+            window.location.href = "/administrator/repository/"
+        }
+    </script>
 </head>
 <body>
   <div class="container-scroller">
@@ -179,13 +208,13 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">作业情况</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false" aria-controls="ui-basic">
               <i class="mdi mdi-circle-outline menu-icon"></i>
               <span class="menu-title">考试情况</span>
               <i class="menu-arrow"></i>
@@ -193,19 +222,19 @@
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" onclick="redirectToProblems()">
               <i class="mdi mdi-view-headline menu-icon"></i>
               <span class="menu-title">发布题目</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" onclick="redirectToNotice()">
               <i class="mdi mdi-chart-pie menu-icon"></i>
               <span class="menu-title">发通知</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">我的题库</span>
               <i class="menu-arrow"></i>
@@ -213,7 +242,7 @@
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">个人中心</span>
               <i class="menu-arrow"></i>
@@ -229,7 +258,7 @@
 
           </li>
             <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPlagiarism()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">查重管理</span>
               <i class="menu-arrow"></i>
@@ -237,7 +266,7 @@
 
           </li>
             <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">题库管理</span>
               <i class="menu-arrow"></i>
@@ -245,7 +274,7 @@
 
           </li>
             <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToInformation()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">师生信息管理</span>
               <i class="menu-arrow"></i>

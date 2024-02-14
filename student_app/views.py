@@ -51,7 +51,7 @@ def profile_student(request):
         student = Student.objects.get(userid=user_id)
     except ObjectDoesNotExist:
         messages.error(request, 'Student does not exist')
-        return redirect('/login/')  # replace 'login' with the name of your login view
+        return redirect('/login/')
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
