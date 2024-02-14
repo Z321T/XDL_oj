@@ -21,8 +21,16 @@ def home_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
+
     return render(request, 'home_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
+def home_teacher(request):
+    # 假设这是你的数据
+    chart_data = {
+        'categories': ['分类1', '分类2', '分类3'],
+        'data': [30, 50, 20]
+    }
+    return render(request, 'teacher_app/home_teacher.html', {'chart_data': chart_data})
 
 def notice_teacher(request):
     dropdown_menu1 = {
