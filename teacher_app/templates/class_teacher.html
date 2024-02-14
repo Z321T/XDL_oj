@@ -56,7 +56,6 @@
         }
     </script>
     <style>
-
         .content-container {
               position: relative; /* 设置相对定位 */
               left:250px;
@@ -70,83 +69,72 @@
 .content-window {
     display: flex; /* 使用Flexbox布局 */
   align-items: start; /* 使表格和控制按钮顶部对齐 */
-  width: 90%; /* 充满容器 */
-  height: 90%; /* 充满容器 */
+  width: 90%;
+  height:90%; /* 充满容器 */
     max-height: 1200px; /* 设置表格的最大高度 */
   overflow-y: auto; /* 如果内容超出，显示滚动条 */
 }
+.table-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
 
- .content-window table {
-     float: left; /* 使表格浮动在左侧 */
+}
+
+
+ .table-container table {
     width: 100%; /* 表格宽度充满容器 */
     height: 100%; /* 表格高度充满容器 */
     border-collapse: collapse; /* 合并表格边框 */
      overflow: auto;
+
   }
 /* 为偶数行设置灰色背景 */
-.content-window tr:nth-child(even) {
+.table-container tr:nth-child(even) {
   background-color: #f2f2f2; /* 浅灰色背景 */
 }
 
 /* 为奇数行设置白色背景 */
-.content-window tr:nth-child(odd) {
+.table-container tr:nth-child(odd) {
   background-color: #ffffff; /* 白色背景 */
 }
-.content-window tr {
+.table-container tr {
   height: 30px; /* 设置每一行的固定高度为50px */
 }
-  .content-window th, .content-window td {
+  .table-container th, .table-container td {
     border: 1px solid #ddd; /* 设置单元格边框 */
     text-align: left; /* 文本左对齐 */
     padding: 8px; /* 单元格内边距 */
   }
 
-  .table-controls {
-      float: left; /* 使控制按钮浮动在左侧，紧随表格之后 */
-  margin-left: 10px; /* 在表格和控制按钮之间添加一些空间 */
-  display: flex; /* 使用Flexbox布局 */
-  flex-direction: column; /* 使按钮垂直排列 */
-  margin-left: 10px; /* 在表格和控制按钮之间添加一些空间 */
+
+  /* 新增的标题样式 */
+.table-title {
+    width: 80px; /* 标题宽度充满容器 */
+    margin-bottom: 5px; /* 在标题和表格之间添加一些空间 */
+    font-size: 20px; /* 设置标题的字体大小 */
+    font-weight: bold; /* 设置标题的字体加粗 */
 }
 
-.arrow-button, .class-button {
-  margin: 2px 0; /* 在按钮之间添加一些垂直间距 */
-  padding: 5px; /* 增加按钮的内边距 */
-  cursor: pointer; /* 将鼠标光标改为指针形状，表示可点击 */
-    border-radius: 10px;
-    border:1px solid purple;
-}
-.arrow-button, .class-button:hover{
-    background-color: mediumpurple;
-}
 
-.arrow-button {
-  background-color: #f0f0f0; /* 浅灰色背景 */
-}
 
-.class-button {
-  background-color: #e7e7e7; /* 略深的灰色背景 */
-}
-.control-button {
-  position: absolute; /* 绝对定位 */
-  width: 30px; /* 按钮宽度 */
-  height: 30%; /* 与.content-container同高 */
-  top: 250px; /* 位于顶部 */
-  background: #ddd; /* 按钮背景颜色 */
-  border: 1px solid mediumpurple;
-    border-radius: 10px;
-  cursor: pointer; /* 鼠标悬停时为指针形状 */
-}
 
-.control-button.right {
-  right: 10px; /* 右侧按钮 */
-}
 
-.control-button.left {
-  left: 10px; /* 左侧按钮 */
+.control-button-right {
+  margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
+  padding: 10px 20px; /* 按钮内边距 */
+  background-color: #007bff; /* 背景颜色 */
+  color: #ffffff; /* 文本颜色 */
+  border: none; /* 移除边框 */
+  border-radius: 5px; /* 圆角边框 */
+  cursor: pointer; /* 鼠标悬停时的指针样式 */
+    right:2px;
+    position: absolute;
   display: none; /* 默认不显示 */
+
 }
-#resetPasswordButton {
+#newClassButton {
   margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
   padding: 10px 20px; /* 按钮内边距 */
   background-color: #007bff; /* 背景颜色 */
@@ -158,22 +146,76 @@
     position: absolute;
 }
 
-#resetPasswordButton:hover {
+#newClassButton:hover {
   background-color: #0056b3; /* 鼠标悬停时的背景颜色变化 */
 }
-.hide {
-  display: none; /* 隐藏元素 */
 
-    #dropZone {
-  border: 2px dashed #ccc;
-  border-radius: 5px;
-  text-align: center;
-  padding: 30px;
-  margin: 10px;
+    .button-class{
+        border-radius: 10px;
+        border: 1px solid purple;
+        background-color: white;
+        color: #0d111b;
+        padding:5px 10px;
+    }
+    .button-class:hover{
+        background-color: mediumpurple;
+    }
+
+/* 弹窗背景 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1; / Sit on top /
+    left: 0;
+    top: 0;
+    width: 100%; / Full width /
+    height: 100%; / Full height /
+    overflow: auto; / Enable scroll if needed /
+    background-color: rgb(0,0,0); / Fallback color /
+    background-color: rgba(0,0,0,0.4); / Black w/ opacity */
+
+}
+/*弹窗内部样式 */
+.modal-content {
+background-color: #fefefe;
+margin: 15% auto; / 15% from the top and centered /
+padding: 20px;
+border: 1px solid #888;
+width: 30%; / Could be more or less, depending on screen size */
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* 关闭按钮样式 */
+.close {
+color: #aaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+color: black;
+text-decoration: none;
+cursor: pointer;
+}
+
+/* 拖拽区域样式 */
+#dropArea {
+width: 80%;
+height: 100px;
+border: 2px dashed #ccc;
+border-radius: 5px;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+margin: 10px 0;
 }
 
 
-}
 
     </style>
 
@@ -246,12 +288,14 @@
       <!-- partial -->
      <div class="content-container">
   <div class="content-window">
+    <div class="table-container">
+      <div class="table-title" id="table-title">我的班级</div>
     <table id="dataTable">
       <thead>
         <tr>
-          <th>姓名</th>
-          <th>学号</th>
-          <th>班级</th>
+          <th>班级名</th>
+          <th>人数</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -259,8 +303,9 @@
         <tr>
           <td><input type="checkbox" id="checkbox1" name="checkbox1">张三</td>
           <td>001</td>
-          <td>1班</td>
+          <td><button class="button-class" id="delete-class">删除</button><button class="button-class" id="refreshButton">详情</button></td>
         </tr>
+        <!--内容示范，可更改-->
         <tr>
           <td><input type="checkbox" id="checkbox2" name="checkbox1">张三</td>
           <td>001</td>
@@ -360,22 +405,17 @@
         <!-- 其他行... -->
       </tbody>
     </table>
-      <div class="table-controls">
-    <button class="arrow-button" id="arrow-up">↑</button>
-    <button class="class-button" id="class-1">一班</button>
-    <button class="class-button" id="class-2">二班</button>
-    <button class="class-button" id="class-3">三班</button>
-    <button class="arrow-button" id="arrow-down">↓</button>
-  </div>
-  </div>
-  <div id="dropZone" class="hide">
-    <p>拖动Excel文件到这里</p>
-  </div>
-  <button id="refreshButton" class="control-button right">上传班级</button>
-  <button id="newButton" class="control-button left hide">我的班级</button>
+    </div>
 
-          <button type="button" id="resetPasswordButton">初始化密码</button>
-</div>
+
+
+  </div>
+         <button id="newButton" class="control-button-right">我的班级</button>
+      <!-- 触发弹窗的按钮 -->
+         <button type="button" id="newClassButton">新建班级</button>
+     </div>
+
+
 
 
 
@@ -384,7 +424,19 @@
 
   </div>
   <!-- container-scroller -->
-
+      <!-- 弹窗内容 -->
+<div id="myModal" class="modal">
+    <!-- 弹窗内部 -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <label for="className">班级名称:</label>
+        <input type="text" id="className" name="className"><br><br>
+        <!-- 拖拽区域 -->
+        <div id="dropArea">将Excel文件拖拽到此处</div><br>
+        <!-- 确定按钮 -->
+        <button type="button" id="confirmButton">确定</button>
+    </div>
+</div>
  <!-- plugins:js -->
   <script type="text/javascript" src="{% static 'teacher_app/js/vendor.bundle.base.js' %}"></script>
   <!-- endinject -->
@@ -405,79 +457,163 @@
   <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
   <!-- End custom js for this page-->
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-<script>
-    // 刷新按钮事件
-document.getElementById('refreshButton').addEventListener('click', function() {
-  // 隐藏表格
-  document.querySelector('.content-window').style.display = 'none';
-  // 显示拖放区域
-  var dropZone = document.getElementById('dropZone');
-  dropZone.style.display = 'block';
-  // 设置拖放区域的事件
-  setupDragAndDrop();
-  // 隐藏右侧的刷新按钮
-  this.style.display = 'none';
-  // 显示左侧的返回按钮
-  document.getElementById('newButton').style.display = 'block';
-});
+  <script>
+/* 定义一个全局变量，稍后在 window.onload 中对其进行初始化8*/
+var originalTableHTML;
 
-// 设置拖放事件的函数
-function setupDragAndDrop() {
-  var dropZone = document.getElementById('dropZone');
-  dropZone.ondragover = function(event) {
-    event.preventDefault();
-    dropZone.classList.add('hover');
-  };
-
-  dropZone.ondragleave = function() {
-    dropZone.classList.remove('hover');
-  };
-
-  dropZone.ondrop = function(event) {
-    event.preventDefault();
-    dropZone.classList.remove('hover');
-    // 获取文件列表
-    var files = event.dataTransfer.files;
-    // 处理文件
-    if (files.length > 0) {
-      var file = files[0];
-      // 假设 readExcelFile 是一个函数，用来读取并处理Excel文件
-      readExcelFile(file);
+function refreshTableContent() {
+    // 更新表格标题
+    var tableTitle = document.getElementById('table-title');
+    if (tableTitle) {
+        tableTitle.textContent = '班级详情'; // 更改为你想要的新标题
     }
-  };
+    var table = document.getElementById('dataTable');
+   var thead = table.getElementsByTagName('thead')[0];
+    var tbody = table.getElementsByTagName('tbody')[0];
+    // 清除现有的表格内容
+     // 清除现有的 thead 和 tbody 内容
+    thead.innerHTML = '';
+    tbody.innerHTML = '';
+
+    // 定义新的 thead 内容
+    var newTheadData = ["姓名", "学号", "班级", "操作"];
+
+    // 创建新的标题行
+    var headerRow = thead.insertRow();
+    newTheadData.forEach(function(headerText) {
+        var headerCell = document.createElement("th");
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+    });
+    // 定义新的 tbody 内容
+    var newData = [
+        ["张三", "001", "计算机1班"],
+        ["李四", "002", "计算机2班"],
+        // 更多行...
+    ];
+
+    // 为每一行新数据创建表格行和单元格
+    newData.forEach(function(rowData) {
+        var row = tbody.insertRow();
+        rowData.forEach(function (cellData) {
+            var cell = row.insertCell();
+            cell.textContent = cellData;
+        });
+        // 在“操作”列添加“删除”和“重置密码”按钮
+        var actionCell = row.insertCell();
+        actionCell.innerHTML = '<button class="button-class" onclick="deleteRow(this)">删除</button>' +
+                               '<button class="button-class" onclick="resetPassword(this)">重置密码</button>'
+    });
+
+
+        // 显示“返回初始”按钮
+    document.getElementById('newButton').style.display = 'block';
+    document.getElementById('newClassButton').style.display = 'none';
+
+    // 由于刷新按钮可能被重新创建，确保再次绑定事件
+    bindButtonEvents();
+    addClass();
 }
 
-// 假设的 readExcelFile 函数
-function readExcelFile(file) {
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var data = e.target.result;
-    // 假设 processData 是一个函数，用来解析Excel数据
-    processData(data);
-  };
-  reader.onerror = function(e) {
-    console.error("读取文件时发生错误", e);
-  };
-  reader.readAsBinaryString(file);
+function bindDeleteButtonEvents() {
+    // 由于每一行都可能有删除按钮，最好是用事件委托来绑定事件，而不是直接绑定到每个按钮上
+    document.getElementById('dataTable').addEventListener('click', function(event) {
+        // 检查点击的是否是删除按钮
+        if (event.target && event.target.classList.contains('button-class')) {
+            // 获取按钮所在的行（tr元素）
+            var row = event.target.closest('tr');
+            // 删除该行
+            row.remove();
+        }
+    }, { once: true }); // 事件监听器在执行一次后会自动移除，确保每个删除按钮只能点击一次
 }
 
-// 返回初始按钮事件
-document.getElementById('newButton').addEventListener('click', function() {
-  // 恢复内容窗口的显示
-  document.querySelector('.content-window').style.display = 'flex';
-  // 隐藏拖放区域
-  document.getElementById('dropZone').style.display = 'none';
-  // 显示右侧的刷新按钮
-  document.getElementById('refreshButton').style.display = 'block';
-  // 隐藏左侧的返回按钮
-  this.style.display = 'none';
-});
-
-// 用于解析和处理Excel文件数据的假设函数
-function processData(data) {
-  // 这里应该是处理Excel数据并显示到页面上的逻辑
-  console.log("处理Excel数据: ", data);
+function deleteRow(button) {
+    var row = button.parentNode.parentNode; // 获取按钮所在的行
+    row.parentNode.removeChild(row); // 从DOM中删除该行
 }
 
-</script>
+function resetPassword(button) {
+    var row = button.parentNode.parentNode; // 获取按钮所在的行
+    var nameCell = row.cells[0]; // 假设姓名在第一列
+    alert("重置 " + nameCell.textContent + " 的密码");
+}
+
+function addClass(){
+              // 获取弹窗元素
+              var modal = document.getElementById("myModal");
+
+// 获取打开弹窗的按钮元素
+              var btn = document.getElementById("newClassButton");
+
+// 获取关闭按钮元素
+              var span = document.getElementsByClassName("close")[0];
+
+// 当用户点击按钮时，打开弹窗
+              btn.onclick = function () {
+                  modal.style.display = "block";
+              }
+
+// 当用户点击 x 按钮时，关闭弹窗
+              span.onclick = function () {
+                  modal.style.display = "none";
+              }
+
+// 当用户点击弹窗外的区域时，关闭弹窗
+              window.onclick = function (event) {
+                  if (event.target == modal) {
+                      modal.style.display = "none";
+                  }
+              }
+
+// 获取确定按钮元素
+              var confirmBtn = document.getElementById("confirmButton");
+
+// 当用户点击确定按钮时，执行相关操作（例如收集数据等）并关闭弹窗
+              confirmBtn.onclick = function () {
+                  // 执行操作，例如收集输入数据等
+
+                  // 关闭弹窗
+                  modal.style.display = "none";
+              }
+          }
+// 使用事件委托监听按钮点击
+function bindButtonEvents() {
+    // 绑定刷新按钮事件
+    document.getElementById('refreshButton').addEventListener('click', refreshTableContent);
+
+    // 绑定返回初始按钮事件
+    document.getElementById('newButton').addEventListener('click', function () {
+        // 使用原始HTML恢复表格
+        document.getElementById('dataTable').innerHTML = originalTableHTML;
+        // 隐藏返回初始按钮
+        this.style.display = 'none';
+        document.getElementById('newClassButton').style.display = 'block';
+    });
+
+    document.getElementById('dataTable').addEventListener('click', function (event) {
+        // 检查是否点击了刷新按钮
+        if (event.target.id === 'refreshButton') {
+            refreshTableContent();
+        }
+        // 检查是否点击了返回初始按钮
+        else if (event.target.id === 'newButton') {
+            // 使用原始HTML恢复表格
+            document.getElementById('dataTable').innerHTML = originalTableHTML;
+            // 隐藏返回初始按钮
+            event.target.style.display = 'none';
+        }
+    });
+}
+
+// 确保在页面加载完成后调用函数以设置事件监听器
+window.onload = function() {
+    originalTableHTML = document.getElementById('dataTable').innerHTML;
+    bindButtonEvents(); // 初始绑定
+    addClass();
+    bindDeleteButtonEvents();
+}
+  </script>
+
+
 </body></html>
