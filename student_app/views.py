@@ -9,6 +9,7 @@ from .forms import StudentForm
 
 
 # Create your views here.
+# 学生主页
 def home_student(request):
     # 获取用户id，判断是否是学生用户，若不是则返回登录页面
     user_id = request.session.get('user_id')
@@ -26,6 +27,7 @@ def home_student(request):
     return render(request, 'home_student.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 我的练习
 def practice_student(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -33,6 +35,7 @@ def practice_student(request):
     return render(request, 'practice_student.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 我的考试
 def test_student(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -40,6 +43,7 @@ def test_student(request):
     return render(request, 'test_student.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 学生个人中心
 def profile_student(request):
 
     dropdown_menu1 = {
@@ -66,6 +70,7 @@ def profile_student(request):
     return render(request, 'profile_student.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
 
 
+# 答题界面
 def coding_student(request):
     return render(request, 'coding_student.html')
 
