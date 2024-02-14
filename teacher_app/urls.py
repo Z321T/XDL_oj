@@ -21,6 +21,7 @@ urlpatterns = [
     path('repository/', repository_teacher, name='repository_teacher'),
     path('class/', class_teacher, name='class_teacher'),
 
+
     path('static/<path:path>', serve),
 
 ]

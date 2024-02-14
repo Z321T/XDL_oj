@@ -17,20 +17,23 @@ def home_teacher(request):
     except ObjectDoesNotExist:
         messages.error(request, 'The teacher information is incorrect. Please log in again.')
         return redirect('/login/')
+        # 这里我们不再需要单独的 dropdown_menu1，因为教师信息已经包含 user_id
+        # 但是如果有其他数据需要传递给下拉菜单，你可以在这里添加
 
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
-
-    return render(request, 'home_teacher.html', {'dropdown_menu1': dropdown_menu1})
-
-def home_teacher(request):
-    # 假设这是你的数据
+        # 假设这是你的饼状图数据
     chart_data = {
         'categories': ['分类1', '分类2', '分类3'],
         'data': [30, 50, 20]
     }
-    return render(request, 'teacher_app/home_teacher.html', {'chart_data': chart_data})
+        # 你可以传递一个包含所有信息的上下文字典给模板
+    context = {
+        'teacher': teacher,  # 添加 teacher 对象
+        'chart_data': chart_data,  # 添加图表数据
+    }
+
+    return render(request, 'home_teacher.html', context)
+
+
 
 def notice_teacher(request):
     dropdown_menu1 = {
