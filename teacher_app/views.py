@@ -152,6 +152,7 @@ def create_class(request):
             return JsonResponse({'errors': form.errors}, status=400)
 
 
+
 # 班级管理：删除班级
 def delete_class(request, class_id):
     try:
