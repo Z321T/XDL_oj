@@ -330,8 +330,6 @@ margin: 10px 0;
         <input type="text" id="className" name="className"><br><br>
         <label for="initialPassword">初始密码:</label>
         <input type="password" id="initialPassword" name="initialPassword"><br><br>
-        <!-- 拖拽区域 -->
-        <div id="dropArea">将Excel文件拖拽到此处</div><br>
         <!-- 文件选择器 -->
         <input type="file" id="fileInput" accept=".xls,.xlsx"><br>
         <!-- 确定按钮 -->
@@ -482,6 +480,10 @@ function addClass(){
         // 创建一个新的XHR对象
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/teacher/class/create/', true);  // 替换为你的API路径
+        // 获取CSRF令牌
+        var csrftoken = getCookie('csrftoken');
+        // 将CSRF令牌添加到请求头中
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
         // 设置请求完成后的处理函数
         xhr.onload = function () {
             if (xhr.status === 200) {
@@ -539,6 +541,21 @@ window.onload = function() {
     bindButtonEvents(); // 初始绑定
 
     bindDeleteButtonEvents();
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
   </script>
 

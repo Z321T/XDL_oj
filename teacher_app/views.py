@@ -1,6 +1,7 @@
 import pandas as pd
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -119,6 +120,7 @@ def class_teacher(request):
                   {'classes': classes, 'dropdown_menu1': dropdown_menu1})
 
 
+@csrf_exempt
 # 班级管理：创建班级
 def create_class(request):
     if request.method == 'POST':
