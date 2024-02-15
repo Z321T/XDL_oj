@@ -1,8 +1,11 @@
 import pandas as pd
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import JsonResponse
 
 from teacher_app.forms import TeacherForm, ClassForm
 from teacher_app.models import Teacher, Class
@@ -104,28 +107,52 @@ def class_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
+    user_id = request.session.get('user_id')
+    try:
+        teacher = Teacher.objects.get(userid=user_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Teacher does not exist')
+        return redirect('/login/')
 
+    # 查询与当前教师关联的班级
+    classes = Class.objects.filter(teacher=teacher)
+    return render(request, 'class_teacher.html',
+                  {'classes': classes, 'dropdown_menu1': dropdown_menu1})
+
+
+@csrf_exempt
+# 班级管理：创建班级
+def create_class(request):
     if request.method == 'POST':
-        form = ClassForm(request.POST)
+        form = ClassForm(request.POST, request.FILES)
         if form.is_valid():
-            new_class = form.save()
-            # 读取Excel文件
-            excel_file = request.FILES['excel_file']
-            data = pd.read_excel(excel_file)
-            # 创建学生用户
-            for index, row in data.iterrows():
-                Student.objects.create(
-                    name=row['姓名'],
-                    userid=row['学号'],
-                    password=row['default_password'],
-                    class_assigned=new_class
-                )
-            return redirect('class_teacher')
-    else:
-        form = ClassForm()
+            new_class = form.save(commit=False)
+            # 获取前端传过来的班级名称
+            class_name = request.POST.get('className')
+            new_class.name = class_name
 
-    classes = Class.objects.all()
-    return render(request, 'class_teacher.html', {'form': form, 'classes': classes, 'dropdown_menu1': dropdown_menu1})
+            user_id = request.session.get('user_id')
+            teacher = Teacher.objects.get(userid=user_id)
+            new_class.teacher = teacher  # 将班级的教师设置为当前登录的教师
+            new_class.save()  # 先保存班级
+            teacher.classes_assigned.add(new_class)  # 然后将班级添加到教师的 classes_assigned 中
+
+            file = request.FILES.get('file')
+            if file:
+                initial_password = request.POST.get('initialPassword')
+                data = pd.read_excel(file)
+                for index, row in data.iterrows():
+                    Student.objects.create(
+                        name=row['姓名'],
+                        userid=row['学号'],
+                        password=initial_password,
+                        class_assigned=new_class
+                    )
+            return JsonResponse({'message': '班级创建成功'}, status=200)
+        else:
+            # 表单验证失败时的处理，通常是返回错误信息
+            return JsonResponse({'errors': form.errors}, status=400)
+
 
 
 # 班级管理：删除班级

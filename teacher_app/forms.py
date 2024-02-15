@@ -12,7 +12,9 @@ class TeacherForm(forms.ModelForm):
 
 
 class ClassForm(forms.ModelForm):
+    file = forms.FileField()
+
     class Meta:
         model = Class
-        fields = ['name']
+        fields = ['name', 'file']
 

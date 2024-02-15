@@ -11,7 +11,6 @@ from teacher_app.models import Teacher
 
 
 # Create your views here.
-@csrf_exempt  # 这里添加了csrf_exempt装饰器，因为Ajax请求可能不包含csrf令牌
 def log_in(request):
     if request.method == 'POST':
         # 获取表单提交的用户名和密码
