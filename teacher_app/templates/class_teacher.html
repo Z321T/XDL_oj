@@ -63,101 +63,95 @@
 
               height: 800px; /* 固定高度 */
               border: 2px solid purple; /* 边框，以便内容窗口可见 */
-            border-radius: 10px;
+              border-radius: 10px;
         }
 
-.content-window {
-    display: flex; /* 使用Flexbox布局 */
-  align-items: start; /* 使表格和控制按钮顶部对齐 */
-  width: 90%;
-  height:90%; /* 充满容器 */
-    max-height: 1200px; /* 设置表格的最大高度 */
-  overflow-y: auto; /* 如果内容超出，显示滚动条 */
-}
-.table-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:100%;
+        .content-window {
+            display: flex; /* 使用Flexbox布局 */
+            align-items: start; /* 使表格和控制按钮顶部对齐 */
+            width: 90%;
+            height:90%; /* 充满容器 */
+            max-height: 1200px; /* 设置表格的最大高度 */
+            overflow-y: auto; /* 如果内容超出，显示滚动条 */
+        }
+        .table-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width:100%;
+        }
 
-}
 
-
- .table-container table {
-    width: 100%; /* 表格宽度充满容器 */
-    height: 100%; /* 表格高度充满容器 */
-    border-collapse: collapse; /* 合并表格边框 */
-     overflow: auto;
-
-  }
+        .table-container table {
+            width: 100%; /* 表格宽度充满容器 */
+            height: 100%; /* 表格高度充满容器 */
+            border-collapse: collapse; /* 合并表格边框 */
+            overflow: auto;
+         }
 /* 为偶数行设置灰色背景 */
-.table-container tr:nth-child(even) {
-  background-color: #f2f2f2; /* 浅灰色背景 */
-}
+        .table-container tr:nth-child(even) {
+            background-color: #f2f2f2; /* 浅灰色背景 */
+        }
 
 /* 为奇数行设置白色背景 */
-.table-container tr:nth-child(odd) {
-  background-color: #ffffff; /* 白色背景 */
-}
-.table-container tr {
-  height: 30px; /* 设置每一行的固定高度为50px */
-}
-  .table-container th, .table-container td {
-    border: 1px solid #ddd; /* 设置单元格边框 */
-    text-align: left; /* 文本左对齐 */
-    padding: 8px; /* 单元格内边距 */
-  }
+        .table-container tr:nth-child(odd) {
+            background-color: #ffffff; /* 白色背景 */
+        }
+        .table-container tr {
+            height: 30px; /* 设置每一行的固定高度为50px */
+        }
+        .table-container th, .table-container td {
+            border: 1px solid #ddd; /* 设置单元格边框 */
+            text-align: left; /* 文本左对齐 */
+            padding: 8px; /* 单元格内边距 */
+        }
 
 
   /* 新增的标题样式 */
-.table-title {
-    width: 80px; /* 标题宽度充满容器 */
-    margin-bottom: 5px; /* 在标题和表格之间添加一些空间 */
-    font-size: 20px; /* 设置标题的字体大小 */
-    font-weight: bold; /* 设置标题的字体加粗 */
-}
+        .table-title {
+            width: 80px; /* 标题宽度充满容器 */
+            margin-bottom: 5px; /* 在标题和表格之间添加一些空间 */
+            font-size: 20px; /* 设置标题的字体大小 */
+            font-weight: bold; /* 设置标题的字体加粗 */
+        }
 
+        .control-button-right {
+            margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
+            padding: 10px 20px; /* 按钮内边距 */
+            background-color: #007bff; /* 背景颜色 */
+            color: #ffffff; /* 文本颜色 */
+            border: none; /* 移除边框 */
+            border-radius: 5px; /* 圆角边框 */
+            cursor: pointer; /* 鼠标悬停时的指针样式 */
+            right:2px;
+            position: absolute;
+            display: none; /* 默认不显示 */
 
+        }
+        #newClassButton {
+            margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
+            padding: 10px 20px; /* 按钮内边距 */
+            background-color: #007bff; /* 背景颜色 */
+            color: #ffffff; /* 文本颜色 */
+            border: none; /* 移除边框 */
+            border-radius: 5px; /* 圆角边框 */
+            cursor: pointer; /* 鼠标悬停时的指针样式 */
+            right:2px;
+            position: absolute;
+        }
 
+        #newClassButton:hover {
+            background-color: #0056b3; /* 鼠标悬停时的背景颜色变化 */
+        }
 
-
-.control-button-right {
-  margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
-  padding: 10px 20px; /* 按钮内边距 */
-  background-color: #007bff; /* 背景颜色 */
-  color: #ffffff; /* 文本颜色 */
-  border: none; /* 移除边框 */
-  border-radius: 5px; /* 圆角边框 */
-  cursor: pointer; /* 鼠标悬停时的指针样式 */
-    right:2px;
-    position: absolute;
-  display: none; /* 默认不显示 */
-
-}
-#newClassButton {
-  margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
-  padding: 10px 20px; /* 按钮内边距 */
-  background-color: #007bff; /* 背景颜色 */
-  color: #ffffff; /* 文本颜色 */
-  border: none; /* 移除边框 */
-  border-radius: 5px; /* 圆角边框 */
-  cursor: pointer; /* 鼠标悬停时的指针样式 */
-    right:2px;
-    position: absolute;
-}
-
-#newClassButton:hover {
-  background-color: #0056b3; /* 鼠标悬停时的背景颜色变化 */
-}
-
-    .button-class{
+        .button-class{
         border-radius: 10px;
         border: 1px solid purple;
         background-color: white;
         color: #0d111b;
         padding:5px 10px;
     }
-    .button-class:hover{
+        .button-class:hover{
         background-color: mediumpurple;
     }
 
@@ -286,153 +280,60 @@ margin: 10px 0;
         </ul>
       </nav>
       <!-- partial -->
-     <div class="content-container">
+ <div class="content-container">
   <div class="content-window">
     <div class="table-container">
       <div class="table-title" id="table-title">我的班级</div>
-    <table id="dataTable">
-      <thead>
-        <tr>
-          <th>班级名</th>
-          <th>人数</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
+        <table id="dataTable">
+        <thead>
+            <tr>
+                <th>班级名</th>
+                <th>人数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
         <!-- 初始的表格内容 -->
+        {% for class in classes %}
         <tr>
-          <td><input type="checkbox" id="checkbox1" name="checkbox1">张三</td>
-          <td>001</td>
-          <td><button class="button-class" id="delete-class">删除</button><button class="button-class" id="refreshButton">详情</button></td>
+            <td><input type="checkbox" id="checkbox{{ forloop.counter }}" name="checkbox{{ forloop.counter }}">{{ class.name }}</td>
+            <td>{{ class.id }}</td>
+            <td><button class="button-class" id="delete-class">删除</button><button class="button-class" id="refreshButton">详情</button></td>
         </tr>
+        {% endfor %}
         <!--内容示范，可更改-->
         <tr>
           <td><input type="checkbox" id="checkbox2" name="checkbox1">张三</td>
           <td>001</td>
           <td>1班</td>
         </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox3" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox4" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox5" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox6" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox7" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox8" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox9" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-              <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-              <td>001</td>
-              <td>1班</td>
 
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" id="checkbox10" name="checkbox1">张三</td>
-          <td>001</td>
-          <td>1班</td>
-        </tr>
         <!-- 其他行... -->
-      </tbody>
-    </table>
+        </tbody>
+        </table>
+      </div>
     </div>
-
-
-
-  </div>
          <button id="newButton" class="control-button-right">我的班级</button>
       <!-- 触发弹窗的按钮 -->
          <button type="button" id="newClassButton">新建班级</button>
-     </div>
-
-
-
-
-
-    </div>
-    <!-- page-body-wrapper ends -->
-
   </div>
+ </div>
+    <!-- page-body-wrapper ends -->
+</div>
   <!-- container-scroller -->
       <!-- 弹窗内容 -->
 <div id="myModal" class="modal">
     <!-- 弹窗内部 -->
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close"> x </span>
         <label for="className">班级名称:</label>
         <input type="text" id="className" name="className"><br><br>
+        <label for="initialPassword">初始密码:</label>
+        <input type="password" id="initialPassword" name="initialPassword"><br><br>
         <!-- 拖拽区域 -->
         <div id="dropArea">将Excel文件拖拽到此处</div><br>
+        <!-- 文件选择器 -->
+        <input type="file" id="fileInput" accept=".xls,.xlsx"><br>
         <!-- 确定按钮 -->
         <button type="button" id="confirmButton">确定</button>
     </div>
@@ -468,10 +369,10 @@ function refreshTableContent() {
         tableTitle.textContent = '班级详情'; // 更改为你想要的新标题
     }
     var table = document.getElementById('dataTable');
-   var thead = table.getElementsByTagName('thead')[0];
+    var thead = table.getElementsByTagName('thead')[0];
     var tbody = table.getElementsByTagName('tbody')[0];
     // 清除现有的表格内容
-     // 清除现有的 thead 和 tbody 内容
+    // 清除现有的 thead 和 tbody 内容
     thead.innerHTML = '';
     tbody.innerHTML = '';
 
@@ -539,51 +440,75 @@ function resetPassword(button) {
     alert("重置 " + nameCell.textContent + " 的密码");
 }
 
+// 新建班级
 function addClass(){
-              // 获取弹窗元素
-              var modal = document.getElementById("myModal");
+    // 获取弹窗元素
+    var modal = document.getElementById("myModal");
+    // 获取打开弹窗的按钮元素
+    var btn = document.getElementById("newClassButton");
+    // 获取关闭按钮元素
+    var span = document.getElementsByClassName("close")[0];
+    // 当用户点击按钮时，打开弹窗
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+    // 当用户点击 x 按钮时，关闭弹窗
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    // 当用户点击弹窗外的区域时，关闭弹窗
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    // 获取确定按钮元素
+    var confirmBtn = document.getElementById("confirmButton");
+    // 当用户点击确定按钮时，执行相关操作（例如收集数据等）并关闭弹窗
+    confirmBtn.onclick = function () {
+        // 获取输入的班级名称和初始密码
+        var className = document.getElementById("className").value;
+        var initialPassword = document.getElementById("initialPassword").value;
+        // 获取文件选择器元素
+        var fileInput = document.getElementById('fileInput');
+        // 获取文件对象
+        var file = fileInput.files[0];
+        // 创建一个FormData对象
+        var formData = new FormData();
+        formData.append('className', className);
+        formData.append('initialPassword', initialPassword);
+        formData.append('file', file);
 
-// 获取打开弹窗的按钮元素
-              var btn = document.getElementById("newClassButton");
+        // 创建一个新的XHR对象
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/teacher/class/create/', true);  // 替换为你的API路径
+        // 设置请求完成后的处理函数
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+            // 请求成功，可以在这里关闭弹窗或者给出用户反馈
+            alert('班级创建成功');
+            }
+            else {
+            // 请求失败，给出错误提示
+            alert('班级创建失败，请重试');
+            }
+        };
+        // 发送请求
+        xhr.send(formData);
+        // 关闭弹窗
+        modal.style.display = "none";
+    }
+}
 
-// 获取关闭按钮元素
-              var span = document.getElementsByClassName("close")[0];
 
-// 当用户点击按钮时，打开弹窗
-              btn.onclick = function () {
-                  modal.style.display = "block";
-              }
-
-// 当用户点击 x 按钮时，关闭弹窗
-              span.onclick = function () {
-                  modal.style.display = "none";
-              }
-
-// 当用户点击弹窗外的区域时，关闭弹窗
-              window.onclick = function (event) {
-                  if (event.target == modal) {
-                      modal.style.display = "none";
-                  }
-              }
-
-// 获取确定按钮元素
-              var confirmBtn = document.getElementById("confirmButton");
-
-// 当用户点击确定按钮时，执行相关操作（例如收集数据等）并关闭弹窗
-              confirmBtn.onclick = function () {
-                  // 执行操作，例如收集输入数据等
-
-                  // 关闭弹窗
-                  modal.style.display = "none";
-              }
-          }
 // 使用事件委托监听按钮点击
 function bindButtonEvents() {
     // 绑定刷新按钮事件
     document.getElementById('refreshButton').addEventListener('click', refreshTableContent);
 
     // 绑定返回初始按钮事件
-    document.getElementById('newButton').addEventListener('click', function () {
+    document.getElementById('newButton').addEventListener('click',
+        function () {
         // 使用原始HTML恢复表格
         document.getElementById('dataTable').innerHTML = originalTableHTML;
         // 隐藏返回初始按钮
@@ -591,7 +516,8 @@ function bindButtonEvents() {
         document.getElementById('newClassButton').style.display = 'block';
     });
 
-    document.getElementById('dataTable').addEventListener('click', function (event) {
+    document.getElementById('dataTable').addEventListener('click',
+        function (event) {
         // 检查是否点击了刷新按钮
         if (event.target.id === 'refreshButton') {
             refreshTableContent();
@@ -609,8 +535,9 @@ function bindButtonEvents() {
 // 确保在页面加载完成后调用函数以设置事件监听器
 window.onload = function() {
     originalTableHTML = document.getElementById('dataTable').innerHTML;
-    bindButtonEvents(); // 初始绑定
     addClass();
+    bindButtonEvents(); // 初始绑定
+
     bindDeleteButtonEvents();
 }
   </script>
