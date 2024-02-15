@@ -9,7 +9,4 @@ class Student(models.Model):
     email = models.EmailField(verbose_name="电子邮箱", unique=True, null=True, blank=True)
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
 
-    # 添加外键字段
-    class_assigned = models.ForeignKey('teacher_app.Class', verbose_name="班级",
-                                       on_delete=models.SET_NULL, null=True, blank=True)
 

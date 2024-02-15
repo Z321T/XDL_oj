@@ -8,6 +8,8 @@ from teacher_app.models import Teacher
 from .forms import StudentForm
 
 
+
+
 # Create your views here.
 # 学生主页
 def home_student(request):
@@ -73,5 +75,4 @@ def profile_student(request):
 # 答题界面
 def coding_student(request):
     return render(request, 'coding_student.html')
-
 
