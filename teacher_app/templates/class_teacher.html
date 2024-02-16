@@ -405,36 +405,7 @@ function resetPassword(button) {
 }
 
 
-// 使用事件委托监听按钮点击
-function bindButtonEvents() {
-    // 绑定刷新按钮事件
-    document.getElementById('refreshButton').addEventListener('click', refreshTableContent);
-    // 绑定返回初始按钮事件
-    document.getElementById('newButton').addEventListener('click',
-        function () {
-            // 使用原始HTML恢复表格
-            document.getElementById('dataTable').innerHTML = originalTableHTML;
-            // 隐藏返回初始按钮
-            this.style.display = 'none';
-            document.getElementById('newClassButton').style.display = 'block';
-        }
-    );
-    document.getElementById('dataTable').addEventListener('click',
-        function (event) {
-            // 检查是否点击了刷新按钮
-            if (event.target.id === 'refreshButton') {
-                refreshTableContent();
-            }
-            // 检查是否点击了返回初始按钮
-            else if (event.target.id === 'newButton') {
-                // 使用原始HTML恢复表格
-                document.getElementById('dataTable').innerHTML = originalTableHTML;
-                // 隐藏返回初始按钮
-                event.target.style.display = 'none';
-            }
-        }
-    );
-}
+
 
 // 确保在页面加载完成后调用函数以设置事件监听器
 window.onload = function() {

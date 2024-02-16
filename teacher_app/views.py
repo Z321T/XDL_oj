@@ -165,7 +165,6 @@ def delete_class(request):
 
 # 班级管理：获取学生信息
 def get_students(request):
-    class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
     student_list = []
     for student in students:
@@ -178,6 +177,8 @@ def get_students(request):
             'last_login': student.last_login
         })
     return JsonResponse({'students': student_list})
+
+
 # 班级管理：删除学生
 def delete_student(request, student_id):
     try:

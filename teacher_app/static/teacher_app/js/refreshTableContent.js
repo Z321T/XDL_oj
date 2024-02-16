@@ -1,4 +1,4 @@
-function refreshTableContent() {
+function refreshTableContent(classId) {
     // 更新表格标题
     var tableTitle = document.getElementById('table-title');
     if (tableTitle) {
@@ -22,10 +22,10 @@ function refreshTableContent() {
         headerCell.textContent = headerText;
         headerRow.appendChild(headerCell);
     });
-    var classId = document.getElementById('classSelect').value;
+
     // 使用Ajax请求从后端获取数据
     $.ajax({
-        url: '/get_students/' + classId + '/',
+        url: '/teacher/class/get_students/' + classId + '/',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -53,4 +53,44 @@ function refreshTableContent() {
     // 由于刷新按钮可能被重新创建，确保再次绑定事件
     bindButtonEvents();
     addClass();
+}
+
+// 使用事件委托监听按钮点击
+function bindButtonEvents() {
+    // 绑定刷新按钮事件
+    document.getElementById('dataTable').addEventListener('click', function(event) {
+        if (event.target && event.target.id.startsWith('refreshButton-')) {
+            var parts = event.target.id.split('-');
+            var classId = parts[1];
+            // 现在你可以使用classId来获取班级信息
+            refreshTableContent(classId);
+        }
+    });
+    // 绑定刷新按钮事件
+    document.getElementById('refreshButton').addEventListener('click', refreshTableContent);
+    // 绑定返回初始按钮事件
+    document.getElementById('newButton').addEventListener('click',
+        function () {
+            // 使用原始HTML恢复表格
+            document.getElementById('dataTable').innerHTML = originalTableHTML;
+            // 隐藏返回初始按钮
+            this.style.display = 'none';
+            document.getElementById('newClassButton').style.display = 'block';
+        }
+    );
+    document.getElementById('dataTable').addEventListener('click',
+        function (event) {
+            // 检查是否点击了刷新按钮
+            if (event.target.id === 'refreshButton') {
+                refreshTableContent();
+            }
+            // 检查是否点击了返回初始按钮
+            else if (event.target.id === 'newButton') {
+                // 使用原始HTML恢复表格
+                document.getElementById('dataTable').innerHTML = originalTableHTML;
+                // 隐藏返回初始按钮
+                event.target.style.display = 'none';
+            }
+        }
+    );
 }
