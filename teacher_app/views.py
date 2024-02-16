@@ -127,8 +127,7 @@ def create_class(request):
         form = ClassForm(request.POST, request.FILES)
         if form.is_valid():
             new_class = form.save(commit=False)
-            # 获取前端传过来的班级名称
-            class_name = request.POST.get('className')
+            class_name = request.POST.get('name')
             new_class.name = class_name
 
             user_id = request.session.get('user_id')
