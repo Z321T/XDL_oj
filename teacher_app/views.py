@@ -120,7 +120,6 @@ def class_teacher(request):
                   {'classes': classes, 'dropdown_menu1': dropdown_menu1})
 
 
-@csrf_exempt
 # 班级管理：创建班级
 def create_class(request):
     if request.method == 'POST':
@@ -133,7 +132,7 @@ def create_class(request):
             user_id = request.session.get('user_id')
             teacher = Teacher.objects.get(userid=user_id)
             new_class.teacher = teacher  # 将班级的教师设置为当前登录的教师
-            new_class.save()  # 先保存班级
+            new_class.save()
             teacher.classes_assigned.add(new_class)  # 然后将班级添加到教师的 classes_assigned 中
 
             file = request.FILES.get('file')
@@ -149,21 +148,36 @@ def create_class(request):
                     )
             return JsonResponse({'message': '班级创建成功'}, status=200)
         else:
-            # 表单验证失败时的处理，通常是返回错误信息
             return JsonResponse({'errors': form.errors}, status=400)
 
 
 # 班级管理：删除班级
-def delete_class(request, class_id):
-    try:
-        class_to_delete = Class.objects.get(id=class_id)
-        class_to_delete.delete()
-        messages.success(request, 'Class deleted successfully.')
-    except Class.DoesNotExist:
-        messages.error(request, 'The class does not exist')
-        return redirect('class_teacher')
+def delete_class(request):
+    class_id = request.GET.get('nid')
+    if class_id:
+        class_to_delete = Class.objects.filter(id=class_id).first()
+        if class_to_delete:
+            for teacher in class_to_delete.teachers.all():
+                teacher.classes_assigned.remove(class_to_delete)
+            class_to_delete.delete()
+    return redirect('class_teacher')
 
 
+# 班级管理：获取学生信息
+def get_students(request):
+    class_id = request.GET.get('class_id')
+    students = Student.objects.filter(class_assigned=class_id)
+    student_list = []
+    for student in students:
+        student_list.append({
+            'id': student.id,
+            'name': student.name,
+            'userid': student.userid,
+            'password': student.password,
+            'email': student.email,
+            'last_login': student.last_login
+        })
+    return JsonResponse({'students': student_list})
 # 班级管理：删除学生
 def delete_student(request, student_id):
     try:

@@ -66,6 +66,7 @@ function addClass() {
                     else {
                         alert(response.message);
                     }
+                    modal.style.display = "none";
                 },
                 error: function (error) {
                     console.error(error);
@@ -75,6 +76,7 @@ function addClass() {
                     else {
                         alert('发生了未知错误');
                     }
+                    modal.style.display = "none";
                 }
             });
         }
@@ -98,53 +100,4 @@ function getCookie(name) {
     return cookieValue;
 }
 
-//         // 创建一个 XMLHttpRequest 对象
-//         var xhr = new XMLHttpRequest();
-//
-//         // 配置请求类型，URL 以及异步处理的标志
-//         xhr.open('POST', 'your-backend-url', true);
-//
-//         // 定义当请求完成时的处理函数
-//         xhr.onload = function () {
-//             if (xhr.status >= 200 && xhr.status < 300) {
-//                 // 请求成功，可以处理响应数据
-//                 console.log('Success:', xhr.responseText);
-//             } else {
-//                 // 请求失败，处理错误状态
-//                 console.log('Error:', xhr.statusText);
-//             }
-//
-//             // 不管成功或失败，都关闭弹窗
-//             modal.style.display = 'none';
-//         };
-//
-//         // 发送请求，携带 FormData 数据
-//         xhr.send(formData);
-//
-//
-//         // 在 addClass 函数内部或作为单独的函数添加
-// // 获取拖拽区域元素
-// var dropArea = document.getElementById('dropArea');
-//
-// // 阻止默认行为（如打开文件）
-// ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-//   dropArea.addEventListener(eventName, preventDefaults, false);
-// });
-//
-// function preventDefaults(e) {
-//   e.preventDefault();
-//   e.stopPropagation();
-// }
-//
-// // 高亮拖拽区域
-// ['dragenter', 'dragover'].forEach(eventName => {
-//   dropArea.addEventListener(eventName, highlight, false);
-// });
-//
-// // 取消高亮
-// ['dragleave', 'drop'].forEach(eventName => {
-//   dropArea.addEventListener(eventName, unhighlight, false);
-// });
-//
-//     };
-// }
+

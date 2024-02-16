@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home_teacher, test_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher
-from .views import create_class
+from .views import create_class, delete_class, get_students
 
 from django.contrib.staticfiles.views import serve
 
@@ -15,9 +15,11 @@ urlpatterns = [
     path('profile/', profile_teacher, name='profile_teacher'),
     path('notice/', notice_teacher, name='notice_teacher'),
     path('repository/', repository_teacher, name='repository_teacher'),
+    # 有关班级的操作
     path('class/', class_teacher, name='class_teacher'),
     path('class/create/', create_class, name='create_class'),
-
+    path('class/delete/', delete_class, name='delete_class'),
+    path('class/get_students/', get_students, name='get_students'),
 
     path('static/<path:path>', serve),
 

@@ -9,6 +9,7 @@ class Student(models.Model):
     password = models.CharField(verbose_name="密码", max_length=128)
     email = models.EmailField(verbose_name="电子邮箱", unique=True, null=True, blank=True)
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
-    class_assigned = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name="班级", null=True, blank=True)
+    class_assigned = models.ForeignKey(Class, on_delete=models.SET_NULL, verbose_name="班级",
+                                       null=True, blank=True, related_name='students')
 
 

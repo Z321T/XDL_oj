@@ -8,6 +8,9 @@ class Class(models.Model):
     def __str__(self):
         return self.name
 
+    def get_student_count(self):
+        return self.students.count()
+
 
 class Teacher(models.Model):
     name = models.CharField(verbose_name="姓名", max_length=6)
