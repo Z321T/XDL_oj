@@ -12,6 +12,15 @@ class Class(models.Model):
         return self.students.count()
 
 
+class Notification(models.Model):
+    content = models.TextField(verbose_name="通知内容")
+    date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
+    recipients = models.ManyToManyField(Class, verbose_name="接收者")
+
+    def __str__(self):
+        return self.content[:50]
+
+
 class Teacher(models.Model):
     name = models.CharField(verbose_name="姓名", max_length=6)
     userid = models.CharField(verbose_name="教工号", max_length=10)

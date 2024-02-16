@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 
 from teacher_app.forms import TeacherForm, ClassForm
-from teacher_app.models import Teacher, Class
+from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam
 from student_app.models import Student
 from student_app.forms import StudentForm
 
@@ -57,7 +57,25 @@ def notice_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    return render(request, 'notice_teacher.html', {'dropdown_menu1': dropdown_menu1})
+    user_id = request.session.get('user_id')
+    teacher = Teacher.objects.get(userid=user_id)
+    classes = Class.objects.filter(teacher=teacher)
+
+    if request.method == 'POST':
+        content = request.POST.get('message')
+        recipient_ids = request.POST.getlist('recipients')
+        recipients = Class.objects.filter(id__in=recipient_ids)
+
+        if content and recipients:
+            notification = Notification(content=content)
+            notification.save()
+            notification.recipients.set(recipients)
+            messages.success(request, '通知已成功发送')
+        else:
+            messages.error(request, '发送通知失败')
+
+        return redirect('notice_teacher')  # 重定向到你的视图URL
+    return render(request, 'notice_teacher.html', {'dropdown_menu1': dropdown_menu1, 'classes': classes})
 
 
 # 教师个人中心
