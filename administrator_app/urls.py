@@ -17,7 +17,6 @@ app_name = 'administrator_app'
 
 urlpatterns = [
     # 管理员使用界面
-    # path('home/student/', home_student_views.***, name='')
     path('home/', home_administrator, name='home_administrator'),
     path('class/', class_administrator, name='class_administrator'),
     path('notice/', notice_administrator, name='notice_administrator'),

@@ -39,12 +39,8 @@ def profile_administrator(request):
         'user_id': request.session.get('user_id'),
     }
 
-    user_id = request.session.get('user_id')  # 获取用户
-    try:
-        administrator = Administrator.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'Administrator does not exist')
-        return redirect('/login/')
+    administrator = Administrator.objects.get(userid=request.session.get('user_id'))
+
     if request.method == 'POST':
         form = AdministratorForm(request.POST, instance=administrator)
         if form.is_valid():
