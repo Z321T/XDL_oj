@@ -1,12 +1,13 @@
 from django.urls import path
 from .views import home_teacher, test_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher
 from .views import create_class, delete_class, get_students
-from .views import create_exercise, create_exam
+from .views import create_exercise, create_exam, create_notice
 
 from django.contrib.staticfiles.views import serve
 
 
 app_name = 'teacher_app'
+
 
 urlpatterns = [
     # 教师使用界面
@@ -14,7 +15,9 @@ urlpatterns = [
     path('home/', home_teacher, name='home_teacher'),
     path('test/', test_teacher, name='test_teacher'),
     path('profile/', profile_teacher, name='profile_teacher'),
+    # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),
+    path('notice/create/', create_notice, name='create_notice'),
     # 有关题库的操作
     path('repository/', repository_teacher, name='repository_teacher'),
     path('repository/create_exercise/', create_exercise, name='create_exercise'),

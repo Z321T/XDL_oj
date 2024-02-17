@@ -52,8 +52,21 @@ def home_teacher(request):
     return render(request, 'home_teacher.html', context)
 
 
-# 发布通知
+# 通知界面
 def notice_teacher(request):
+    dropdown_menu1 = {
+        'user_id': request.session.get('user_id'),
+    }
+
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = teacher.classes_assigned.all()  # 获取教师教授的所有班级
+    notifications = Notification.objects.filter(recipients__in=classes)  # 使用班级来查询通知
+    return render(request, 'notice_teacher.html',
+                  {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
+
+
+# 发布通知
+def create_notice(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
@@ -73,8 +86,9 @@ def notice_teacher(request):
             messages.success(request, '通知已成功发送')
         else:
             messages.error(request, '发送通知失败')
-        return redirect('teacher_app:notice_teacher')  # 重定向到你的视图URL
-    return render(request, 'notice_teacher.html', {'dropdown_menu1': dropdown_menu1, 'classes': classes})
+        return redirect('teacher_app:create_notice')  # 重定向到你的视图URL
+    return render(request, 'create_notice.html',
+                  {'dropdown_menu1': dropdown_menu1, 'classes': classes})
 
 
 # 教师个人中心
