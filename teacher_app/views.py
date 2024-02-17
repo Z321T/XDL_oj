@@ -73,8 +73,7 @@ def notice_teacher(request):
             messages.success(request, '通知已成功发送')
         else:
             messages.error(request, '发送通知失败')
-
-        return redirect('notice_teacher')  # 重定向到你的视图URL
+        return redirect('teacher_app:notice_teacher')  # 重定向到你的视图URL
     return render(request, 'notice_teacher.html', {'dropdown_menu1': dropdown_menu1, 'classes': classes})
 
 
@@ -84,12 +83,9 @@ def profile_teacher(request):
         'user_id': request.session.get('user_id'),
     }
 
-    user_id = request.session.get('user_id')  # 获取用户
-    try:
-        teacher = Teacher.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'Teacher does not exist')
-        return redirect('/login/')  # replace 'login' with the name of your login view
+    user_id = request.session.get('user_id')
+    teacher = Teacher.objects.get(userid=user_id)
+
     if request.method == 'POST':
         form = TeacherForm(request.POST, instance=teacher)
         if form.is_valid():

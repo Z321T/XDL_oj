@@ -31,20 +31,16 @@
         function redirectToHome() {
             window.location.href = "/student/home/"
         }
-
         function redirectToPractice() {
             window.location.href = "/student/practice/";
         }
-
         function redirectToTest() {
             window.location.href = "/student/test/";
         }
-
         function redirectToProfile() {
             window.location.href = "/student/profile/"
         }
-
-    </script>
+        </script>
     </head>
 <body>
   <div class="container-scroller">
@@ -120,52 +116,27 @@
             </div>
           </li>
           <li class="nav-item dropdown mr-4">
-            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
-              <i class="mdi mdi-bell mx-0"></i>
-              <span class="count"></span>
+            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="#" data-toggle="dropdown">
+                <i class="mdi mdi-bell mx-0"></i>
+                <span class="count">{{ notifications.count }}</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">通知</p>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-success">
-                    <i class="mdi mdi-information mx-0"></i>
-                  </div>
-                </div>
-                  <!--可替换消息-->
-                <div class="item-content">
-                  <h6 class="font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-warning">
-                    <i class="mdi mdi-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="item-content">
-                  <h6 class="font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-info">
-                    <i class="mdi mdi-account-box mx-0"></i>
-                  </div>
-                </div>
-                <div class="item-content">
-                  <h6 class="font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown" style="height: 200px; overflow-y: auto;">
+                <p class="mb-0 font-weight-normal float-left dropdown-header">通知</p>
+                {% for notification in notifications %}
+                <a class="dropdown-item">
+                    <div class="item-thumbnail">
+                        <div class="item-icon bg-success">
+                            <i class="mdi mdi-information mx-0"></i>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <h6 class="font-weight-normal">{{ notification.content|truncatechars:30 }}</h6>
+                        <p class="font-weight-light small-text mb-0 text-muted">
+                            {{ notification.date_posted }}
+                        </p>
+                    </div>
+                </a>
+                {% endfor %}
             </div>
           </li>
           <li class="nav-item nav-profile dropdown">

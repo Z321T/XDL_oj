@@ -4,10 +4,8 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
 from student_app.models import Student
-from teacher_app.models import Teacher
+from teacher_app.models import Teacher, Class, Notification
 from .forms import StudentForm
-
-
 
 
 # Create your views here.
@@ -26,7 +24,13 @@ def home_student(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    return render(request, 'home_student.html', {'dropdown_menu1': dropdown_menu1})
+
+    if request.method == 'GET':
+        # 获取与学生关联的班级的所有通知，按照发布日期降序排序
+        notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    return render(request, 'home_student.html',
+                  {'dropdown_menu1': dropdown_menu1, 'notifications': notifications })
 
 
 # 我的练习
@@ -75,4 +79,15 @@ def profile_student(request):
 # 答题界面
 def coding_student(request):
     return render(request, 'coding_student.html')
+
+
+# 接受通知
+# def notifications_view(request):
+#     user_id = request.session.get('user_id')
+#     student = Student.objects.get(userid=user_id)
+#     if request.method == 'GET':
+#         # 获取与学生关联的班级的所有通知，按照发布日期降序排序
+#         notifications = Notification.objects.filter(recipients__in=student.classes.all()).order_by('-date_posted')
+#         # 将通知传递给模板，并渲染模板
+#         return render(request, 'home_student.html', {'notifications': notifications})
 
