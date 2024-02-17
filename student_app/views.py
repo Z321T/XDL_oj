@@ -8,7 +8,6 @@ from teacher_app.models import Teacher, Class, Notification
 from .forms import StudentForm
 
 
-# Create your views here.
 # 学生主页
 def home_student(request):
     # 获取用户id，判断是否是学生用户，若不是则返回登录页面
@@ -55,13 +54,7 @@ def profile_student(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-
-    user_id = request.session.get('user_id')  # 获取用户
-    try:
-        student = Student.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'Student does not exist')
-        return redirect('/login/')
+    student = Student.objects.get(userid=request.session.get('user_id'))
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():

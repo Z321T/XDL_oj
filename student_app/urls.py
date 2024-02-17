@@ -7,6 +7,7 @@ from .views import home_student, practice_student, test_student, profile_student
 
 app_name = 'student_app'
 
+
 urlpatterns = [
     path('home/', home_student, name='home_student'),
     path('practice/', practice_student, name='practice_student'),

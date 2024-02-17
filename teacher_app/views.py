@@ -105,7 +105,49 @@ def repository_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    return render(request, 'repository_teacher.html', {'dropdown_menu1': dropdown_menu1})
+
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    exercises = Exercise.objects.filter(teacher=teacher)
+    exams = Exam.objects.filter(teacher=teacher)
+
+    return render(request, 'repository_teacher.html',
+                  {'dropdown_menu1': dropdown_menu1, 'exercises': exercises, 'exams': exams})
+
+
+# 创建练习
+def create_exercise(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        deadline = request.POST.get('deadline')
+        class_ids = request.POST.getlist('classes')
+        classes = Class.objects.filter(id__in=class_ids)
+
+        exercise = Exercise(title=title, content=content, deadline=deadline)
+        exercise.teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+        exercise.save()
+        exercise.classes.set(classes)
+
+        return redirect('repository_teacher')
+    return render(request, 'create_exercise.html')
+
+
+# 创建考试
+def create_exam(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        deadline = request.POST.get('deadline')
+        class_ids = request.POST.getlist('classes')
+        classes = Class.objects.filter(id__in=class_ids)
+
+        exam = Exam(title=title, content=content, deadline=deadline)
+        exam.teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+        exam.save()
+        exam.classes.set(classes)
+
+        return redirect('repository_teacher')
+    return render(request, 'create_exam.html')
 
 
 # 考试情况
@@ -121,13 +163,7 @@ def class_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    user_id = request.session.get('user_id')
-    try:
-        teacher = Teacher.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'Teacher does not exist')
-        return redirect('/login/')
-
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     # 查询与当前教师关联的班级
     classes = Class.objects.filter(teacher=teacher)
     return render(request, 'class_teacher.html',
@@ -143,8 +179,7 @@ def create_class(request):
             class_name = request.POST.get('name')
             new_class.name = class_name
 
-            user_id = request.session.get('user_id')
-            teacher = Teacher.objects.get(userid=user_id)
+            teacher = Teacher.objects.get(userid=request.session.get('user_id'))
             new_class.teacher = teacher  # 将班级的教师设置为当前登录的教师
             new_class.save()
             teacher.classes_assigned.add(new_class)  # 然后将班级添加到教师的 classes_assigned 中

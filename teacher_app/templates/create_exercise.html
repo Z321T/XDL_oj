@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+        <!-- 左侧空列表 -->
+        <div class="list-container">
+            <h3>待发布列表</h3>
+            <ul id="eventList">
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+                <!-- 列表项将在这里添加 -->
+            </ul>
+            <div class="button-container">
+                     <button type="button" class="btn-answer">发布考试</button>
+                     <button type="button" class="btn-save">发布作业</button>
+            </div>
+        </div>
+
+        <!-- 右侧时间选择器和发布按钮 -->
+         <div class="newproblem-container">
+             <input type="text" class="editable-title" placeholder="编辑标题">
+                   <div class="title-line"></div>
+                      <textarea class="editable-content" placeholder="编辑题目内容..."></textarea>
+                          <div class="input-container">
+                                <div class="input-group">
+                                    <label for="memoryLimit">内存限制:</label>
+                                    <input type="text" id="memoryLimit" name="memoryLimit" placeholder="例如，256MB">
+                                </div>
+                                <div class="input-group">
+                                    <label for="timeLimit">时间限制:</label>
+                                    <input type="text" id="timeLimit" name="timeLimit" placeholder="例如，1s">
+                                </div>
+                          </div>
+                    <!-- 添加按钮 -->
+                           <div class="button-container">
+                               <button type="button" class="btn-answer">上传答案</button>
+                               <button type="button" class="btn-save">保存</button>
+                           </div>
+
+
+
+         </div>
+
+        <!-- partial:partials/_footer.html -->
+
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+</body>
+</html>
