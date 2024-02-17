@@ -15,7 +15,7 @@ class Class(models.Model):
 class Notification(models.Model):
     content = models.TextField(verbose_name="通知内容")
     date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
-    recipients = models.ManyToManyField(Class, verbose_name="接收者")
+    recipients = models.ManyToManyField(Class, verbose_name="接收班级")
 
     def __str__(self):
         return self.content[:50]
@@ -75,12 +75,4 @@ class ExamQuestion(models.Model):
         return f"{self.exam.title} - {self.content}"
 
 
-class Announcement(models.Model):
-    title = models.CharField(verbose_name="公告标题", max_length=255)
-    content = models.TextField(verbose_name="公告内容")
-    published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
-    teacher = models.ForeignKey(Teacher, verbose_name="发布教师", on_delete=models.CASCADE)
-    class_to_notify = models.ForeignKey(Class, verbose_name="接收公告的班级", on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.title
