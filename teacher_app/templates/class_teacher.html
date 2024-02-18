@@ -319,8 +319,10 @@ background-color: #f0f8ff;
         <input type="text" id="classNameInput" name="className"><br><br>
         <label for="initialPasswordInput">初始化密码:</label>
         <input type="password" id="initialPasswordInput" name="initialPassword"><br><br>
-        <label for="excelFileInput">上传Excel文件:</label>
-        <input type="file" id="excelFileInput" name="excelFile"><br><br>
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="excelFileInput" name="excelFile">
+            <label class="custom-file-label" for="excelFileInput">上传Excel文件:</label>
+        </div>
 
         <!-- 确定按钮 -->
         <button type="button" onclick="addClass()" id="confirmButton">确定</button>

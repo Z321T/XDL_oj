@@ -243,7 +243,7 @@
         </ul>
       </nav>
       <!-- partial -->
-        <div class="container">
+      <div class="container">
         <!-- 班级列表部分 -->
         <div class="class-list">
             <h3>班级列表</h3>
@@ -258,35 +258,72 @@
 
         <!-- 通知发布窗口 -->
         <div class="notification-panel">
-
-
+            <h3>发布练习</h3>
+            <form id="exerciseFrom" method="post" action="{% url 'teacher_app:create_exercise' exercise.id %}">
+                {% csrf_token %}
                 <div class="input-group">
                     <label for="recipient">接收班级：</label>
                     <div id="recipient" class="recipient-container"></div>
                 </div>
                 <div class="input-group">
-                    <label for="message">练习标题：</label>
-                    <input type="text" id="message" name="message" placeholder="请输入练习标题">
+                    <label for="title">练习标题：</label>
+                    <input type="text" id="title" name="title" placeholder="请输入练习标题">
                 </div>
-
-                  <table id="my-table">
-                      <h5>练习题列表：</h5>
-                    <tr>
-                          <td>&nbsp;</td>
-                    </tr>
-                </table>
-                 <div class="button-group">
-                     #需要修改
-                    <button onclick="window.location.href='repository/create-exercise';">创建练习</button>
-                    <button>保存</button>
-                    <button onclick="confirm-exerciselist()">确认发布</button>
+                <div class="input-group">
+                    <label for="content">练习题描述：</label>
+                    <input id="content" name="content" placeholder="请输入练习题描述">
                 </div>
-
-
+                <div class="input-group">
+                    <label for="deadline">截止时间：</label>
+                    <input type="text" id="deadline" name="deadline" placeholder="请输入截止时间">
+                </div>
+                <input type="hidden" name="exercise_id" value="{{ exercise.id }}">
+                <div class="row">
+                    <div class="col-md-12 stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title">练习列表</p>
+                                <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                    <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>题目</th>
+                                                <th>发布时间</th>
+                                                <th>截止时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% with exercise=exercise %}
+                                                {% for question in exercise.questions.all %}
+                                                    <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                        <td>
+                                                            <input type="checkbox" id="question{{ question.id }}">
+                                                            {{ question.content }}
+                                                        </td>
+                                                        <td>{{ exercise.published_at }}</td>
+                                                        <td>{{ exercise.deadline }}</td>
+                                                    </tr>
+                                                {% empty %}
+                                                <tr>
+                                                    <td colspan="4" style="text-align: center;">没有练习内容</td>
+                                                </tr>
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="submit">发布练习</button>
+                </div>
+            </form>
+                <button onclick="window.location.href='{% url 'teacher_app:create_exercise' exercise.id %}'">创建练习</button>
         </div>
 
-    </div>
-
+      </div>
 
 
         </div>
@@ -316,7 +353,7 @@
   <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
   <!-- End custom js for this page-->
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
- <script>
+  <script>
      document.addEventListener('DOMContentLoaded', function () {
     var classItems = document.querySelectorAll('.class-list ul li');
     var recipientContainer = document.querySelector('.recipient-container');
@@ -356,9 +393,5 @@
         });
     });
 });
-
  </script>
-
-
-
 </body></html>

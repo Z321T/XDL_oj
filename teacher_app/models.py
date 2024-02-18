@@ -47,7 +47,10 @@ class Exercise(models.Model):
 class ExerciseQuestion(models.Model):
     exercise = models.ForeignKey(Exercise, verbose_name="练习", on_delete=models.CASCADE,
                                  related_name='questions', null=True)
+    title = models.CharField(max_length=200, verbose_name="题目标题", null=True, blank=True)
     content = models.TextField(verbose_name="题目内容")
+    memory_limit = models.IntegerField(verbose_name="内存限制", default=0)
+    time_limit = models.IntegerField(verbose_name="时间限制", default=0)
 
     def __str__(self):
         return f"{self.exercise.title} - {self.content}"

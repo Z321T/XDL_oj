@@ -1,13 +1,13 @@
 import pandas as pd
-
+from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 
-from teacher_app.forms import TeacherForm, ClassForm,ExerciseForm, ExerciseQuestionFormset
+from teacher_app.forms import TeacherForm, ClassForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam
 from student_app.models import Student
 from student_app.forms import StudentForm
@@ -128,28 +128,58 @@ def repository_teacher(request):
 
 
 # 题库管理：练习列表
-def exercise_list(request):
+def exercise_list_default(request):
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = teacher.classes_assigned.all()
 
-    return render(request, 'exercise_list.html', {'classes': classes})
+    exercise = Exercise.objects.create(
+        title="默认标题",
+        content="默认内容",
+        deadline=datetime.now() + timedelta(days=7),
+        teacher=teacher
+    )
+
+    return render(request, 'exercise_list.html',
+                  {'classes': classes, 'exercise': exercise})
+
+
+def exercise_list(request, exercise_id):
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = teacher.classes_assigned.all()
+    exercise = get_object_or_404(Exercise, id=exercise_id)
+
+    if request.method == 'POST':
+        exercise.title = request.POST.get('title')
+        exercise.content = request.POST.get('content')
+        exercise.published_at = datetime.now()
+        exercise.deadline = request.POST.get('deadline')
+
+        recipient_ids = request.POST.getlist('recipient_id')
+        for recipient_id in recipient_ids:
+            recipient_class = Class.objects.get(id=recipient_id)
+            exercise.classes.add(recipient_class)
+
+        exercise.save()
+
+    return render(request, 'exercise_list.html',
+                  {'classes': classes, 'exercise': exercise})
 
 
 # 题库管理：练习列表-创建练习
-def create_exercise(request):
+def create_exercise(request, exercise_id):
+    exercise = get_object_or_404(Exercise, id=exercise_id)
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
-        deadline = request.POST.get('deadline')
-        class_ids = request.POST.getlist('classes')
-        classes = Class.objects.filter(id__in=class_ids)
+        memory_limit = request.POST.get('memory_limit')
+        time_limit = request.POST.get('time_limit')
 
-        exercise = Exercise(title=title, content=content, deadline=deadline)
-        exercise.teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-        exercise.save()
-        exercise.classes.set(classes)
-        return redirect('teacher_app:exercise_list')
-    return render(request, 'create_exercise.html')
+        question = ExerciseQuestion(exercise=exercise, title=title, content=content,
+                                    memory_limit=memory_limit, time_limit=time_limit)
+        question.save()
+
+        return redirect('teacher_app:exercise_list', exercise_id=exercise.id)
+    return render(request, 'create_exercise.html', {'exercise': exercise})
 
 
 # 题库管理：考试列表
@@ -238,7 +268,7 @@ def delete_class(request):
 
 
 # 班级管理：获取学生信息
-def get_students(request):
+def get_students(request, class_id):
     students = Student.objects.filter(class_assigned=class_id)
     student_list = []
     for student in students:

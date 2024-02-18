@@ -315,20 +315,20 @@
                                                         </tr>
                                                     {% endfor %}
                                                     {% empty %}
-                                                    <tr>
-                                                        <td colspan="4" style="text-align: center;">没有练习内容</td>
-                                                    </tr>
+                                                        <tr>
+                                                            <td colspan="4" style="text-align: center;">没有练习内容</td>
+                                                        </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5"></div>
-                                    <div class="col-sm-12 col-md-7">
-                                        <button onclick="window.location.href='{% url 'teacher_app:exercise_list' %}'" style="float: right;">发布练习</button>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-5"></div>
+                            <div class="col-sm-12 col-md-7">
+                                <button onclick="window.location.href='{% url 'teacher_app:exercise_list_default' %}'" style="float: right;">发布练习</button>
                             </div>
                         </div>
                     </div>
@@ -376,12 +376,12 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5"></div>
-                                    <div class="col-sm-12 col-md-7">
-                                        <button onclick="window.location.href='{% url 'teacher_app:exam_list' %}'" style="float: right;">发布考试</button>
-                                    </div>
                                 </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-5"></div>
+                            <div class="col-sm-12 col-md-7">
+                                <button onclick="window.location.href='{% url 'teacher_app:exam_list' %}'" style="float: right;">发布考试</button>
                             </div>
                         </div>
                     </div>
