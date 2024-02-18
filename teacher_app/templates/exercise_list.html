@@ -18,156 +18,132 @@
     <link rel="stylesheet" href="{% static 'teacher_app/css/style.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
-    <style>
-        .container {
+<style>
+    .recipient-container {
+    display: flex; /* 使用 Flexbox 实现横向排列 */
+    flex-wrap: wrap; /* 允许卡片换行 */
+    gap: 10px; /* 卡片之间的间隔 */
+}
+
+.class-tag {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0; /* 卡片背景色 */
+    border: 1px solid #ccc; /* 卡片边框 */
+    border-radius: 5px; /* 边框圆角 */
+}
+
+.remove-class {
+    margin-left: 10px;
+    cursor: pointer;
+}
+    .container {
     display: flex;
     height: 100vh;
 }
 
-.list-container,
-.newproblem-container {
-    width: 50%; /* 容器宽度各占一半 */
+.class-list {
+    width: 20%;
+    background-color: #f0f0f0; /* 灰白色背景 */
     padding: 20px;
+    overflow-y: auto;
     box-sizing: border-box;
+    border: 2px solid #ccc; /* 灰色边框 */
     border-radius: 10px;
-    border:2px solid purple;
 }
 
-.list-container {
-    position:relative;
-    background-color: #f0f0f5; /* 左侧列表背景色 */
+.class-list h3 {
+    margin-top: 0;
 }
 
-.newproblem-container {
-    position: relative; /* 为了绝对定位标题行 */
-    width: 50%; /* 或您需要的宽度 */
-    padding: 20px;
-    box-sizing: border-box;
-
-}
-.editable-title {
-    width: 100%; /* 或根据需要调整 */
-    font-size: 16px;
-    text-align: center; /* 文本居中 */
-    margin: 0;
-    border: none; /* 移除边框 */
-    padding: 0; /* 移除内边距 */
-    box-sizing: border-box; /* 确保边框和内边距不会增加尺寸 */
-    resize: none; /* 禁止调整大小 */
-}
-
-.title-line {
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-    margin-bottom: 20px; /* 与内容区域的间距 */
-}
-
-
-.editable-content {
-     width: 100%;  /* 视口宽度 */
-    height: 500px; /* 视口高度 */
-    margin: 0;
-    border: none; /* 移除边框 */
-    padding: 0; /* 移除内边距 */
-    box-sizing: border-box; /* 确保边框和内边距不会增加尺寸 */
-    resize: none; /* 禁止调整大小 */
-
-}
-
-.input-container {
-    position: relative; /* 绝对定位 */
-    right:0;
-    bottom: 1px; /* 放置在方框的底部 */
-    width: 400px;
-    height:70px;
-    padding:0;
-    display: flex; /* 使用Flexbox布局 */
-    justify-content: space-between; /* 输入框之间有间隔 */
-    box-sizing: border-box;
-
-}
-
-.input-group {
-
-    display: flex; /* 同样应用Flexbox */
-    flex-direction: column; /* 使标签在输入框上方 */
-    align-items: flex-start; /* 左对齐 */
-}
-
-.input-group label {
-    margin-bottom: 8px; /* 与输入框的间距 */
-}
-
-.input-group input {
-    width: calc(100% - 20px); /* 输入框宽度填满，考虑内边距 */
-    padding: 5px;
-    margin-top: 5px; /* 与标签的间距 */
-    border-radius: 10px;
-    border: 1px solid darkgray;
-}
-
-.newproblem-container h3,
-.list-container h3 {
-    text-align: center;
-}
-
-#eventList {
-    list-style-type: none;
+.class-list ul {
+    list-style: none;
     padding: 0;
 }
 
-.button-container
-{
-    position:absolute;
-    bottom:20px;
-    right:10px;
+.class-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* 更淡的灰色边框 */
+}
+
+.notification-panel {
     display: flex;
-    justify-content: space-between; /* 输入框之间有间隔 */
+    flex-direction: column;
+    position: relative;
+    width: 80%;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc; /* 灰色边框 */
+    border-radius: 10px;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc; /* 灰色边框 */
+    border-radius: 10px;
     box-sizing: border-box;
 }
-.btn-answer,
-.btn-save {
-    border-radius: 10px;
-    border:1px solid purple;
-    right:2px;
-    bottom:50px;
-    margin-top: 10px; /* 在按钮上方添加一些间距 */
-    padding: 5px 15px; /* 按钮内部的填充 */
-    background-color: #f0f0f0; /* 按钮的背景色 */
-    cursor: pointer; /* 鼠标悬停时的指针形状 */
+
+.input-group textarea {
+    height: 500px;
 }
 
-.btn-answer:hover,
-.btn-save:hover {
-    background-color: #e0e0e0; /* 鼠标悬停时按钮的背景色 */
-}
-
-.btn-answer
-{
-    margin-right: 20px;
-}
-
-#confirmButton {
-    background-color: #4CAF50; /* 按钮背景颜色 */
-    color: white;
-    border: none;
-    cursor: pointer;
+#item-list li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f0f0;
     border-radius: 5px;
 }
-
-#confirmButton:hover {
-    background-color: #45a049;
-}
-#eventList li {
-    padding: 10px;
-    border-bottom: 1px solid #ccc; /* 添加分割线 */
+#my-table {
+    width: 100%; /* 或者你可以指定一个固定的宽度，如 500px */
+    height: 500px; /* 表格的高度 */
+    border-collapse: collapse; /* 使边框合并为单一边框 */
+    border: 2px solid #cccccc; /* 表格外边框 */
 }
 
-#eventList li:last-child {
-    border-bottom: none; /* 最后一个列表项不需要分割线 */
+#my-table td {
+    border-bottom: 1px solid black; /* 单元格横线 */
 }
-    </style>
+
+#my-table tr:last-child td {
+    border-bottom: none; /* 最后一行单元格不显示横线 */
+}
+.button-group{
+    position: absolute;
+    right:3px;
+    bottom: 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:10px;
+}
+
+.button-group button {
+    /* 按钮样式 */
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.button-group button:hover {
+    background-color: #45a049;}
+</style>
 
     <style type="text/css">/* Chart.js */
         @keyframes chartjs-render-animation{
@@ -267,61 +243,54 @@
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
-         <div class="row">
-            <div class="col-md-12 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">题目列表</p>
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                            <!-- 添加了 style 属性 -->
-                            <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6"></div>
-                                    <div class="col-sm-12 col-md-6"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布人</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">截止时间</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for exercise in exercises %}
-                                                    {% for question in exercise.questions.all %}
-                                                        <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                            <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ question.content }}</td>
-                                                            <td>{{ exercise.published_at }}</td>
-                                                            <td>{{ exercise.teacher.name }}</td>
-                                                            <td>{{ exercise.deadline }}</td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                    {% empty %}
-                                                    <tr>
-                                                        <td colspan="4" style="text-align: center;">暂无题目</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5"></div>
-                                    <div class="col-sm-12 col-md-7">
-                                        <button onclick="window.location.href='{% url 'teacher_app:create_exercise' %}'" style="float: right;">创建题目</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="container">
+        <!-- 班级列表部分 -->
+        <div class="class-list">
+            <h3>班级列表</h3>
+            <ul>
+                {% for class in classes %}
+                    <li data-class-id="{{ class.id }}">{{ class.name }}</li>
+                {% empty %}
+                    <li>No classes found</li>
+                {% endfor %}
+            </ul>
         </div>
+
+        <!-- 通知发布窗口 -->
+        <div class="notification-panel">
+
+
+                <div class="input-group">
+                    <label for="recipient">接收班级：</label>
+                    <div id="recipient" class="recipient-container"></div>
+                </div>
+                <div class="input-group">
+                    <label for="message">练习标题：</label>
+                    <input type="text" id="message" name="message" placeholder="请输入练习标题">
+                </div>
+
+                  <table id="my-table">
+                      <h5>练习题列表：</h5>
+                    <tr>
+                          <td>&nbsp;</td>
+                    </tr>
+                </table>
+                 <div class="button-group">
+                     #需要修改
+                    <button onclick="window.location.href='repository/create-exercise';">创建练习</button>
+                    <button>保存</button>
+                    <button onclick="confirm-exerciselist()">确认发布</button>
+                </div>
+
+
+        </div>
+
+    </div>
+
+
+
+        </div>
+  </div>
 
 
 
@@ -347,5 +316,49 @@
   <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
   <!-- End custom js for this page-->
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
+ <script>
+     document.addEventListener('DOMContentLoaded', function () {
+    var classItems = document.querySelectorAll('.class-list ul li');
+    var recipientContainer = document.querySelector('.recipient-container');
+
+    classItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            var className = this.textContent;
+            var classId = this.dataset.classId;
+
+            // 检查是否已经添加了这个班级的卡片
+            var existingTags = recipientContainer.querySelectorAll('.class-tag');
+            var isClassAlreadyAdded = Array.from(existingTags).some(function(tag) {
+                return tag.dataset.classId === classId;
+            });
+
+            // 如果班级已经被添加，就不再重复添加
+            if (isClassAlreadyAdded) {
+                return;
+            }
+
+            // 创建班级卡片
+            var tag = document.createElement('div');
+            tag.className = 'class-tag';
+            tag.dataset.classId = classId; // 使用 classId 作为唯一标识
+            tag.textContent = className;
+
+            // 创建移除按钮
+            var removeBtn = document.createElement('span');
+            removeBtn.textContent = '❌';
+            removeBtn.className = 'remove-class';
+            removeBtn.onclick = function () {
+                recipientContainer.removeChild(tag);
+            };
+
+            tag.appendChild(removeBtn);
+            recipientContainer.appendChild(tag);
+        });
+    });
+});
+
+ </script>
+
+
 
 </body></html>
