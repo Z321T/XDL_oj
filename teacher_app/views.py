@@ -70,8 +70,7 @@ def create_notice(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    user_id = request.session.get('user_id')
-    teacher = Teacher.objects.get(userid=user_id)
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = Class.objects.filter(teacher=teacher)
 
     if request.method == 'POST':
@@ -130,7 +129,9 @@ def repository_teacher(request):
 
 # 题库管理：练习列表
 def exercise_list(request):
-    return render(request, 'exercise_list.html')
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = teacher.classes_assigned.all()
+    return render(request, 'exercise_list.html', {'classes': classes})
 
 
 # 题库管理：考试列表
