@@ -55,6 +55,7 @@ def profile_administrator(request):
     return render(request, 'profile_administrator.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
 
 
+# 我的题库
 def repository_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -62,6 +63,7 @@ def repository_administrator(request):
     return render(request, 'repository_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 考试情况
 def test_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -69,6 +71,7 @@ def test_administrator(request):
     return render(request, 'test_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 班级管理
 def class_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -76,6 +79,7 @@ def class_administrator(request):
     return render(request, 'class_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 查重管理
 def plagiarism_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -83,6 +87,7 @@ def plagiarism_administrator(request):
     return render(request, 'plagiarism_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 师生信息管理
 def information_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
@@ -90,6 +95,7 @@ def information_administrator(request):
     return render(request, 'information_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 题库管理
 def problems_administrator(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),

@@ -40,8 +40,11 @@
         function redirectToNotice() {
             window.location.href = "/administrator/notice/"
         }
-        function redirectToInformation() {
-            window.location.href = "/administrator/information/"
+        function redirectToRepository() {
+            window.location.href = "/administrator/repository/"
+        }
+        function redirectToProfile() {
+            window.location.href = "/administrator/profile/"
         }
         function redirectToClass() {
             window.location.href = "/administrator/class/"
@@ -52,11 +55,8 @@
         function redirectToProblems() {
             window.location.href = "/administrator/problems/"
         }
-        function redirectToProfile() {
-            window.location.href = "/administrator/profile/"
-        }
-        function redirectToRepository() {
-            window.location.href = "/administrator/repository/"
+        function redirectToInformation() {
+            window.location.href = "/administrator/information/"
         }
     </script>
 </head>
@@ -219,22 +219,19 @@
               <span class="menu-title">考试情况</span>
               <i class="menu-arrow"></i>
             </a>
-
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" onclick="redirectToProblems()">
-              <i class="mdi mdi-view-headline menu-icon"></i>
-              <span class="menu-title">发布题目</span>
+            <a class="nav-link" href="#" onclick="redirectToNotice()">
+              <i class="mdi mdi-chart-pie menu-icon"></i>
+              <span class="menu-title">通知</span>
             </a>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">我的题库</span>
               <i class="menu-arrow"></i>
             </a>
-
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
@@ -242,31 +239,40 @@
               <span class="menu-title">个人中心</span>
               <i class="menu-arrow"></i>
             </a>
-
-
-            <li class="nav-item">
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="redirectToClass()">
+              <i class="mdi mdi-view-headline menu-icon"></i>
+              <span class="menu-title">班级管理</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+              <i class="mdi mdi-account menu-icon"></i>
+              <span class="menu-title">————</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPlagiarism()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">查重管理</span>
               <i class="menu-arrow"></i>
             </a>
-
           </li>
-            <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProblems()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">题库管理</span>
               <i class="menu-arrow"></i>
             </a>
-
           </li>
-            <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToInformation()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">师生信息管理</span>
               <i class="menu-arrow"></i>
             </a>
-
           </li>
         </ul>
       </nav>
