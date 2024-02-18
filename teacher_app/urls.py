@@ -21,6 +21,9 @@ urlpatterns = [
     # 有关题库的操作
     path('repository/', repository_teacher, name='repository_teacher'),
     path('repository/create_exercise/', create_exercise, name='create_exercise'),
+    #下面需要根据跳转修改
+path('repository/exercise_list/', exercise_list , name='exercise_list'),
+path('repository/exam_list/', exam_list, name='exam_list'),
     path('repository/create_exam/', create_exam, name='create_exam'),
     # 有关班级的操作
     path('class/', class_teacher, name='class_teacher'),

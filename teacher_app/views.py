@@ -162,6 +162,9 @@ def create_exam(request):
 
         return redirect('repository_teacher')
     return render(request, 'create_exam.html')
+#需要修改
+def exam_list(reauest):
+def exercise_list(request):
 
 
 # 考试情况
