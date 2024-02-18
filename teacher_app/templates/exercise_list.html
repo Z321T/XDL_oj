@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>通知</title>
+    <title>练习列表</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'teacher_app/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'teacher_app/css/vendor.bundle.base.css' %}">
@@ -234,13 +234,13 @@
 
           </li>
 
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToNotice()">
               <i class="mdi mdi-chart-pie menu-icon"></i>
               <span class="menu-title">通知</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
               <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">我的题库</span>
@@ -272,7 +272,7 @@
             <div class="col-md-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-title">通知列表</p>
+                        <p class="card-title">题目列表</p>
                         <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                             <!-- 添加了 style 属性 -->
                             <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
@@ -285,7 +285,7 @@
                                         <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
                                             <thead>
                                                 <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">通知内容</th>
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目内容</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">接收班级</th>
                                                 </tr>
@@ -303,7 +303,7 @@
                                                     </tr>
                                                 {% empty %}
                                                 <tr>
-                                                    <td colspan="3" style="text-align: center;">暂无通知</td>
+                                                    <td colspan="3" style="text-align: center;">暂无题目</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -313,7 +313,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-5"></div>
                                     <div class="col-sm-12 col-md-7">
-                                        <button onclick="window.location.href='{% url 'teacher_app:create_notice' %}'" style="float: right;">发布通知</button>
+                                        <button onclick="window.location.href='{% url 'teacher_app:create_exercise' %}'" style="float: right;">创建题目</button>
                                     </div>
                                 </div>
                             </div>
