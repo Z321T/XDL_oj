@@ -128,7 +128,17 @@ def repository_teacher(request):
                   {'dropdown_menu1': dropdown_menu1, 'exercises': exercises, 'exams': exams})
 
 
-# 创建练习
+# 题库管理：练习列表
+def exercise_list(request):
+    return render(request, 'exercise_list.html')
+
+
+# 题库管理：考试列表
+def exam_list(reauest):
+    return render(reauest, 'exam_list.html')
+
+
+# 题库管理：练习列表-创建练习
 def create_exercise(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -142,11 +152,11 @@ def create_exercise(request):
         exercise.save()
         exercise.classes.set(classes)
 
-        return redirect('repository_teacher')
+        return redirect('teacher_app:exercise_list')
     return render(request, 'create_exercise.html')
 
 
-# 创建考试
+# 题库管理：考试列表-创建考试
 def create_exam(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -160,11 +170,8 @@ def create_exam(request):
         exam.save()
         exam.classes.set(classes)
 
-        return redirect('repository_teacher')
+        return redirect('teacher_app:exam_list')
     return render(request, 'create_exam.html')
-#需要修改
-def exam_list(reauest):
-def exercise_list(request):
 
 
 # 考试情况
