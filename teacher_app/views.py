@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import JsonResponse
 
-from teacher_app.forms import TeacherForm, ClassForm
+from teacher_app.forms import TeacherForm, ClassForm,ExerciseForm, ExerciseQuestionFormset
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam
 from student_app.models import Student
 from student_app.forms import StudentForm
@@ -131,12 +131,8 @@ def repository_teacher(request):
 def exercise_list(request):
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = teacher.classes_assigned.all()
+
     return render(request, 'exercise_list.html', {'classes': classes})
-
-
-# 题库管理：考试列表
-def exam_list(reauest):
-    return render(reauest, 'exam_list.html')
 
 
 # 题库管理：练习列表-创建练习
@@ -152,9 +148,13 @@ def create_exercise(request):
         exercise.teacher = Teacher.objects.get(userid=request.session.get('user_id'))
         exercise.save()
         exercise.classes.set(classes)
-
         return redirect('teacher_app:exercise_list')
     return render(request, 'create_exercise.html')
+
+
+# 题库管理：考试列表
+def exam_list(reauest):
+    return render(reauest, 'exam_list.html')
 
 
 # 题库管理：考试列表-创建考试
