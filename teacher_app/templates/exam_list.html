@@ -263,7 +263,8 @@
                 {% csrf_token %}
                 <div class="input-group">
                     <label for="recipient">接收班级：</label>
-                    <div id="recipient_id" name="recipient_id" class="recipient-container"></div>
+                    <div id="recipient" class="recipient-container"></div>
+                    <input type="hidden" id="recipientIds" name="recipients">
                 </div>
                 <div class="input-group">
                     <label for="title">考试标题：</label>
@@ -298,7 +299,7 @@
                                                     <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                         <td>
                                                             <input type="checkbox" id="question{{ question.id }}">
-                                                            {{ question.content }}
+                                                            {{ question.title}}
                                                         </td>
                                                         <td>{{ exam.published_at }}</td>
                                                         <td>{{ exam.deadline }}</td>
@@ -357,49 +358,46 @@
      document.addEventListener('DOMContentLoaded', function () {
     var classItems = document.querySelectorAll('.class-list ul li');
     var recipientContainer = document.querySelector('.recipient-container');
+    var recipientIdsInput = document.querySelector('#recipientIds');
+
+        function updateRecipientIds() {
+            var classTags = recipientContainer.querySelectorAll('.class-tag');
+            var ids = Array.from(classTags).map(function(tag) {
+                return tag.dataset.classId;
+            });
+            recipientIdsInput.value = ids.join(',');  // 更新input元素的值
+        }
 
     classItems.forEach(function (item) {
         item.addEventListener('click', function () {
             var className = this.textContent;
             var classId = this.dataset.classId;
-
             // 检查是否已经添加了这个班级的卡片
             var existingTags = recipientContainer.querySelectorAll('.class-tag');
             var isClassAlreadyAdded = Array.from(existingTags).some(function(tag) {
                 return tag.dataset.classId === classId;
             });
-
-            // 如果班级已经被添加，就不再重复添加
             if (isClassAlreadyAdded) {
                 return;
             }
-
             // 创建班级卡片
             var tag = document.createElement('div');
             tag.className = 'class-tag';
             tag.dataset.classId = classId; // 使用 classId 作为唯一标识
             tag.textContent = className;
-
             // 创建移除按钮
             var removeBtn = document.createElement('span');
             removeBtn.textContent = '❌';
             removeBtn.className = 'remove-class';
             removeBtn.onclick = function () {
                 recipientContainer.removeChild(tag);
+                updateRecipientIds();
             };
-
             tag.appendChild(removeBtn);
             recipientContainer.appendChild(tag);
+            updateRecipientIds();
         });
     });
-});
+  });
  </script>
-<script>
-    document.getElementById('submit-button').addEventListener('click', function(event) {
-        // 阻止表单的默认提交行为
-        event.preventDefault();
-        document.getElementById('examFrom').submit();
-        window.location.href = '{% url 'teacher_app:repository_teacher' %}';
-    });
-</script>
 </body></html>

@@ -254,11 +254,12 @@
         <!-- 通知发布窗口 -->
         <div class="notification-panel">
             <h2>发布通知</h2>
-            <form id="notificationForm" method="post" action="/teacher/notice/create/">
+            <form id="notificationForm" method="post" action="{% url 'teacher_app:create_notice' %}">
                 {% csrf_token %}
                 <div class="input-group">
                     <label for="recipient">收件人:</label>
-                    <div id="recipients" name="recipients" class="recipient-container"></div>
+                    <div id="recipient" class="recipient-container"></div>
+                    <input type="hidden" id="recipientIds" name="recipients">
                 </div>
                 <div class="input-group">
                     <label for="message">消息内容:</label>
@@ -306,6 +307,15 @@
      document.addEventListener('DOMContentLoaded', function () {
         var classItems = document.querySelectorAll('.class-list ul li');
         var recipientContainer = document.querySelector('.recipient-container');
+        var recipientIdsInput = document.querySelector('#recipientIds');
+
+        function updateRecipientIds() {
+            var classTags = recipientContainer.querySelectorAll('.class-tag');
+            var ids = Array.from(classTags).map(function(tag) {
+                return tag.dataset.classId;
+            });
+            recipientIdsInput.value = ids.join(',');  // 更新input元素的值
+        }
 
         classItems.forEach(function (item) {
             item.addEventListener('click', function () {
@@ -330,9 +340,11 @@
                 removeBtn.className = 'remove-class';
                 removeBtn.onclick = function () {
                     recipientContainer.removeChild(tag);
+                    updateRecipientIds();
                 };
                 tag.appendChild(removeBtn);
                 recipientContainer.appendChild(tag);
+                updateRecipientIds();
             });
         });
     });

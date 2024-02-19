@@ -73,7 +73,8 @@ def create_notice(request):
 
     if request.method == 'POST':
         content = request.POST.get('message')
-        recipient_ids = request.POST.getlist('recipients')
+        recipient_ids = request.POST.get('recipients').split(',')
+        # recipient_ids = request.POST.getlist('recipients')
         recipients = Class.objects.filter(id__in=recipient_ids)
 
         if content and recipients:
@@ -152,13 +153,14 @@ def exercise_list(request, exercise_id):
         exercise.published_at = datetime.now()
         exercise.deadline = request.POST.get('deadline')
 
-        recipient_ids = request.POST.getlist('recipient_id')
-        for recipient_id in recipient_ids:
-            recipient_class = Class.objects.get(id=recipient_id)
-            exercise.classes.add(recipient_class)
-
-        exercise.save()
-
+        recipient_ids = request.POST.get('recipients').split(',')
+        recipient_class = Class.objects.filter(id__in=recipient_ids)
+        if recipient_class:
+            exercise.save()
+            exercise.classes.set(recipient_class)
+            return redirect('teacher_app:repository_teacher')
+        else:
+            messages.error(request, '创建练习失败')
     return render(request, 'exercise_list.html',
                   {'classes': classes, 'exercise': exercise})
 
@@ -207,13 +209,14 @@ def exam_list(request, exam_id):
         exam.published_at = datetime.now()
         exam.deadline = request.POST.get('deadline')
 
-        recipient_ids = request.POST.getlist('recipient_id')
-        for recipient_id in recipient_ids:
-            recipient_class = Class.objects.get(id=recipient_id)
-            exam.classes.add(recipient_class)
-
-        exam.save()
-
+        recipient_ids = request.POST.get('recipients').split(',')
+        recipient_class = Class.objects.filter(id__in=recipient_ids)
+        if recipient_class:
+            exam.save()
+            exam.classes.set(recipient_class)
+            return redirect('teacher_app:repository_teacher')
+        else:
+            messages.error(request, '创建考试失败')
     return render(request, 'exam_list.html',
                   {'classes': classes, 'exam': exam})
 

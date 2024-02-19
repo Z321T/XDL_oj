@@ -263,7 +263,8 @@
                 {% csrf_token %}
                 <div class="input-group">
                     <label for="recipient">接收班级：</label>
-                    <div id="recipient_id" name="recipient_id" class="recipient-container"></div>
+                    <div id="recipient" class="recipient-container"></div>
+                    <input type="hidden" id="recipientIds" name="recipients">
                 </div>
                 <div class="input-group">
                     <label for="title">练习标题：</label>
@@ -298,7 +299,7 @@
                                                     <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                         <td>
                                                             <input type="checkbox" id="question{{ question.id }}">
-                                                            {{ question.content }}
+                                                            {{ question.title }}
                                                         </td>
                                                         <td>{{ exercise.published_at }}</td>
                                                         <td>{{ exercise.deadline }}</td>
@@ -357,6 +358,15 @@
      document.addEventListener('DOMContentLoaded', function () {
         var classItems = document.querySelectorAll('.class-list ul li');
         var recipientContainer = document.querySelector('.recipient-container');
+        var recipientIdsInput = document.querySelector('#recipientIds');
+
+        function updateRecipientIds() {
+            var classTags = recipientContainer.querySelectorAll('.class-tag');
+            var ids = Array.from(classTags).map(function(tag) {
+                return tag.dataset.classId;
+            });
+            recipientIdsInput.value = ids.join(',');  // 更新input元素的值
+        }
 
         classItems.forEach(function (item) {
             item.addEventListener('click', function () {
@@ -381,19 +391,13 @@
                 removeBtn.className = 'remove-class';
                 removeBtn.onclick = function () {
                     recipientContainer.removeChild(tag);
+                    updateRecipientIds();
                 };
                 tag.appendChild(removeBtn);
                 recipientContainer.appendChild(tag);
+                updateRecipientIds();
             });
         });
-    });
-</script>
-<script>
-    document.getElementById('submit-button').addEventListener('click', function(event) {
-        // 阻止表单的默认提交行为
-        event.preventDefault();
-        document.getElementById('exerciseFrom').submit();
-        window.location.href = '{% url 'teacher_app:repository_teacher' %}';
     });
 </script>
 </body></html>

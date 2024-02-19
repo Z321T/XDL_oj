@@ -293,14 +293,12 @@
                                             </thead>
                                             <tbody>
                                                 {% for exercise in exercises %}
-                                                    {% for question in exercise.questions.all %}
-                                                        <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                            <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ question.title }}</td>
-                                                            <td>{{ exercise.published_at }}</td>
-                                                            <td>{{ exercise.teacher.name }}</td>
-                                                            <td>{{ exercise.deadline }}</td>
-                                                        </tr>
-                                                    {% endfor %}
+                                                    <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                        <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ exercise.title }}</td>
+                                                        <td>{{ exercise.published_at }}</td>
+                                                        <td>{{ exercise.teacher.name }}</td>
+                                                        <td>{{ exercise.deadline }}</td>
+                                                    </tr>
                                                     {% empty %}
                                                         <tr>
                                                             <td colspan="4" style="text-align: center;">没有练习内容</td>
@@ -346,14 +344,12 @@
                                             </thead>
                                             <tbody>
                                             {% for exam in exams %}
-                                                {% for question in exam.questions.all %}
-                                                    <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ question.title }}</td>
-                                                        <td>{{ exam.published_at }}</td>
-                                                        <td>{{ exam.teacher.name }}</td>
-                                                        <td>{{ exam.deadline }}</td>
-                                                    </tr>
-                                                {% endfor %}
+                                                <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                    <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ exam.title }}</td>
+                                                    <td>{{ exam.published_at }}</td>
+                                                    <td>{{ exam.teacher.name }}</td>
+                                                    <td>{{ exam.deadline }}</td>
+                                                </tr>
                                                 {% empty %}
                                                     <tr>
                                                         <td colspan="4" style="text-align: center;">没有考试内容</td>
@@ -362,13 +358,13 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                  </div>
                                 </div>
-                                </div>
-                            </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-5"></div>
-                            <div class="col-sm-12 col-md-7">
-                                <button onclick="window.location.href='{% url 'teacher_app:exam_list_default' %}'" style="float: right;">发布考试</button>
+                              </div>
+                            <div class="row">
+                               <div class="col-sm-12 col-md-5"></div>
+                               <div class="col-sm-12 col-md-7">
+                                  <button onclick="window.location.href='{% url 'teacher_app:exam_list_default' %}'" style="float: right;">发布考试</button>
                             </div>
                         </div>
                     </div>
