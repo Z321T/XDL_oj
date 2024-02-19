@@ -72,7 +72,7 @@ class Exam(models.Model):
 class ExamQuestion(models.Model):
     exam = models.ForeignKey(Exam, verbose_name="考试", on_delete=models.CASCADE,
                              related_name='questions', null=True)
-    cotitle = models.CharField(max_length=200, verbose_name="题目标题", null=True, blank=True)
+    title = models.CharField(max_length=200, verbose_name="题目标题", null=True, blank=True)
     content = models.TextField(verbose_name="题目内容")
     memory_limit = models.IntegerField(verbose_name="内存限制", default=0)
     time_limit = models.IntegerField(verbose_name="时间限制", default=0)
