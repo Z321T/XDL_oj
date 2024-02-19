@@ -54,14 +54,15 @@
 }
 
 .class-list {
-    width: 20%; /* 占据总宽度的1/3 */
-    background-color: #f4f4f4; /* 可以根据您的设计需求更改颜色 */
+    width: 20%;
+    background-color: #f9f9f9; /* 浅灰色背景 */
     padding: 20px;
-    overflow-y: auto; /* 如果班级列表很长，需要滚动条 */
+    overflow-y: auto;
     box-sizing: border-box;
-    border: 2px solid purple;
+    border: 2px solid #d3d3d3; /* 深灰色边框 */
     border-radius: 10px;
 }
+
 
 .class-list h3 {
     margin-top: 0;
@@ -78,13 +79,15 @@
 }
 
 .notification-panel {
-    position:relative;
+    position: relative;
     width: 80%; /* 占据总宽度的2/3 */
     padding: 20px;
     box-sizing: border-box;
-    border:2px solid purple;
+    background-color: #f9f9f9; /* 浅灰色背景 */
+    border: 2px solid #d3d3d3; /* 深灰色边框 */
     border-radius: 10px;
 }
+
 
 .input-group {
     margin-bottom: 10px;
@@ -109,26 +112,25 @@
     height: 500px;
 
 }
-
-button1 {
-     display: block; /* 使按钮成为块级元素，这样才能应用自动外边距 */
-    position:absolute;
-    right:2px;
-    bottom:2px;
-    width: 30%;
-    padding: 10px;
-    background-color: #6e48aa;
-    color: white;
-    border: 2px solid grey;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    text-align: center;
+.btn-default {
+    background-color: #ffffff; /* 白色背景 */
+    color: #333333; /* 深色文本 */
+    border: 1px solid #cccccc; /* 浅灰色边框 */
+    padding: 10px 20px; /* 内填充 */
+    font-size: 16px; /* 文本大小 */
+    border-radius: 5px; /* 圆角边框 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 轻微阴影 */
+    transition: all 0.3s; /* 平滑过渡效果 */
 }
 
-button1:hover {
-    background-color: #9d50bb;
+.btn-default:hover, .btn-default:focus {
+    border-color: #66afe9; /* 悬停/聚焦时的蓝色边框 */
+    outline: none; /* 移除聚焦时的轮廓线 */
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* 悬停/聚焦时的阴影效果 */
 }
+
+
+
 
      </style>
 
@@ -262,7 +264,7 @@ button1:hover {
                     <label for="message">消息内容:</label>
                     <textarea id="message" name="message" placeholder="请输入您的消息"></textarea>
                 </div>
-                <button type="submit">发送</button>
+                <button type="submit" class="btn-default">发送</button>
             </form>
         </div>
 
