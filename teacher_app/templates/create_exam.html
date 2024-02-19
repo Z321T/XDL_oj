@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>考试题设计</title>
     <link rel="stylesheet" href="{% static 'teacher_app/css/bootstrap.min.css' %}">
     <style>
 
@@ -67,30 +67,33 @@
 </head>
 <body>
     <div class="container mt-5">
-        <div class="newproblem-container bg-light p-4 border rounded">
-            <input type="text" class="form-control mb-3" placeholder="编辑标题">
+    <div class="newproblem-container bg-light p-4 border rounded">
+        <form method="post" action="{% url 'teacher_app:create_exam' exam.id %}">
+            {% csrf_token %}
+            <input type="text" class="form-control mb-3" name="title" placeholder="编辑标题">
             <hr>
-            <textarea class="form-control mb-3 custom-textarea" placeholder="编辑题目内容..."></textarea>
+            <textarea class="form-control mb-3 custom-textarea" name="content" placeholder="编辑题目内容..."></textarea>
             <div class="input-container mb-3">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="memory-addon">内存限制</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="例如，256MB" aria-label="MemoryLimit" aria-describedby="memory-addon">
+                    <input type="text" class="form-control" name="memory_limit" placeholder="例如，256MB" aria-label="MemoryLimit" aria-describedby="memory-addon">
                 </div>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="time-addon">时间限制</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="例如，1s" aria-label="TimeLimit" aria-describedby="time-addon">
+                    <input type="text" class="form-control" name="time_limit" placeholder="例如，1s" aria-label="TimeLimit" aria-describedby="time-addon">
                 </div>
             </div>
             <div class="button-container text-center">
                 <button type="button" class="btn btn-primary mr-2">上传答案</button>
-                <button type="button" class="btn btn-success">保存</button>
+                <button type="submit" class="btn btn-success">保存</button>
             </div>
-        </div>
+        </form>
     </div>
+</div>
 </body>
 
 </html>

@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 
 from teacher_app.forms import TeacherForm, ClassForm
-from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam
+from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
 from student_app.models import Student
 from student_app.forms import StudentForm
 
@@ -183,26 +183,58 @@ def create_exercise(request, exercise_id):
 
 
 # 题库管理：考试列表
-def exam_list(reauest):
-    return render(reauest, 'exam_list.html')
+def exam_list_default(request):
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = teacher.classes_assigned.all()
+
+    exam = Exam.objects.create(
+        title="默认标题",
+        content="默认内容",
+        deadline=datetime.now() + timedelta(days=7),
+        teacher=teacher
+    )
+
+    return render(request, 'exam_list.html',
+                  {'classes': classes, 'exam': exam})
+
+
+def exam_list(request, exam_id):
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = teacher.classes_assigned.all()
+    exam = get_object_or_404(Exam, id=exam_id)
+
+    if request.method == 'POST':
+        exam.title = request.POST.get('title')
+        exam.content = request.POST.get('content')
+        exam.published_at = datetime.now()
+        exam.deadline = request.POST.get('deadline')
+
+        recipient_ids = request.POST.getlist('recipient_id')
+        for recipient_id in recipient_ids:
+            recipient_class = Class.objects.get(id=recipient_id)
+            exam.classes.add(recipient_class)
+
+        exam.save()
+
+    return render(request, 'exam_list.html',
+                  {'classes': classes, 'exam': exam})
 
 
 # 题库管理：考试列表-创建考试
-def create_exam(request):
+def create_exam(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id)
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
-        deadline = request.POST.get('deadline')
-        class_ids = request.POST.getlist('classes')
-        classes = Class.objects.filter(id__in=class_ids)
+        memory_limit = request.POST.get('memory_limit')
+        time_limit = request.POST.get('time_limit')
 
-        exam = Exam(title=title, content=content, deadline=deadline)
-        exam.teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-        exam.save()
-        exam.classes.set(classes)
+        question = ExamQuestion(exam=exam, title=title, content=content,
+                                memory_limit=memory_limit, time_limit=time_limit)
+        question.save()
 
-        return redirect('teacher_app:exam_list')
-    return render(request, 'create_exam.html')
+        return redirect('teacher_app:exam_list', exam_id=exam.id)
+    return render(request, 'create_exam.html', {'exam': exam})
 
 
 # 考试情况

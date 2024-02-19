@@ -259,7 +259,7 @@
         <!-- 通知发布窗口 -->
         <div class="notification-panel">
             <h3>发布练习</h3>
-            <form id="exerciseFrom" method="post" action="{% url 'teacher_app:create_exercise' exercise.id %}">
+            <form id="exerciseFrom" method="post" action="{% url 'teacher_app:exercise_list' exercise.id %}">
                 {% csrf_token %}
                 <div class="input-group">
                     <label for="recipient">接收班级：</label>
@@ -320,7 +320,7 @@
                     <button type="submit">发布练习</button>
                 </div>
             </form>
-                <button onclick="window.location.href='{% url 'teacher_app:create_exercise' exercise.id %}'">创建练习</button>
+                <button onclick="window.location.href='{% url 'teacher_app:create_exercise' exercise.id %}'">创建练习题</button>
         </div>
 
       </div>
