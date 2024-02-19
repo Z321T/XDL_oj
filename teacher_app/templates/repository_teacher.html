@@ -267,21 +267,8 @@
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
-         <div class="date-filter">
-            <select id="yearSelect" onchange="updateDays()">
-            <!-- JavaScript将在这里动态填充年份选项 -->
-            </select>
-            <select id="monthSelect" onchange="updateDays()">
-            <!-- JavaScript将在这里动态填充月份选项 -->
-            </select>
-            <select id="daySelect">
-            <!-- JavaScript将在这里动态填充日期选项 -->
-            </select>
-         </div>
-
-
-          <div class="row">
+        <div class="main-panel">
+        <div class="row">
             <div class="col-md-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -388,7 +375,9 @@
                 </div>
             </div>
         </div>
-
+      </div>
+    </div>
+  </div>
   <!-- container-scroller -->
 
  <!-- plugins:js -->
@@ -411,54 +400,4 @@
   <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
   <!-- End custom js for this page-->
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-  <script>
-// 初始化年份和月份下拉菜单
-function initDateFilter() {
-  const yearSelect = document.getElementById('yearSelect');
-  const monthSelect = document.getElementById('monthSelect');
-  const currentYear = new Date().getFullYear();
-
-  // 填充年份选项
-  for (let i = currentYear; i >= 1900; i--) {
-    const option = document.createElement('option');
-    option.value = i;
-    option.textContent = i;
-    yearSelect.appendChild(option);
-  }
-
-  // 填充月份选项
-  for (let i = 1; i <= 12; i++) {
-    const option = document.createElement('option');
-    option.value = i;
-    option.textContent = i.toString().padStart(2, '0');
-    monthSelect.appendChild(option);
-  }
-
-  updateDays(); // 初始填充日期
-}
-
-// 根据选定的年份和月份更新日期选项
-function updateDays() {
-  const yearSelect = document.getElementById('yearSelect');
-  const monthSelect = document.getElementById('monthSelect');
-  const daySelect = document.getElementById('daySelect');
-
-  const year = yearSelect.value;
-  const month = monthSelect.value;
-  const daysInMonth = new Date(year, month, 0).getDate();
-
-  daySelect.innerHTML = ''; // 清空日期选项
-
-  // 填充日期选项
-  for (let i = 1; i <= daysInMonth; i++) {
-    const option = document.createElement('option');
-    option.value = i;
-    option.textContent = i.toString().padStart(2, '0');
-    daySelect.appendChild(option);
-  }
-}
-
-// 页面加载完成时初始化日期筛选器
-window.onload = initDateFilter;
-  </script>
 </body></html>

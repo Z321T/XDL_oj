@@ -234,6 +234,7 @@ background-color: #f0f8ff;
               <span class="menu-title">作业情况</span>
               <i class="menu-arrow"></i>
             </a>
+
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToNotice()">
@@ -247,6 +248,7 @@ background-color: #f0f8ff;
               <span class="menu-title">我的题库</span>
               <i class="menu-arrow"></i>
             </a>
+
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
@@ -254,6 +256,7 @@ background-color: #f0f8ff;
               <span class="menu-title">个人中心</span>
               <i class="menu-arrow"></i>
             </a>
+
           </li>
             <li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToClass()" aria-expanded="false" aria-controls="auth">
@@ -261,61 +264,67 @@ background-color: #f0f8ff;
               <span class="menu-title">班级管理</span>
               <i class="menu-arrow"></i>
             </a>
+
           </li>
         </ul>
       </nav>
       <!-- partial -->
-     <div class="main-panel">
-        <div class="row">
-            <div class="col-md-12 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">班级列表</p>
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                            <!-- 添加了 style 属性 -->
-                            <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6"></div>
-                                    <div class="col-sm-12 col-md-6"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">班级</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">班级人数</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for class in classes %}
-                                                    <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox" id="class{{ class.id }}"> {{ class.name }}</td>
-                                                        <td>{{ class.students.count }}</td>
-                                                        <td>
-                                                            <button class="button-class delete-class" data-class-id="{{ class.id }}">删除</button>
-                                                            <button class="button-class class-details" data-class-id="{{ class.id }}">详情</button>
-                                                        </td>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-5"></div>
-                            <div class="col-sm-12 col-md-7">
-                                <button onclick="window.location.href='{% url 'teacher_app:create_class' %}'" style="float: right;">创建班级</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+     <div class="content-container">
+  <div class="content-window">
+    <div class="table-container">
+      <div class="table-title" id="table-title">我的班级</div>
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>班级名</th>
+          <th>人数</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 初始的表格内容 -->
+        {% for class in classes %}
+        <tr>
+            <td><input type="checkbox" id="checkbox1" name="checkbox1">{{ class.name }}</td>
+            <td>{{ class.students.count }}</td>
+               <td>
+                <button class="button-class delete-class" data-class-id="{{ class.id }}">删除</button>
+                <button class="button-class refresh-button" data-class-id="{{ class.id }}">详情</button>
+             </td>
+
+        </tr>
+        {% endfor %}
+
+        <!-- 其他行... -->
+      </tbody>
+    </table>
     </div>
   </div>
+         <button id="newButton" class="control-button-right">我的班级</button>
+      <!-- 触发弹窗的按钮 -->
+         <button type="button" id="newClassButton">新建班级</button>
+     </div>
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+      <!-- 弹窗内容 -->
+<div id="myModal" class="modal">
+    <!-- 弹窗内部 -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <label for="classNameInput">班级名称:</label>
+        <input type="text" id="classNameInput" name="className"><br><br>
+        <label for="initialPasswordInput">初始化密码:</label>
+        <input type="password" id="initialPasswordInput" name="initialPassword"><br><br>
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="excelFileInput" name="excelFile">
+            <label class="custom-file-label" for="excelFileInput">上传Excel文件:</label>
+        </div>
+
+        <!-- 确定按钮 -->
+        <button type="button" onclick="addClass()" id="confirmButton">确定</button>
+    </div>
 </div>
 
  <!-- plugins:js -->
@@ -333,43 +342,13 @@ background-color: #f0f8ff;
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script type="text/javascript" src="{% static 'teacher_app/js/dashboard.js' %}"></script>
-  <script type="text/javascript" src="{% static 'teacher_app/js/data-table.js' %}"></script>
-  <script type="text/javascript" src="{% static 'teacher_app/js/jquery.dataTables(1).js' %}"></script>
+  <script type="text/javascript"  src="{% static 'teacher_app/js/data-table.js' %}"></script>
+  <script type="text/javascript"  src="{% static 'teacher_app/js/jquery.dataTables(1).js' %}"></script>
   <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
   <!-- End custom js for this page-->
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-  <script>
-      $(document).ready(function() {
-          $('.delete-class').on('click', function() {
-                var classId = $(this).data('class-id');
-                $.ajax({
-                    url: "{% url 'teacher_app:delete_class' %}",  // 这里应该是 delete_class 视图函数的 URL
-                    type: 'POST',
-                    data: {
-                        'class_id': classId,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'  // Django 需要这个字段来防止 CSRF 攻击
-                    },
-                    success: function(response) {
-                    // 这里可以添加处理成功的代码，例如刷新页面或者删除对应的表格行
-                        location.reload();
-                    },
-                    error: function(response) {
-                        // 这里可以添加处理失败的代码，例如显示一个错误消息
-                        alert('删除失败');
-                    }
-                });
-          });
-      });
-  </script>
-  <script>
-        $(document).ready(function() {
-            $('.class-details').on('click', function() {
-                var classId = $(this).data('class-id');
-                var url = "{% url 'teacher_app:class_details' '123' %}".replace('123', classId);
-                window.location.href = url;
-            });
-        });
-  </script>
+  <script src="{% static 'teacher_app/js/addclass.js' %}" type="text/javascript"></script>
+  <script src="{% static 'teacher_app/js/refreshTableContent.js' %}" type="text/javascript"></script>
 
 
 </body></html>

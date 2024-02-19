@@ -1,8 +1,6 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
-from django.core.files.storage import default_storage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -251,7 +249,6 @@ def class_teacher(request):
         'user_id': request.session.get('user_id'),
     }
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    # 查询与当前教师关联的班级
     classes = Class.objects.filter(teacher=teacher)
     return render(request, 'class_teacher.html',
                   {'classes': classes, 'dropdown_menu1': dropdown_menu1})
@@ -260,70 +257,79 @@ def class_teacher(request):
 # 班级管理：创建班级
 def create_class(request):
     if request.method == 'POST':
-        form = ClassForm(request.POST, request.FILES)
-        if form.is_valid():
-            new_class = form.save(commit=False)
-            class_name = request.POST.get('name')
-            new_class.name = class_name
+        class_name = request.POST.get('className')
+        initial_password = request.POST.get('initialPassword')
+        file = request.FILES.get('excelFile')
 
+        if class_name and initial_password and file:
             teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-            new_class.teacher = teacher  # 将班级的教师设置为当前登录的教师
-            new_class.save()
-            teacher.classes_assigned.add(new_class)  # 然后将班级添加到教师的 classes_assigned 中
+            new_class = Class.objects.create(name=class_name, teacher=teacher)
+            teacher.classes_assigned.add(new_class)
 
-            file = request.FILES.get('file')
-            if file:
-                initial_password = request.POST.get('initialPassword')
-                data = pd.read_excel(file)
-                for index, row in data.iterrows():
-                    Student.objects.create(
-                        name=row['姓名'],
-                        userid=row['学号'],
-                        password=initial_password,
-                        class_assigned=new_class
-                    )
-            return JsonResponse({'message': '班级创建成功'}, status=200)
+            data = pd.read_excel(file)
+            for index, row in data.iterrows():
+                Student.objects.create(
+                    name=row['姓名'],
+                    userid=row['学号'],
+                    password=initial_password,
+                    class_assigned=new_class
+                )
+            return redirect('teacher_app:class_teacher')
         else:
-            return JsonResponse({'errors': form.errors}, status=400)
+            errors = {}
+            if not class_name:
+                errors['className'] = 'This field is required.'
+            if not initial_password:
+                errors['initialPassword'] = 'This field is required.'
+            if not file:
+                errors['excelFile'] = 'This field is required.'
+            return JsonResponse({'errors': errors}, status=400)
+    return render(request, 'create_class.html')
 
 
 # 班级管理：删除班级
 def delete_class(request):
-    class_id = request.GET.get('nid')
-    if class_id:
-        class_to_delete = Class.objects.filter(id=class_id).first()
-        if class_to_delete:
-            for teacher in class_to_delete.teachers.all():
-                teacher.classes_assigned.remove(class_to_delete)
-            class_to_delete.delete()
-    return redirect('class_teacher')
+    if request.method == 'POST':
+        class_id = request.POST.get('class_id')
+        if class_id:
+            class_to_delete = Class.objects.filter(id=class_id).first()
+            if class_to_delete:
+                for teacher in class_to_delete.teacher_set.all():
+                    teacher.classes_assigned.remove(class_to_delete)
+                class_to_delete.delete()
+                return JsonResponse({'status': 'success'}, status=200)
+        return JsonResponse({'status': 'error', 'message': 'Class not found'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
-# 班级管理：获取学生信息
-def get_students(request, class_id):
-    students = Student.objects.filter(class_assigned=class_id)
-    student_list = []
-    for student in students:
-        student_list.append({
-            'id': student.id,
-            'name': student.name,
-            'userid': student.userid,
-            'password': student.password,
-            'email': student.email,
-            'last_login': student.last_login
-        })
-    return JsonResponse({'students': student_list})
+# 班级管理：班级详情
+def class_details(request, class_id):
+    if request.method == 'GET':
+        try:
+            students = Student.objects.filter(class_assigned=class_id)
+            return render(request, 'class_details.html', {'students': students})
+        except Class.DoesNotExist:
+            return redirect('teacher_app:class_teacher')
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('teacher_app:class_teacher')
 
 
 # 班级管理：删除学生
-def delete_student(request, student_id):
-    try:
-        student_to_delete = Student.objects.get(id=student_id)
-        student_to_delete.delete()
-        messages.success(request, 'Student deleted successfully.')
-    except Student.DoesNotExist:
-        messages.error(request, 'The student does not exist')
-    return redirect('class_teacher')
+def delete_student(request):
+    if request.method == 'POST':
+        student_id = request.POST.get('student_id')
+        try:
+            student_to_delete = Student.objects.get(id=student_id)
+            student_to_delete.class_assigned = None
+            student_to_delete.save()
+            student_to_delete.delete()
+            return JsonResponse({'status': 'success', 'message': 'Student deleted successfully.'})
+        except Student.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'The student does not exist'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 
 # 班级管理：初始化密码
