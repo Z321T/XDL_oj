@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
 from student_app.models import Student
-from teacher_app.models import Teacher, Class, Notification
+from teacher_app.models import Teacher, Class, Notification, Exercise, Exam
 from .forms import StudentForm
 
 
@@ -29,7 +29,7 @@ def home_student(request):
         notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
 
     return render(request, 'home_student.html',
-                  {'dropdown_menu1': dropdown_menu1, 'notifications': notifications })
+                  {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
 
 
 # 我的练习
@@ -37,6 +37,10 @@ def practice_student(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    class_assigned = student.class_assigned
+    exercises = class_assigned.exercises.all()
+
     return render(request, 'practice_student.html', {'dropdown_menu1': dropdown_menu1})
 
 
@@ -45,7 +49,11 @@ def test_student(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    return render(request, 'test_student.html', {'dropdown_menu1': dropdown_menu1})
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    class_assigned = student.class_assigned
+    exams = Exam.objects.filter(classes=class_assigned)
+    return render(request, 'test_student.html',
+                  {'dropdown_menu1': dropdown_menu1, 'exams': exams})
 
 
 # 学生个人中心

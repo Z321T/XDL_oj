@@ -76,52 +76,6 @@
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item dropdown mr-1">
-            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
-              <i class="mdi mdi-message-text mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">消息</p>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                    <img src="{% static 'student_app/photo/face4.jpg' %}" alt="image" class="profile-pic">
-                </div>
-                  <!--可替换消息-->
-                <div class="item-content flex-grow">
-                  <h6 class="ellipsis font-weight-normal">David Grey
-                  </h6>
-                  <p class="font-weight-light small-text text-muted mb-0">
-                    The meeting is cancelled
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                    <img src="{% static 'student_app/photo/face2.jpg' %}" alt="image" class="profile-pic">
-                </div>
-                <div class="item-content flex-grow">
-                  <h6 class="ellipsis font-weight-normal">Tim Cook
-                  </h6>
-                  <p class="font-weight-light small-text text-muted mb-0">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                    <img src="{% static 'student_app/photo/face3.jpg' %}" alt="image" class="profile-pic">
-                </div>
-                <div class="item-content flex-grow">
-                  <h6 class="ellipsis font-weight-normal"> Johnson
-                  </h6>
-                  <p class="font-weight-light small-text text-muted mb-0">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
           <li class="nav-item dropdown mr-4">
             <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
               <i class="mdi mdi-bell mx-0"></i>
@@ -179,11 +133,11 @@
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
                 <i class="mdi mdi-settings text-primary"></i>
-                Settings
+                设置
               </a>
               <a class="dropdown-item">
                 <i class="mdi mdi-logout text-primary"></i>
-                Logout
+                退出
               </a>
             </div>
           </li>
@@ -201,7 +155,7 @@
           <li class="nav-item ">
             <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">我的作业</span>
+              <span class="menu-title">学生主页</span>
             </a>
           </li>
           <li class="nav-item">
@@ -210,7 +164,6 @@
               <span class="menu-title">我的练习</span>
               <i class="menu-arrow"></i>
             </a>
-
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="#" onclick="redirectToTest()">
@@ -235,150 +188,62 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between flex-wrap">
-                <div class="d-flex align-items-end flex-wrap">
-                  <div class="mr-md-3 mr-xl-5">
-                    <h2>Welcome to CUMT-OJ</h2>
-                    <p class="mb-md-0">你的代码学习助手</p>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-          </div>
           <div class="row d-flex" id="proBanner">
             <div class="col-md-12 grid-margin">
               <div class="card bg-gradient-primary border-0">
                 <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-
-
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body dashboard-tabs p-0">
-
-                  <div class="tab-content py-0 px-0">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">好题集</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="https://majestic.bootmb.com/#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">5</h5>
-                              </a>
-
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">错题集</small>
-                            <h5 class="mr-2 mb-0">90</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">成绩分析</small>
-                            <h5 class="mr-2 mb-0">详情</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">教师评语</small>
-                            <h5 class="mr-2 mb-0">..</h5>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-            <div class=" stretch-card">
-              <div class="card">
+          <div class="stretch-card">
+            <div class="card">
                 <div class="card-body">
-                  <p class="card-title">考试列表</p>
-                  <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                      <div class="table-responsive">
-    <div class="card-container">
-        <!-- 示例卡片 -->
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-           
-            <div class="card-item">发布人: $23230</div>
-        </div>
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-            
-            <div class="card-item">发布人: $23230</div>
-        </div>
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-           
-            <div class="card-item">发布人: $23230</div>
-        </div>
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-           
-            <div class="card-item">发布人: $23230</div>
-        </div>
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-            <div class="card-item">发布人: $23230</div>
-        </div>
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-            
-            <div class="card-item">发布人: $23230</div>
-        </div>
-        <div class="card">
-            <div class="card-item card-title">期中考试r</div>
-            <div class="card-item">考试时间: Ui design completed</div>
-            
-            <div class="card-item">发布人: $23230</div>
-        </div>
-
-        <!-- 根据需要复制更多卡片 -->
-    </div>
-</div>
-
-
-                 </div>
+                    <p class="card-title">考试列表</p>
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="exam-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="exam-listing" class="table dataTable no-footer" role="grid">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_asc" tabindex="0" aria-controls="exam-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
+                                                <th class="sorting" tabindex="0" aria-controls="exam-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
+                                                <th class="sorting" tabindex="0" aria-controls="exam-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布教师</th>
+                                                <th class="sorting" tabindex="0" aria-controls="exam-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">截止时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for exam in exams %}
+                                            {% for question in exam.questions.all %}
+                                                <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                    <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ question.title }}</td>
+                                                    <td>{{ exam.published_at }}</td>
+                                                    <td>{{ exam.teacher.name }}</td>
+                                                    <td>{{ exam.deadline }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="4" style="text-align: center;">没有考试内容</td>
+                                                </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+            </div>
             </div>
 
+        </div>
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-          </div>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between"></div>
         </footer>
         <!-- partial -->
       </div>
