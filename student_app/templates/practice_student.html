@@ -49,6 +49,24 @@
         }
 
         </script>
+        <style>
+            .add-exercise-form {
+    margin-bottom: 10px;
+}
+
+#exercise-input {
+    margin-right: 5px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+#add-exercise-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+        </style>
     </head>
 <body>
   <div class="container-scroller">
@@ -77,52 +95,7 @@
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item dropdown mr-1">
-            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
-              <i class="mdi mdi-message-text mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">消息</p>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                    <img src="{% static 'student_app/photo/face4.jpg' %}" alt="image" class="profile-pic">
-                </div>
-                  <!--可替换消息-->
-                <div class="item-content flex-grow">
-                  <h6 class="ellipsis font-weight-normal">David Grey
-                  </h6>
-                  <p class="font-weight-light small-text text-muted mb-0">
-                    The meeting is cancelled
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                    <img src="{% static 'student_app/photo/face2.jpg' %}" alt="image" class="profile-pic">
-                </div>
-                <div class="item-content flex-grow">
-                  <h6 class="ellipsis font-weight-normal">Tim Cook
-                  </h6>
-                  <p class="font-weight-light small-text text-muted mb-0">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                    <img src="{% static 'student_app/photo/face3.jpg' %}" alt="image" class="profile-pic">
-                </div>
-                <div class="item-content flex-grow">
-                  <h6 class="ellipsis font-weight-normal"> Johnson
-                  </h6>
-                  <p class="font-weight-light small-text text-muted mb-0">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
+
           <li class="nav-item dropdown mr-4">
             <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
               <i class="mdi mdi-bell mx-0"></i>
@@ -238,30 +211,6 @@
         <div class="content-wrapper">
 
           <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between flex-wrap">
-                <div class="d-flex align-items-end flex-wrap">
-                  <div class="mr-md-3 mr-xl-5">
-                    <h2>Welcome to CUMT-OJ</h2>
-                    <p class="mb-md-0">你的代码学习助手</p>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <div class="row d-flex" id="proBanner">
-            <div class="col-md-12 grid-margin">
-              <div class="card bg-gradient-primary border-0">
-                <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body dashboard-tabs p-0">
@@ -273,22 +222,14 @@
                         <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
                           <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
                           <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">未做练习</small>
-                            <h5 class="mr-2 mb-0">90</h5>
+                            <small class="mb-1 text-muted">我的练习</small>
                           </div>
                         </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">已做练习</small>
-                            <h5 class="mr-2 mb-0">45</h5>
-                          </div>
-                        </div>
+
                         <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
                           <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
                           <div class="d-flex flex-column justify-content-around">
                             <small class="mb-1 text-muted">错题本</small>
-                            <h5 class="mr-2 mb-0">..</h5>
                           </div>
                         </div>
 
@@ -322,7 +263,7 @@
                 </ul>
             </nav>
                     <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
+                        <table id="practice-list" class="table dataTable no-footer" role="grid">
                             <thead>
                                 <tr role="row">
                                     <th>题目</th>
@@ -332,122 +273,42 @@
                             </thead>
                             <tbody>
                                 <!-- 在此处添加左边表格的行数据 -->
-                                   <tr role="row" class="odd">
-                                                  <td class="sorting_1">Alvin Fisher</td>
-                                                  <td>Ui design completed</td>
-                                                  <td>East Mayra</td>
 
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Betty Hunt</td>
-                                                  <td>Ui design not completed</td>
-                                                  <td>Lake Sandrafort</td>
-
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Emily Cunningham</td>
-                                                  <td>support</td>
-                                                  <td>Makennaton</td>
-
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Ernest Wade</td>
-                                                  <td>Levelled up</td>
-                                                  <td>West Fidelmouth</td>
-
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Jacob Kennedy</td>
-                                                  <td>New project</td>
-                                                  <td>Cletaborough</td>
-
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Jeremy Ortega</td>
-                                                  <td>Levelled up</td>
-                                                  <td>Catalinaborough</td>
-
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Minnie Farmer</td>
-                                                  <td>support</td>
-                                                  <td>Agustinaborough</td>
-
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Myrtie Lambert</td>
-                                                  <td>Ui design completed</td>
-                                                  <td>Cassinbury</td>
-
-
-                                              </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-          <div class="col-md-1">
 
-          </div>
         <!-- 右边的表格 -->
         <div class="col-md-4 stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-title">我的练习</p>
-                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                        <table class="table dataTable no-footer" role="grid">
-                            <thead>
-                                <tr role="row">
-                                    <th>题目</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- 在此处添加右边表格的行数据 -->
-                                  <tr role="row" class="odd">
-                                                  <td class="sorting_1">Alvin Fisher</td>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-title">我的练习</p>
 
+            <!-- 新增的输入框和按钮 -->
+            <div class="add-exercise-form">
+                <input type="text" id="exercise-input" placeholder="输入练习名称" />
+                <button id="add-exercise-btn">添加</button>
+            </div>
 
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Betty Hunt</td>
-
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Emily Cunningham</td>
-
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Ernest Wade</td>
-
-
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Jacob Kennedy</td>
-
-
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Jeremy Ortega</td>
-
-
-
-                                              </tr><tr role="row" class="odd">
-                                                  <td class="sorting_1">Minnie Farmer</td>
-
-
-
-                                              </tr><tr role="row" class="even">
-                                                  <td class="sorting_1">Myrtie Lambert</td>
-
-
-                                              </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                <table class="table dataTable no-footer" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th>题目</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 在此处动态添加表格行数据 -->
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+</div>
+
     </div>
 </div>
 

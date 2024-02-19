@@ -52,11 +52,7 @@
     padding: 20px;
 }
 
-.homework-list {
-    width: 45%;
-    display: flex;
-    flex-direction: column; /* 确保标题和内容垂直排列 */
-}
+
 
 /* 为两个列表都设置相同的最小高度和边框样式 */
 .homework-list > table,
@@ -260,31 +256,64 @@ tbody:before {
             <div id="current-task-message">
                         <p>加载中...</p>
                     </div>
-         <div class="container">
+           <div class="container">
                      <!-- 消息显示栏 -->
 
-        <div class="homework-list" id="incomplete-tasks">
-            <h2>未完成的作业</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>作业名称</th>
-                        <th>截止时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 这里可以使用JavaScript动态添加未完成的作业项 -->
-                </tbody>
-            </table>
+       <div class="container-fluid">
+    <div class="row">
+        <!-- 左边的表格 -->
+        <div class="col-md-7 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">未完成作业</p>
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                        <table id="incomplete-tasks" class="table dataTable no-footer" role="grid">
+                            <thead>
+                                <tr role="row">
+                                    <th>作业</th>
+                                    <th>截止时间</th>
+                                    <th>发布人</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 在此处添加左边表格的行数据 -->
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="homework-list" id="completed-tasks">
-            <h2>已完成的作业</h2>
-            <ul>
-                <!-- 这里可以使用JavaScript动态添加已完成的作业项 -->
-            </ul>
+
+           <div class="col-md-4 stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-title">我的练习</p>
+
+            <!-- 新增的输入框和按钮 -->
+            <div class="add-exercise-form">
+                <input type="text" id="exercise-input" placeholder="输入练习名称" />
+                <button id="add-exercise-btn">添加</button>
+            </div>
+
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                <table class="table dataTable no-footer" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th>题目</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 在此处动态添加表格行数据 -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+           </div>
+    </div>
+       </div>
+           </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
 
