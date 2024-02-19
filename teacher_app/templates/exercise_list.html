@@ -198,13 +198,13 @@
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToHome()">
               <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">作业情况</span>
+              <span class="menu-title">教师主页</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false" aria-controls="ui-basic">
               <i class="mdi mdi-circle-outline menu-icon"></i>
-              <span class="menu-title">考试情况</span>
+              <span class="menu-title">作业情况</span>
               <i class="menu-arrow"></i>
             </a>
 
@@ -355,45 +355,39 @@
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
   <script>
      document.addEventListener('DOMContentLoaded', function () {
-    var classItems = document.querySelectorAll('.class-list ul li');
-    var recipientContainer = document.querySelector('.recipient-container');
+        var classItems = document.querySelectorAll('.class-list ul li');
+        var recipientContainer = document.querySelector('.recipient-container');
 
-    classItems.forEach(function (item) {
-        item.addEventListener('click', function () {
-            var className = this.textContent;
-            var classId = this.dataset.classId;
-
-            // 检查是否已经添加了这个班级的卡片
-            var existingTags = recipientContainer.querySelectorAll('.class-tag');
-            var isClassAlreadyAdded = Array.from(existingTags).some(function(tag) {
-                return tag.dataset.classId === classId;
+        classItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                var className = this.textContent;
+                var classId = this.dataset.classId;
+                // 检查是否已经添加了这个班级的卡片
+                var existingTags = recipientContainer.querySelectorAll('.class-tag');
+                var isClassAlreadyAdded = Array.from(existingTags).some(function(tag) {
+                    return tag.dataset.classId === classId;
+                });
+                if (isClassAlreadyAdded) {
+                    return;
+                }
+                // 创建班级卡片
+                var tag = document.createElement('div');
+                tag.className = 'class-tag';
+                tag.dataset.classId = classId;
+                tag.textContent = className;
+                // 创建移除按钮
+                var removeBtn = document.createElement('span');
+                removeBtn.textContent = '❌';
+                removeBtn.className = 'remove-class';
+                removeBtn.onclick = function () {
+                    recipientContainer.removeChild(tag);
+                };
+                tag.appendChild(removeBtn);
+                recipientContainer.appendChild(tag);
             });
-
-            // 如果班级已经被添加，就不再重复添加
-            if (isClassAlreadyAdded) {
-                return;
-            }
-
-            // 创建班级卡片
-            var tag = document.createElement('div');
-            tag.className = 'class-tag';
-            tag.dataset.classId = classId; // 使用 classId 作为唯一标识
-            tag.textContent = className;
-
-            // 创建移除按钮
-            var removeBtn = document.createElement('span');
-            removeBtn.textContent = '❌';
-            removeBtn.className = 'remove-class';
-            removeBtn.onclick = function () {
-                recipientContainer.removeChild(tag);
-            };
-
-            tag.appendChild(removeBtn);
-            recipientContainer.appendChild(tag);
         });
     });
-});
- </script>
+</script>
 <script>
     document.getElementById('submit-button').addEventListener('click', function(event) {
         // 阻止表单的默认提交行为
