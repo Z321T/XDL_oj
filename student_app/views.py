@@ -7,6 +7,8 @@ from student_app.models import Student
 from teacher_app.models import Teacher, Class, Notification, Exercise, Exam
 from .forms import StudentForm
 
+import subprocess
+
 
 # 学生主页
 def home_student(request):
@@ -121,3 +123,12 @@ def coding_student(request):
 #         # 将通知传递给模板，并渲染模板
 #         return render(request, 'home_student.html', {'notifications': notifications})
 
+
+def run_node_script(request):
+    result = subprocess.run(['node', 'path_to_your_node_script.js'], capture_output=True, text=True)
+    return result.stdout
+
+def submit_code_view(request):
+    # 这里处理提交的代码
+    # 例如，你可以使用 request.POST.get('code') 来获取提交的代码
+    return HttpResponse("代码已提交")
