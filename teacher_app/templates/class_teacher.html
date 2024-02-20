@@ -350,12 +350,10 @@ background-color: #f0f8ff;
                         'csrfmiddlewaretoken': '{{ csrf_token }}'  // Django 需要这个字段来防止 CSRF 攻击
                     },
                     success: function(response) {
-                    // 这里可以添加处理成功的代码，例如刷新页面或者删除对应的表格行
-                        location.reload();
+                        alert(response.message);
                     },
                     error: function(response) {
-                        // 这里可以添加处理失败的代码，例如显示一个错误消息
-                        alert('删除失败');
+                        alert(response.responseJSON.message);
                     }
                 });
           });

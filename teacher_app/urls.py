@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home_teacher, test_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher
-from .views import create_class, delete_class, class_details, delete_student
+from .views import create_class, delete_class, class_details, delete_student, reset_password
 from .views import create_exercise, create_exam, create_notice
 from .views import exercise_list, exercise_list_default, exam_list, exam_list_default
 
@@ -33,6 +33,7 @@ urlpatterns = [
     path('class/delete/', delete_class, name='delete_class'),
     path('class/class_details/<int:class_id>', class_details, name='class_details'),
     path('class/class_details/delete_student/', delete_student, name='delete_student'),
+    path('class/class_details/reset_password/', reset_password, name='reset_password'),
 
     path('static/<path:path>', serve),
 

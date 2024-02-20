@@ -24,7 +24,6 @@ def home_teacher(request):
     try:
         teacher = Teacher.objects.get(userid=user_id)
     except ObjectDoesNotExist:
-        messages.error(request, 'The teacher information is incorrect. Please log in again.')
         return redirect('/login/')
         # 这里我们不再需要单独的 dropdown_menu1，因为教师信息已经包含 user_id
         # 但是如果有其他数据需要传递给下拉菜单，你可以在这里添加
@@ -58,7 +57,7 @@ def notice_teacher(request):
 
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = teacher.classes_assigned.all()  # 获取教师教授的所有班级
-    notifications = Notification.objects.filter(recipients__in=classes)  # 使用班级来查询通知
+    notifications = Notification.objects.filter(recipients__in=classes).distinct()  # 使用班级来查询通知
     return render(request, 'notice_teacher.html',
                   {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
 
@@ -74,17 +73,13 @@ def create_notice(request):
     if request.method == 'POST':
         content = request.POST.get('message')
         recipient_ids = request.POST.get('recipients').split(',')
-        # recipient_ids = request.POST.getlist('recipients')
         recipients = Class.objects.filter(id__in=recipient_ids)
 
         if content and recipients:
             notification = Notification(content=content)
             notification.save()
             notification.recipients.set(recipients)
-            messages.success(request, '通知已成功发送')
-        else:
-            messages.error(request, '发送通知失败')
-        return redirect('teacher_app:create_notice')  # 重定向到你的视图URL
+        return redirect('teacher_app:notice_teacher')
     return render(request, 'create_notice.html',
                   {'dropdown_menu1': dropdown_menu1, 'classes': classes})
 
@@ -102,7 +97,6 @@ def profile_teacher(request):
         form = TeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile updated successfully')
             return redirect('profile_teacher')
         else:
             # 如果表单无效，将错误信息返回到模板
@@ -159,8 +153,6 @@ def exercise_list(request, exercise_id):
             exercise.save()
             exercise.classes.set(recipient_class)
             return redirect('teacher_app:repository_teacher')
-        else:
-            messages.error(request, '创建练习失败')
     return render(request, 'exercise_list.html',
                   {'classes': classes, 'exercise': exercise})
 
@@ -215,8 +207,6 @@ def exam_list(request, exam_id):
             exam.save()
             exam.classes.set(recipient_class)
             return redirect('teacher_app:repository_teacher')
-        else:
-            messages.error(request, '创建考试失败')
     return render(request, 'exam_list.html',
                   {'classes': classes, 'exam': exam})
 
@@ -278,15 +268,6 @@ def create_class(request):
                     class_assigned=new_class
                 )
             return redirect('teacher_app:class_teacher')
-        else:
-            errors = {}
-            if not class_name:
-                errors['className'] = 'This field is required.'
-            if not initial_password:
-                errors['initialPassword'] = 'This field is required.'
-            if not file:
-                errors['excelFile'] = 'This field is required.'
-            return JsonResponse({'errors': errors}, status=400)
     return render(request, 'create_class.html')
 
 
@@ -300,8 +281,8 @@ def delete_class(request):
                 for teacher in class_to_delete.teacher_set.all():
                     teacher.classes_assigned.remove(class_to_delete)
                 class_to_delete.delete()
-                return JsonResponse({'status': 'success'}, status=200)
-        return JsonResponse({'status': 'error', 'message': 'Class not found'}, status=400)
+                return JsonResponse({'status': 'success', 'message': '班级删除成功'}, status=200)
+        return JsonResponse({'status': 'error', 'message': '班级未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
@@ -328,20 +309,22 @@ def delete_student(request):
             student_to_delete.class_assigned = None
             student_to_delete.save()
             student_to_delete.delete()
-            return JsonResponse({'status': 'success', 'message': 'Student deleted successfully.'})
+            return JsonResponse({'status': 'success', 'message': '删除成功'})
         except Student.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'The student does not exist'}, status=400)
+            return JsonResponse({'status': 'error', 'message': '学生用户不存在'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 
 # 班级管理：初始化密码
-def reset_password(request, student_id):
-    try:
-        student = Student.objects.get(id=student_id)
-        student.password = 'default_password'  # 设置为默认密码
-        student.save()
-        messages.success(request, 'Password reset successfully.')
-    except Student.DoesNotExist:
-        messages.error(request, 'Student not found.')
-    return redirect('class_teacher')
+def reset_password(request):
+    if request.method == 'POST':
+        student = Student.objects.get(id=request.POST.get('student_id'))
+        try:
+            student.password = 'cumt1909'  # 设置为默认密码
+            student.save()
+            return JsonResponse({'status': 'success', 'message': '初始化成功，密码改为cumt1909'}, status=200)
+        except Student.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': '初始化密码失败'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)

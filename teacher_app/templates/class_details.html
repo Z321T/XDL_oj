@@ -345,19 +345,36 @@ background-color: #f0f8ff;
           $('.delete-student').on('click', function() {
                 var studentId = $(this).data('student-id');
                 $.ajax({
-                    url: "{% url 'teacher_app:delete_student' %}",  // 这里应该是 delete_class 视图函数的 URL
+                    url: "{% url 'teacher_app:delete_student' %}",
                     type: 'POST',
                     data: {
                         'student_id': studentId,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'  // Django 需要这个字段来防止 CSRF 攻击
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
-                    // 这里可以添加处理成功的代码，例如刷新页面或者删除对应的表格行
-                        location.reload();
+                        alert(response.message);
                     },
                     error: function(response) {
-                        // 这里可以添加处理失败的代码，例如显示一个错误消息
-                        alert('删除失败');
+                        alert(response.responseJSON.message);
+                    }
+                });
+          });
+      });
+      $(document).ready(function() {
+          $('.reset-password').on('click', function() {
+                var studentId = $(this).data('student-id');
+                $.ajax({
+                    url: "{% url 'teacher_app:reset_password' %}",
+                    type: 'POST',
+                    data: {
+                        'student_id': studentId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(response) {
+                        alert(response.responseJSON.message);
                     }
                 });
           });
