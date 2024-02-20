@@ -37,7 +37,7 @@ class Exercise(models.Model):
     published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
     deadline = models.DateTimeField(verbose_name="截止时间")
 
-    teacher = models.ForeignKey(Teacher, verbose_name="发布教师", on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, verbose_name="发布教师", on_delete=models.SET_NULL, null=True)
     classes = models.ManyToManyField(Class, verbose_name="参与练习的班级", blank=True)
 
     def __str__(self):
@@ -62,7 +62,7 @@ class Exam(models.Model):
     published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
     deadline = models.DateTimeField(verbose_name="截止时间")
 
-    teacher = models.ForeignKey(Teacher, verbose_name="教师", on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, verbose_name="发布教师", on_delete=models.SET_NULL, null=True)
     classes = models.ManyToManyField(Class, verbose_name="参与考试的班级", blank=True)
 
     def __str__(self):

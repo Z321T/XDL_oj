@@ -188,6 +188,43 @@ def create_exercise(request, exercise_id):
     return render(request, 'create_exercise.html', {'exercise': exercise})
 
 
+# 题库管理：练习列表-修改练习题
+def exercise_edit(request, exercise_id):
+    if request.method == 'GET':
+        exercise = Exercise.objects.get(id=exercise_id)
+        return render(request, 'exercise_edit.html', {'exercise': exercise})
+
+
+# 题库管理：练习列表-删除练习
+def exercise_delete(request):
+    if request.method == 'POST':
+        exercise_id = request.POST.get('exercise_id')
+        if exercise_id:
+            exercise_to_delete = Exercise.objects.filter(id=exercise_id).first()
+            if exercise_to_delete:
+                exercise_to_delete.questions.all().delete()
+                exercise_to_delete.classes.clear()
+                exercise_to_delete.delete()
+                return JsonResponse({'status': 'success', 'message': '删除成功'})
+        return JsonResponse({'status': 'error', 'message': '练习未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+# 题库管理：练习列表-删除练习题
+def exercisequestion_delete(request):
+    if request.method == 'POST':
+        question_id = request.POST.get('question_id')
+        if question_id:
+            question_to_delete = ExerciseQuestion.objects.filter(id=question_id).first()
+            if question_to_delete:
+                question_to_delete.delete()
+                return JsonResponse({'status': 'success', 'message': '删除成功'})
+        return JsonResponse({'status': 'error', 'message': '练习题未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
 # 题库管理：考试列表
 def exam_list_default(request):
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
@@ -242,7 +279,44 @@ def create_exam(request, exam_id):
     return render(request, 'create_exam.html', {'exam': exam})
 
 
-# 考试情况
+# 题库管理：考试列表-修改考试题
+def exam_edit(request, exam_id):
+    if request.method == 'GET':
+        exam = Exam.objects.get(id=exam_id)
+        return render(request, 'exam_edit.html', {'exam': exam})
+
+
+# 题库管理：考试列表-删除考试
+def exam_delete(request):
+    if request.method == 'POST':
+        exam_id = request.POST.get('exam_id')
+        if exam_id:
+            exam_to_delete = Exam.objects.filter(id=exam_id).first()
+            if exam_to_delete:
+                exam_to_delete.questions.all().delete()
+                exam_to_delete.classes.clear()
+                exam_to_delete.delete()
+                return JsonResponse({'status': 'success', 'message': '删除成功'})
+        return JsonResponse({'status': 'error', 'message': '考试未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+# 题库管理：考试列表-删除考试题
+def examquestion_delete(request):
+    if request.method == 'POST':
+        question_id = request.POST.get('question_id')
+        if question_id:
+            question_to_delete = ExamQuestion.objects.filter(id=question_id).first()
+            if question_to_delete:
+                question_to_delete.delete()
+                return JsonResponse({'status': 'success', 'message': '删除成功'})
+        return JsonResponse({'status': 'error', 'message': '考试题未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+# 作业情况
 def test_teacher(request):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),

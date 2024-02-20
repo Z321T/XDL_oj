@@ -272,7 +272,7 @@
             <div class="col-md-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-title">练习列表</p>
+                        <p class="card-title">练习题列表</p>
                         <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                             <!-- 添加了 style 属性 -->
                             <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
@@ -286,22 +286,20 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布人</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">截止时间</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">内存限制</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">时间限制</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for exercise in exercises %}
+
+                                                {% for question in exercise.questions.all %}
                                                     <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ exercise.title }}</td>
-                                                        <td>{{ exercise.published_at }}</td>
-                                                        <td>{{ exercise.teacher.name }}</td>
-                                                        <td>{{ exercise.deadline }}</td>
+                                                        <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ question.title }}</td>
+                                                        <td>{{ question.memory_limit }}</td>
+                                                        <td>{{ question.time_limit }}</td>
                                                         <td>
-                                                            <button class="button-class delete-exercise" data-exercise-id="{{ exercise.id }}">删除</button>
-                                                            <button class="button-class edit-exercise" data-exercise-id="{{ exercise.id }}">编辑</button>
+                                                            <button class="button-class delete-exercisequestion" data-exercisequestion-id="{{ question.id }}" data-exercise-id="{{ exercise.id }}">删除</button>
                                                         </td>
                                                     </tr>
                                                     {% empty %}
@@ -309,6 +307,7 @@
                                                             <td colspan="4" style="text-align: center;">没有练习内容</td>
                                                         </tr>
                                                 {% endfor %}
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -318,70 +317,14 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-5"></div>
                             <div class="col-sm-12 col-md-7">
-                                <button onclick="window.location.href='{% url 'teacher_app:exercise_list_default' %}'" style="float: right;">发布练习</button>
+                                <button onclick="window.location.href='{% url 'teacher_app:repository_teacher' %}'" style="float: right;">返回</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">考试列表</p>
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                            <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6"></div>
-                                    <div class="col-sm-12 col-md-6"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布人</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">截止时间</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for exam in exams %}
-                                                <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ exam.title }}</td>
-                                                    <td>{{ exam.published_at }}</td>
-                                                    <td>{{ exam.teacher.name }}</td>
-                                                    <td>{{ exam.deadline }}</td>
-                                                    <td>
-                                                        <button class="button-class delete-exam" data-exam-id="{{ exam.id }}">删除</button>
-                                                        <button class="button-class edit-exam" data-exam-id="{{ exam.id }}">编辑</button>
-                                                    </td>
-                                                </tr>
-                                                {% empty %}
-                                                    <tr>
-                                                        <td colspan="4" style="text-align: center;">没有考试内容</td>
-                                                    </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            <div class="row">
-                               <div class="col-sm-12 col-md-5"></div>
-                               <div class="col-sm-12 col-md-7">
-                                  <button onclick="window.location.href='{% url 'teacher_app:exam_list_default' %}'" style="float: right;">发布考试</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-      </div>
     </div>
   </div>
   <!-- container-scroller -->
@@ -407,18 +350,19 @@
   <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
   <script>
   $(document).ready(function() {
-      $('.delete-exercise').on('click', function() {
+      $('.delete-exercisequestion').on('click', function() {
+            var questionId = $(this).data('exercisequestion-id');
             var exerciseId = $(this).data('exercise-id');
             $.ajax({
-                url: "{% url 'teacher_app:exercise_delete' %}",
+                url: "{% url 'teacher_app:exercisequestion_delete' %}",
                 type: 'POST',
                 data: {
-                    'exercise_id': exerciseId,
+                    'question_id': questionId,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
                     alert(response.message);
-                    window.location.href = "{% url 'teacher_app:repository_teacher' %}";
+                    window.location.href = "{% url 'teacher_app:exercise_edit' exercise_id='123' %}".replace('123', exerciseId);
                 },
                 error: function(response) {
                     alert(response.responseJSON.message);
@@ -426,44 +370,5 @@
             });
       });
   });
-  </script>
-  <script>
-        $(document).ready(function() {
-            $('.edit-exercise').on('click', function() {
-                var exerciseId = $(this).data('exercise-id');
-                window.location.href = "{% url 'teacher_app:exercise_edit' '123' %}".replace('123', exerciseId);
-            });
-        });
-  </script>
-  <script>
-  $(document).ready(function() {
-    $('.delete-exam').on('click', function() {
-        var examId = $(this).data('exam-id');
-        $.ajax({
-            url: "{% url 'teacher_app:exam_delete' %}",
-            type: 'POST',
-            data: {
-                'exam_id': examId,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function(response) {
-                alert(response.message);
-                window.location.href = "{% url 'teacher_app:repository_teacher' %}";
-            },
-            error: function(response) {
-                alert(response.responseJSON.message);
-            }
-        });
-    });
-  });
-  </script>
-  <script>
-        $(document).ready(function() {
-            $('.edit-exam').on('click', function() {
-                var examId = $(this).data('exam-id');
-                var url = "{% url 'teacher_app:exam_edit' '123' %}".replace('123', examId);
-                window.location.href = url;
-            });
-        });
   </script>
 </body></html>
