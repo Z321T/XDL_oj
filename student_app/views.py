@@ -1,4 +1,6 @@
 import json
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,16 +21,13 @@ def home_student(request):
     try:
         student = Student.objects.get(userid=user_id)
     except ObjectDoesNotExist:
-        messages.error(request, 'The student information is incorrect. Please log in again.')
         return redirect('/login/')
 
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
 
-    if request.method == 'GET':
-        # 获取与学生关联的班级的所有通知，按照发布日期降序排序
-        notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
 
     return render(request, 'home_student.html',
                   {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
@@ -51,7 +50,6 @@ def practice_list(request, exercise_id):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    # student = Student.objects.get(userid=request.session.get('user_id'))
     if request.method == 'GET':
         exercise = Exercise.objects.get(id=exercise_id)
         return render(request, 'practice_list.html',
@@ -75,16 +73,10 @@ def text_list(request, exam_id):
     dropdown_menu1 = {
         'user_id': request.session.get('user_id'),
     }
-    # student = Student.objects.get(userid=request.session.get('user_id'))
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
         return render(request, 'text_list.html',
                     {'dropdown_menu1': dropdown_menu1, 'exam': exam})
-
-    # class_assigned = student.class_assigned
-    # exams = Exam.objects.filter(classes=class_assigned).order_by('-published_at')
-    # return render(request, 'test_student.html',
-    #               {'dropdown_menu1': dropdown_menu1, 'exams': exams})
 
 
 # 学生个人中心
@@ -113,20 +105,10 @@ def coding_student(request):
     return render(request, 'coding_student.html')
 
 
-# 接受通知
-# def notifications_view(request):
-#     user_id = request.session.get('user_id')
-#     student = Student.objects.get(userid=user_id)
-#     if request.method == 'GET':
-#         # 获取与学生关联的班级的所有通知，按照发布日期降序排序
-#         notifications = Notification.objects.filter(recipients__in=student.classes.all()).order_by('-date_posted')
-#         # 将通知传递给模板，并渲染模板
-#         return render(request, 'home_student.html', {'notifications': notifications})
-
-
 def run_node_script(request):
     result = subprocess.run(['node', 'path_to_your_node_script.js'], capture_output=True, text=True)
     return result.stdout
+
 
 def submit_code_view(request):
     # 这里处理提交的代码
