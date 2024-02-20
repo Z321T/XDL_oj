@@ -186,9 +186,6 @@
               <span class="menu-title">个人中心</span>
             </a>
           </li>
-
-
-
         </ul>
       </nav>
       <!-- partial -->
@@ -203,9 +200,7 @@
                     <h2>Welcome to CUMT-OJ</h2>
                     <p class="mb-md-0">你的代码学习助手</p>
                   </div>
-
                 </div>
-
               </div>
             </div>
           </div>
@@ -213,24 +208,25 @@
             <div class="col-md-12 grid-margin">
               <div class="card bg-gradient-primary border-0">
                 <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-
-
                 </div>
               </div>
             </div>
           </div>
 
-      <div class="profile-card">
-        <div class="profile-image">
-            <img src="{% static 'student_app/photo/user-avatar.png' %}" alt="头像">
+          <div class="profile-card">
+            <div class="profile-image">
+                <img src="{% static 'student_app/photo/user-avatar.png' %}" alt="头像">
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">提交</button>
+            </form>
+            </div>
         </div>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">提交</button>
-        </form>
-     </div>
-
+      </div>
+    </div>
+  </div>
 
   <!-- plugins:js -->
   <script type="text/javascript" src="{% static 'student_app/js/vendor.bundle.base.js' %}"></script>
