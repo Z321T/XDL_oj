@@ -1,8 +1,9 @@
 from django.urls import path
 from .views import home_teacher, test_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher
 from .views import create_class, delete_class, class_details, delete_student, reset_password
-from .views import create_exercise, create_exam, create_notice
+from .views import create_exercise, create_exam
 from .views import exercise_list, exercise_list_default, exam_list, exam_list_default
+from .views import create_notice, delete_notice
 
 from django.contrib.staticfiles.views import serve
 
@@ -19,6 +20,7 @@ urlpatterns = [
     # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),
     path('notice/create/', create_notice, name='create_notice'),
+    path('notice/delete/', delete_notice, name='delete_notice'),
     # 有关题库的操作
     path('repository/', repository_teacher, name='repository_teacher'),
     path('repository/exercise_list/', exercise_list_default, name='exercise_list_default'),

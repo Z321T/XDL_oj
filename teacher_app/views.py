@@ -84,6 +84,20 @@ def create_notice(request):
                   {'dropdown_menu1': dropdown_menu1, 'classes': classes})
 
 
+# 删除通知
+def delete_notice(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        if notification_id:
+            notification_to_delete = Notification.objects.filter(id=notification_id).first()
+            if notification_to_delete:
+                notification_to_delete.delete()
+                return JsonResponse({'status': 'success', 'message': '删除成功，请刷新页面'})
+        return JsonResponse({'status': 'error', 'message': '通知未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
 # 教师个人中心
 def profile_teacher(request):
     dropdown_menu1 = {
@@ -97,7 +111,7 @@ def profile_teacher(request):
         form = TeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            return redirect('profile_teacher')
+            return redirect('teacher_app:profile_teacher')
         else:
             # 如果表单无效，将错误信息返回到模板
             return render(request, 'profile_teacher.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
