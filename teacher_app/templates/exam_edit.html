@@ -292,7 +292,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
                                                 {% for question in exam.questions.all %}
                                                     <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                         <td class="sorting_1"><input type="checkbox" id="question{{ question.id }}"> {{ question.title }}</td>
@@ -307,7 +306,6 @@
                                                             <td colspan="4" style="text-align: center;">没有考试内容</td>
                                                         </tr>
                                                 {% endfor %}
-                                                
                                             </tbody>
                                         </table>
                                     </div>

@@ -56,8 +56,8 @@ def notice_teacher(request):
     }
 
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    classes = teacher.classes_assigned.all()  # 获取教师教授的所有班级
-    notifications = Notification.objects.filter(recipients__in=classes).distinct()  # 使用班级来查询通知
+    classes = teacher.classes_assigned.all()
+    notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
     return render(request, 'notice_teacher.html',
                   {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
 
@@ -127,8 +127,8 @@ def repository_teacher(request):
     }
 
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    exercises = Exercise.objects.filter(teacher=teacher)
-    exams = Exam.objects.filter(teacher=teacher)
+    exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
+    exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
 
     return render(request, 'repository_teacher.html',
                   {'dropdown_menu1': dropdown_menu1, 'exercises': exercises, 'exams': exams})

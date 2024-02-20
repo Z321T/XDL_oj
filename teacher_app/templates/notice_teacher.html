@@ -16,6 +16,7 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{% static 'teacher_app/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <style>
@@ -267,7 +268,17 @@
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row d-flex" id="proBanner">
+            <div class="col-md-12 grid-margin">
+              <div class="card bg-gradient-primary border-0">
+                <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="main-panel">
          <div class="row">
             <div class="col-md-12 stretch-card">
                 <div class="card">
@@ -282,7 +293,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
+                                        <table  class="table dataTable no-footer" role="grid">
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">通知内容</th>
@@ -298,15 +309,13 @@
                                                         <td>{{ notification.date_posted }}</td>
                                                         <td>
                                                             {% for class in notification.recipients.all %}
-                                                                {{ class }}{% if not forloop.last %}, {% endif %}
+                                                                {{ class }}{% if not forloop.last %}, {%endif %}
                                                             {% endfor %}
                                                         </td>
                                                         <td><button class="button-class delete-notification" data-notification-id="{{ notification.id }}">删除</button></td>
                                                     </tr>
                                                 {% empty %}
-                                                <tr>
-                                                    <td colspan="3" style="text-align: center;">暂无通知</td>
-                                                </tr>
+                                                <tr><td colspan="3" style="text-align: center;">暂无通知</td></tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>

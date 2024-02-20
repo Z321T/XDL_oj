@@ -282,13 +282,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
+                                        <table  class="table dataTable no-footer" role="grid">
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布人</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">截止时间</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">接收班级</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
                                                 </tr>
                                             </thead>
@@ -300,14 +301,17 @@
                                                         <td>{{ exercise.teacher.name }}</td>
                                                         <td>{{ exercise.deadline }}</td>
                                                         <td>
+                                                            {% for class in exercise.classes.all %}
+                                                                {{ class.name }}{% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>
                                                             <button class="button-class delete-exercise" data-exercise-id="{{ exercise.id }}">删除</button>
                                                             <button class="button-class edit-exercise" data-exercise-id="{{ exercise.id }}">编辑</button>
                                                         </td>
                                                     </tr>
                                                     {% empty %}
-                                                        <tr>
-                                                            <td colspan="4" style="text-align: center;">没有练习内容</td>
-                                                        </tr>
+                                                        <tr><td colspan="4" style="text-align: center;">没有练习内容</td></tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
@@ -338,13 +342,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="recent-purchases-listing" class="table dataTable no-footer" role="grid">
+                                        <table  class="table dataTable no-footer" role="grid">
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">题目</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">发布人</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">截止时间</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">接收班级</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
                                                 </tr>
                                             </thead>
@@ -356,14 +361,17 @@
                                                     <td>{{ exam.teacher.name }}</td>
                                                     <td>{{ exam.deadline }}</td>
                                                     <td>
+                                                        {% for class in exam.classes.all %}
+                                                            {{ class.name }}{% if not forloop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
                                                         <button class="button-class delete-exam" data-exam-id="{{ exam.id }}">删除</button>
                                                         <button class="button-class edit-exam" data-exam-id="{{ exam.id }}">编辑</button>
                                                     </td>
                                                 </tr>
                                                 {% empty %}
-                                                    <tr>
-                                                        <td colspan="4" style="text-align: center;">没有考试内容</td>
-                                                    </tr>
+                                                    <tr><td colspan="4" style="text-align: center;">没有考试内容</td></tr>
                                             {% endfor %}
                                             </tbody>
                                         </table>
