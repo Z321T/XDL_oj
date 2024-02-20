@@ -141,13 +141,14 @@
           </div>
         <!-- Right side (Editor and Debugger) -->
                         <!-- 表单 -->
-            <form id="codeForm" action="{% url 'submit_code' %}" method="post">
-              {% csrf_token %}
-              <!-- 隐藏的输入框用于存储代码 -->
-              <input type="hidden" name="code" id="hiddenCodeInput">
-              <!-- 这里可以添加其他表单元素，例如用于选择语言的下拉菜单等 -->
-            </form>
 
+{#            <form id="codeForm" action="{% url 'submit_code' %}" method="post">#}
+{#              {% csrf_token %}#}
+{#              <!-- 隐藏的输入框用于存储代码 -->#}
+{#              <input type="hidden" name="code" id="hiddenCodeInput">#}
+{#              <!-- 这里可以添加其他表单元素，例如用于选择语言的下拉菜单等 -->#}
+{#            </form>#}
+      
           <div class="editor-container" id="editor">
             <!-- Monaco编辑器将在这里初始化 -->
 

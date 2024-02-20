@@ -2,7 +2,8 @@
 from django.urls import path
 from django.contrib.staticfiles.views import serve
 
-from .views import home_student, practice_student, test_student, profile_student, coding_student
+from .views import home_student, practice_student, test_student, profile_student, coding_student, submit_code_view
+from . import views
 
 
 app_name = 'student_app'
@@ -14,6 +15,7 @@ urlpatterns = [
     path('test/', test_student, name='test_student'),
     path('profile/', profile_student, name='profile_student'),
     path('coding/', coding_student, name='coding_student'),
+    path('submit/', views.submit_code_view, name='submit_code'),
 
 
     path('static/<path:path>', serve),
