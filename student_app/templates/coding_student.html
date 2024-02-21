@@ -64,8 +64,7 @@
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
-              <!-- 提交按钮 -->
-  <button class="debugger-button" id="runCode" onclick="toggleDebugger()">提交</button>
+
 
         </div>
       </div>
@@ -140,15 +139,6 @@
             </div>
           </div>
         <!-- Right side (Editor and Debugger) -->
-                        <!-- 表单 -->
-
-{#            <form id="codeForm" action="{% url 'submit_code' %}" method="post">#}
-{#              {% csrf_token %}#}
-{#              <!-- 隐藏的输入框用于存储代码 -->#}
-{#              <input type="hidden" name="code" id="hiddenCodeInput">#}
-{#              <!-- 这里可以添加其他表单元素，例如用于选择语言的下拉菜单等 -->#}
-{#            </form>#}
-      
           <div class="editor-container" id="editor">
             <!-- Monaco编辑器将在这里初始化 -->
 
@@ -158,6 +148,14 @@
               </div>
           </div>
 
+                       <!-- 表单 -->
+            <form id="codeForm" action="{% url 'student_app:run-cpp' %}" method="post">
+                {% csrf_token %}
+                <textarea id="codeTextArea" style="display: none;"></textarea> <!-- 隐藏 textarea -->
+                <input type="hidden" name="code" id="hiddenCodeInput">
+                <!-- 使用之前按钮的样式和位置，但移除了 onclick 属性 -->
+                <button class="debugger-button" id="runCode" type="submit">提交</button>
+            </form>
 
 
   </div>
@@ -193,42 +191,79 @@
   <!-- End custom js for this page-->
   <script src="{% static 'student_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
 <script src="{% static 'student_app/js/editor_setup.js' %}"></script>
-<!-- 在页面底部添加JavaScript代码来初始化Monaco编辑器 -->
-    <script>
-        require.config({
-            paths: {
-                'vs': '{% static "node_modules/monaco-editor/min/vs" %}'
-            }
-        });
+<script>
+    var editor;  // 定义全局变量以存储编辑器实例
 
-        require(['vs/editor/editor.main'], function() {
-            var editor = monaco.editor.create(document.getElementById('editor'), {
-                value: 'console.log("Hello, world!")',
-                language: 'javascript',
-                theme: 'vs-light'
-            });
+    require.config({
+        paths: {
+            'vs': '{% static "node_modules/monaco-editor/min/vs" %}'
+        }
+    });
+
+    require(['vs/editor/editor.main'], function() {
+        editor = monaco.editor.create(document.getElementById('editor'), {
+            value: 'console.log("Hello, world!")',
+            language: 'javascript',
+            theme: 'vs-light'
         });
-    </script>
+    });
+</script>
 
 <script>
-    document.getElementById('runCode').addEventListener('click', function() {
-    var userCode = editor.getValue(); // 假设 editor 是你的 Monaco 编辑器实例
+    // 提交代码的函数，使用 AJAX
+    function submitCode() {
+        var code = editor.getValue();  // 从 Monaco 编辑器获取代码
 
-    // 发送 AJAX 请求到后端执行代码
-    fetch('/run-code', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: userCode }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        // 显示输出、内存占用、执行时间和错误信息
-        document.getElementById('debugger').innerText = `输出: ${data.output}\n内存占用: ${data.memory}\n执行时间: ${data.time}\n错误: ${data.error}`;
+        fetch("{% url 'student_app:run-cpp' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ code: code }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 显示 debugger 窗口并更新内容
+            var debuggerElement = document.getElementById('debugger');
+            debuggerElement.style.display = 'block'; // 确保 debugger 是可见的
+            debuggerElement.innerHTML = `<p>输出: ${data.output}</p><p>错误: ${data.error}</p>`;  // 根据返回的数据结构调整
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // 绑定事件处理器到表单提交和按钮点击事件
+    document.getElementById('codeForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // 阻止表单的默认提交行为
+        submitCode();  // 调用函数提交代码
     });
-});
+
+    document.getElementById('runCode').addEventListener('click', function(event) {
+        event.preventDefault();  // 阻止按钮的默认行为
+        submitCode();  // 调用函数提交代码
+    });
 </script>
+
+<script>
+    // 用于获取 CSRF token 的辅助函数
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+
+
 
 
 </body></html>

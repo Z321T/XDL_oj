@@ -28,9 +28,10 @@
   z-index: 999; /* 确保调试器在最顶层 */
 }
 .debugger-button {
-  position:fixed;
+  z-index: 999!important;
+  position: relative; /* 如果按钮在表单中，可能需要relative定位 */
+
     bottom:3px;
-  right: 10px; /* 或其他适当的右侧位置 */
   width: 50px; /* 设置按钮宽度 */
   height: 30px; /* 设置按钮高度 */
   border-radius: 25%; /* 圆角矩形 */

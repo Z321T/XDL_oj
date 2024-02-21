@@ -16,7 +16,3 @@
       });
     }
     // 显示/隐藏调试器
-function toggleDebugger() {
-  var debuggerPanel = document.getElementById('debugger');
-  debuggerPanel.style.display = debuggerPanel.style.display === 'none' ? 'block' : 'none';
-}
