@@ -425,7 +425,6 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
-                    alert(response.message);
                     window.location.href = "{% url 'teacher_app:repository_teacher' %}";
                 },
                 error: function(response) {
@@ -455,7 +454,6 @@
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function(response) {
-                alert(response.message);
                 window.location.href = "{% url 'teacher_app:repository_teacher' %}";
             },
             error: function(response) {

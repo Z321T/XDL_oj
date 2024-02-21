@@ -359,7 +359,6 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
-                    alert(response.message);
                     window.location.href = "{% url 'teacher_app:exercise_edit' exercise_id='123' %}".replace('123', exerciseId);
                 },
                 error: function(response) {

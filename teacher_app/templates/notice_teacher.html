@@ -278,8 +278,6 @@
               </div>
             </div>
           </div>
-        <div class="main-panel">
-         <div class="row">
             <div class="col-md-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -296,7 +294,7 @@
                                         <table  class="table dataTable no-footer" role="grid">
                                             <thead>
                                                 <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">通知内容</th>
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">通知</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">接收班级</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
@@ -305,14 +303,17 @@
                                             <tbody>
                                                 {% for notification in notifications %}
                                                     <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox" id="notification{{ notification.id }}">{{ notification.content }}</td>
+                                                        <td class="sorting_1"><input type="checkbox" id="notification{{ notification.id }}">{{ notification.title }}</td>
                                                         <td>{{ notification.date_posted }}</td>
                                                         <td>
                                                             {% for class in notification.recipients.all %}
                                                                 {{ class }}{% if not forloop.last %}, {%endif %}
                                                             {% endfor %}
                                                         </td>
-                                                        <td><button class="button-class delete-notification" data-notification-id="{{ notification.id }}">删除</button></td>
+                                                        <td>
+                                                            <button class="button-class delete-notification" data-notification-id="{{ notification.id }}">删除</button>
+                                                            <button class="button-class content-notification" data-notification-id="{{ notification.id }}">详情</button>
+                                                        </td>
                                                     </tr>
                                                 {% empty %}
                                                 <tr><td colspan="3" style="text-align: center;">暂无通知</td></tr>
@@ -336,6 +337,25 @@
       </div>
     </div>
   </div>
+  <!-- Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">通知</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="notificationModalContent">
+                    <!-- 通知内容将在这里显示 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
   <!-- container-scroller -->
 
@@ -371,7 +391,6 @@
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
-                        alert(response.message);
                          window.location.href = "{% url 'teacher_app:notice_teacher' %}";
                     },
                     error: function(response) {
@@ -379,6 +398,31 @@
                     }
                 });
           });
+      });
+  </script>
+  <script>
+      $(document).ready(function() {
+            $('.content-notification').on('click', function() {
+            var notificationId = $(this).data('notification-id');
+            $.ajax({
+                url: "{% url 'student_app:notification_content' %}",
+                type: 'POST',
+                data: {
+                    'notification_id': notificationId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // 更新模态框的内容
+                $('#notificationModalLabel').text(response.title);
+                $('#notificationModalContent').text(response.content);
+                // 显示模态框
+                $('#notificationModal').modal('show');
+                },
+                error: function(response) {
+                    alert(response.responseJSON.message);
+                }
+            });
+        });
       });
   </script>
 </body></html>

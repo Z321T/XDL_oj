@@ -71,12 +71,13 @@ def create_notice(request):
     classes = Class.objects.filter(teacher=teacher)
 
     if request.method == 'POST':
+        title = request.POST.get('title')
         content = request.POST.get('message')
         recipient_ids = request.POST.get('recipients').split(',')
         recipients = Class.objects.filter(id__in=recipient_ids)
 
-        if content and recipients:
-            notification = Notification(content=content)
+        if title and content and recipients:
+            notification = Notification(title=title, content=content)
             notification.save()
             notification.recipients.set(recipients)
         return redirect('teacher_app:notice_teacher')
@@ -92,8 +93,18 @@ def delete_notice(request):
             notification_to_delete = Notification.objects.filter(id=notification_id).first()
             if notification_to_delete:
                 notification_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '删除成功，请刷新页面'})
+                return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': '通知未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+# 通知详情
+def notification_content(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        notification = Notification.objects.get(id=notification_id)
+        return JsonResponse({'title': notification.title, 'content': notification.content})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
@@ -205,7 +216,7 @@ def exercise_delete(request):
                 exercise_to_delete.questions.all().delete()
                 exercise_to_delete.classes.clear()
                 exercise_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '删除成功'})
+                return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': '练习未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
@@ -219,7 +230,7 @@ def exercisequestion_delete(request):
             question_to_delete = ExerciseQuestion.objects.filter(id=question_id).first()
             if question_to_delete:
                 question_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '删除成功'})
+                return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': '练习题未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
@@ -296,7 +307,7 @@ def exam_delete(request):
                 exam_to_delete.questions.all().delete()
                 exam_to_delete.classes.clear()
                 exam_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '删除成功'})
+                return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': '考试未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
@@ -310,7 +321,7 @@ def examquestion_delete(request):
             question_to_delete = ExamQuestion.objects.filter(id=question_id).first()
             if question_to_delete:
                 question_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '删除成功'})
+                return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': '考试题未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)

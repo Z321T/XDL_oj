@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>我的考试</title>
+    <title>我的练习</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'student_app/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'student_app/css/vendor.bundle.base.css' %}">
@@ -133,14 +133,14 @@
               <span class="menu-title">学生主页</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPractice()" aria-expanded="false" aria-controls="ui-basic">
               <i class="mdi mdi-circle-outline menu-icon"></i>
               <span class="menu-title">我的练习</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToTest()">
               <i class="mdi mdi-view-headline menu-icon"></i>
               <span class="menu-title">我的考试</span>
@@ -174,7 +174,7 @@
           <div class="stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title">考试列表</p>
+                    <p class="card-title">练习题目</p>
                     <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                         <div id="exam-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                             <div class="row">
@@ -190,23 +190,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {% for exam in exams %}
+                                            {% for question in exercise.questions.all %}
                                                 <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1">{{ exam.title }}</td>
-                                                    <td>{{ exam.published_at }}</td>
-                                                    <td>{{ exam.teacher.name }}</td>
-                                                    <td>{{ exam.deadline }}</td>
-                                                    <td><button class="button-class doing-exam" data-exam-id="{{ exam.id }}">查看考试</button></td>
+                                                    <td class="sorting_1"> {{ question.title }}</td>
+                                                    <td>{{ exercise.published_at }}</td>
+                                                    <td>{{ exercise.teacher.name }}</td>
+                                                    <td>{{ exercise.deadline }}</td>
+                                                    <td><button class="button-class doing-question" data-question-id="{{ question.id }}">开始作答</button></td>
                                                 </tr>
-                                            {% empty %}
-                                                <tr>
-                                                    <td colspan="4" style="text-align: center;">没有考试内容</td>
-                                                </tr>
-                                        {% endfor %}
+                                                {% empty %}
+                                                <tr><td colspan="4" style="text-align: center;">没有考试题目</td></tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5"></div>
+                        <div class="col-sm-12 col-md-7">
+                            <button onclick="window.location.href='{% url 'student_app:practice_student' %}'" style="float: right;">返回</button>
                         </div>
                     </div>
                 </div>
@@ -221,8 +225,7 @@
     </div>
     <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
-<!-- Modal -->
+  <!-- Modal -->
     <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -241,6 +244,8 @@
             </div>
         </div>
     </div>
+  <!-- container-scroller -->
+
   <!-- plugins:js -->
   <script type="text/javascript" src="{% static 'student_app/js/vendor.bundle.base.js' %}"></script>
   <!-- endinject -->
@@ -262,12 +267,19 @@
   <!-- End custom js for this page-->
   <script src="{% static 'student_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
   <script>
-        $(document).ready(function() {
-            $('.doing-exam').on('click', function() {
-                var examId = $(this).data('exam-id');
-                window.location.href = "{% url 'student_app:text_list' '123' %}".replace('123', examId);
-            });
-        });
+      $(document).ready(function() {
+          $('.doing-question').on('click', function() {
+                var questionId = $(this).data('question-id');
+                $.ajax({
+                    url: "{% url 'student_app:coding_student' %}",
+                    type: 'POST',
+                    data: {
+                        'question_id': questionId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                });
+          });
+      });
   </script>
   <script>
       $(document).ready(function() {
