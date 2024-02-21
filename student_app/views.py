@@ -101,6 +101,8 @@ def notification_content(request):
         notification_id = request.POST.get('notification_id')
         notification = Notification.objects.get(id=notification_id)
         return JsonResponse({'title': notification.title, 'content': notification.content})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
 # 答题界面

@@ -99,6 +99,16 @@ def delete_notice(request):
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
+# 通知详情
+def notification_content(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        notification = Notification.objects.get(id=notification_id)
+        return JsonResponse({'title': notification.title, 'content': notification.content})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
 # 教师个人中心
 def profile_teacher(request):
     dropdown_menu1 = {

@@ -5,7 +5,7 @@ from .views import (exercise_list_default, exercise_list,
                     create_exercise, exercise_delete, exercise_edit, exercisequestion_delete)
 from .views import (exam_list_default, exam_list,
                     create_exam, exam_delete, exam_edit, examquestion_delete)
-from .views import create_notice, delete_notice
+from .views import create_notice, delete_notice, notification_content
 
 from django.contrib.staticfiles.views import serve
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path('notice/', notice_teacher, name='notice_teacher'),
     path('notice/create/', create_notice, name='create_notice'),
     path('notice/delete/', delete_notice, name='delete_notice'),
+    path('notice/notification_content/', notification_content, name='notification_content'),
     # 有关题库的操作
     path('repository/', repository_teacher, name='repository_teacher'),
     path('repository/exercise_list/', exercise_list_default, name='exercise_list_default'),
