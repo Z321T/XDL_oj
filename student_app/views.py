@@ -90,23 +90,10 @@ def coding_student(request):
     return render(request, 'coding_student.html')
 
 
-# 接受通知
-# def notifications_view(request):
-#     user_id = request.session.get('user_id')
-#     student = Student.objects.get(userid=user_id)
-#     if request.method == 'GET':
-#         # 获取与学生关联的班级的所有通知，按照发布日期降序排序
-#         notifications = Notification.objects.filter(recipients__in=student.classes.all()).order_by('-date_posted')
-#         # 将通知传递给模板，并渲染模板
-#         return render(request, 'home_student.html', {'notifications': notifications})
-
-
-
-
-
 def call_node_api(request):
     response = requests.get('http://localhost:3000/api')  # Node.js服务器的地址
     return HttpResponse(response.json())
+
 
 @csrf_exempt  # 临时禁用 CSRF 保护，注意这在生产环境中可能是不安全的
 def run_cpp_code(request):
