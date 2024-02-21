@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 
 
+
 # 学生主页
 def home_student(request):
     # 获取用户id，判断是否是学生用户，若不是则返回登录页面
@@ -25,16 +26,10 @@ def home_student(request):
     try:
         student = Student.objects.get(userid=user_id)
     except ObjectDoesNotExist:
-        messages.error(request, 'The student information is incorrect. Please log in again.')
         return redirect('/login/')
 
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
-
-    if request.method == 'GET':
-        # 获取与学生关联的班级的所有通知，按照发布日期降序排序
-        notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
 
     return render(request, 'home_student.html',
                   {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
@@ -42,35 +37,53 @@ def home_student(request):
 
 # 我的练习
 def practice_student(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     student = Student.objects.get(userid=request.session.get('user_id'))
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
-    exercises = class_assigned.exercises.all()
+    exercises = Exercise.objects.filter(classes=class_assigned).order_by('-published_at')
+    return render(request, 'practice_student.html',
+                  {'dropdown_menu1': dropdown_menu1, 'exercises': exercises, 'notifications': notifications})
 
-    return render(request, 'practice_student.html', {'dropdown_menu1': dropdown_menu1})
+
+# 我的练习：练习详情
+def practice_list(request, exercise_id):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    if request.method == 'GET':
+        exercise = Exercise.objects.get(id=exercise_id)
+        return render(request, 'practice_list.html',
+                      {'dropdown_menu1': dropdown_menu1, 'exercise': exercise, 'notifications': notifications})
 
 
 # 我的考试
 def test_student(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     student = Student.objects.get(userid=request.session.get('user_id'))
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
-    exams = Exam.objects.filter(classes=class_assigned)
+    exams = Exam.objects.filter(classes=class_assigned).order_by('-published_at')
     return render(request, 'test_student.html',
-                  {'dropdown_menu1': dropdown_menu1, 'exams': exams})
+                  {'dropdown_menu1': dropdown_menu1, 'exams': exams, 'notifications': notifications})
+
+
+# 我的考试：考试详情
+def text_list(request, exam_id):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    if request.method == 'GET':
+        exam = Exam.objects.get(id=exam_id)
+        return render(request, 'text_list.html',
+                      {'dropdown_menu1': dropdown_menu1, 'exam': exam, 'notifications': notifications})
 
 
 # 学生个人中心
 def profile_student(request):
-
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     student = Student.objects.get(userid=request.session.get('user_id'))
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
@@ -79,10 +92,22 @@ def profile_student(request):
             return redirect('profile_student')
         else:
             # 如果表单无效，将错误信息返回到模板
-            return render(request, 'profile_student.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
+            return render(request, 'profile_student.html',
+                          {'form': form, 'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
     else:
         form = StudentForm(instance=student)
-    return render(request, 'profile_student.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
+    return render(request, 'profile_student.html',
+                  {'form': form, 'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
+
+
+# 通知内容
+def notification_content(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        notification = Notification.objects.get(id=notification_id)
+        return JsonResponse({'title': notification.title, 'content': notification.content})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
 # 答题界面
