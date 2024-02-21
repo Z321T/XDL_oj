@@ -1,13 +1,21 @@
 from django.db import models
 
+from student_app.models import Student
+from teacher_app.models import ExerciseQuestion, ExamQuestion
+
 
 # Create your models here.
-class Score(models.Model):
-    student = models.ForeignKey('student_app.Student', on_delete=models.CASCADE, verbose_name="学生")
-    exam = models.ForeignKey('teacher_app.Exam', on_delete=models.CASCADE, null=True, blank=True, verbose_name="考试")
-    exercise = models.ForeignKey('teacher_app.Exercise', on_delete=models.CASCADE, null=True, blank=True, verbose_name='练习')
-    score = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="得分")
+class CodeFeature(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, verbose_name="学生",
+                                related_name='code_features', null=True)
+    exercise_question = models.ForeignKey(ExerciseQuestion, on_delete=models.CASCADE,
+                                          verbose_name="练习题", related_name='code_features', null=True, blank=True)
+    exam_question = models.ForeignKey(ExamQuestion, on_delete=models.CASCADE,
+                                      verbose_name="考试题", related_name='code_features', null=True, blank=True)
+    feature = models.TextField(verbose_name="特征值")
 
     def __str__(self):
-        return f"{self.student.name} - {self.exam.title if self.exam else self.exercise.title} - {self.score}"
+        return (f"{self.student.name if self.student else '无关联学生'} - "
+                f"{self.exercise_question or self.exam_question} - {self.feature}")
+
 

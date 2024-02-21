@@ -5,10 +5,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 
-from teacher_app.forms import TeacherForm, ClassForm
+from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
 from student_app.models import Student
-from student_app.forms import StudentForm
 
 
 # Create your views here.
