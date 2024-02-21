@@ -294,7 +294,7 @@
                                         <table  class="table dataTable no-footer" role="grid">
                                             <thead>
                                                 <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">通知内容</th>
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 167.95px;">通知</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 155.6px;">发布时间</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">接收班级</th>
                                                     <th class="sorting" tabindex="0" aria-controls="recent-purchases-listing" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 72.575px;">操作</th>
@@ -303,7 +303,7 @@
                                             <tbody>
                                                 {% for notification in notifications %}
                                                     <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox" id="notification{{ notification.id }}">{{ notification.content }}</td>
+                                                        <td class="sorting_1"><input type="checkbox" id="notification{{ notification.id }}">{{ notification.title }}</td>
                                                         <td>{{ notification.date_posted }}</td>
                                                         <td>
                                                             {% for class in notification.recipients.all %}
@@ -369,7 +369,6 @@
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
-                        alert(response.message);
                          window.location.href = "{% url 'teacher_app:notice_teacher' %}";
                     },
                     error: function(response) {
