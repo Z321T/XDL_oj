@@ -64,9 +64,7 @@ def notice_teacher(request):
 
 # 发布通知
 def create_notice(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = Class.objects.filter(teacher=teacher)
 
@@ -111,10 +109,7 @@ def notification_content(request):
 
 # 教师个人中心
 def profile_teacher(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
-
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     user_id = request.session.get('user_id')
     teacher = Teacher.objects.get(userid=user_id)
 
@@ -133,10 +128,7 @@ def profile_teacher(request):
 
 # 题库管理
 def repository_teacher(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
-
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
@@ -190,9 +182,10 @@ def create_exercise(request, exercise_id):
         content = request.POST.get('content')
         memory_limit = request.POST.get('memory_limit')
         time_limit = request.POST.get('time_limit')
+        answer = request.POST.get('answer')
 
         question = ExerciseQuestion(exercise=exercise, title=title, content=content,
-                                    memory_limit=memory_limit, time_limit=time_limit)
+                                    memory_limit=memory_limit, time_limit=time_limit, answer=answer)
         question.save()
 
         return redirect('teacher_app:exercise_list', exercise_id=exercise.id)
@@ -281,9 +274,10 @@ def create_exam(request, exam_id):
         content = request.POST.get('content')
         memory_limit = request.POST.get('memory_limit')
         time_limit = request.POST.get('time_limit')
+        answer = request.POST.get('answer')
 
         question = ExamQuestion(exam=exam, title=title, content=content,
-                                memory_limit=memory_limit, time_limit=time_limit)
+                                memory_limit=memory_limit, time_limit=time_limit, answer=answer)
         question.save()
 
         return redirect('teacher_app:exam_list', exam_id=exam.id)
@@ -329,17 +323,13 @@ def examquestion_delete(request):
 
 # 作业情况
 def test_teacher(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     return render(request, 'test_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
 
 # 班级管理
 def class_teacher(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = Class.objects.filter(teacher=teacher)
     return render(request, 'class_teacher.html',
