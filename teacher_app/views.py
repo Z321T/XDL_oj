@@ -13,9 +13,7 @@ from student_app.models import Student
 # Create your views here.
 # 教师主页
 def home_teacher(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     # 获取用户id，若没有登录则返回登录页面
     user_id = request.session.get('user_id')
     if user_id is None:
@@ -24,9 +22,6 @@ def home_teacher(request):
         teacher = Teacher.objects.get(userid=user_id)
     except ObjectDoesNotExist:
         return redirect('/login/')
-        # 这里我们不再需要单独的 dropdown_menu1，因为教师信息已经包含 user_id
-        # 但是如果有其他数据需要传递给下拉菜单，你可以在这里添加
-
         # 假设这是你的饼状图数据
     chart_data = {
         'categories': ['分类1', '分类2', '分类3'],
@@ -50,10 +45,7 @@ def home_teacher(request):
 
 # 通知界面
 def notice_teacher(request):
-    dropdown_menu1 = {
-        'user_id': request.session.get('user_id'),
-    }
-
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = teacher.classes_assigned.all()
     notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()

@@ -3,7 +3,6 @@ from django.urls import path
 from django.contrib.staticfiles.views import serve
 
 from .views import home_student, practice_student, test_student, profile_student, coding_student
-from .views import text_list, practice_list
 from .views import text_list, practice_list, notification_content
 from . import views
 
@@ -12,7 +11,7 @@ app_name = 'student_app'
 
 
 urlpatterns = [
-path('home/', home_student, name='home_student'),
+    path('home/', home_student, name='home_student'),
     # 练习相关
     path('practice/', practice_student, name='practice_student'),
     path('practice/practice_list/<int:exercise_id>', practice_list, name='practice_list'),

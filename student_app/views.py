@@ -1,20 +1,18 @@
+import os
+import json
+import time
+import requests
+import subprocess
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from student_app.models import Student
 from teacher_app.models import Teacher, Class, Notification, Exercise, Exam
 from .forms import StudentForm
-
-import os
-import json
-import time
-import subprocess
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import requests
-
 
 
 # 学生主页
