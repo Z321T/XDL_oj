@@ -238,11 +238,15 @@
         $('#codeForm').on('submit', function (event) {
             event.preventDefault(); // 阻止表单的默认提交行为
             var code = editor.getValue(); // 获取代码编辑器中的内容
+            var types = "{{ types }}";
+            var questionId = {{ question.id }};
             $.ajax({
                 url: "{% url 'student_app:run-cpp' %}",
                 type: 'POST',
                 data: {
                     'code': code,
+                    'types': types,
+                    'questionId': questionId,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'  // 直接使用 Django 模板标签插入 CSRF 令牌
                 },
                 success: function (response) {

@@ -32,6 +32,9 @@ urlpatterns = [
     # 超级管理员使用界面
     path('administrator/', include('administrator_app.urls')),
 
+    # 代码查重
+    path('codebert/', include('CodeBERT_app.urls')),
+
     # include('administrator_app.urls')
     path('admin/', admin.site.urls),
 ]
