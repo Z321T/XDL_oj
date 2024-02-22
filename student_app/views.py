@@ -111,17 +111,21 @@ def notification_content(request):
 # 答题界面
 def coding_exercise(request, exercisequestion_id):
     if request.method == 'GET':
-        exercise_question = get_object_or_404(ExerciseQuestion, id=exercisequestion_id)
-        exercise = exercise_question.exercise
-        return render(request, 'coding_student.html')
+        question = get_object_or_404(ExerciseQuestion, id=exercisequestion_id)
+        question_set = question.exercise
+        types = 'exercise'
+        return render(request, 'coding_student.html',
+                      {'question_set': question_set, 'question': question, 'types': types})
     return render(request, 'coding_student.html')
 
 
 def coding_exam(request, examquestion_id):
     if request.method == 'GET':
-        exam_question = get_object_or_404(ExamQuestion, id=examquestion_id)
-        exam = exam_question.exam
-        return render(request, 'coding_student.html')
+        question = get_object_or_404(ExamQuestion, id=examquestion_id)
+        question_set = question.exam
+        types = 'exam'
+        return render(request, 'coding_student.html',
+                      {'question_set': question_set, 'question': question, 'types': types})
     return render(request, 'coding_student.html')
 
 
