@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{% static 'student_app/css/profile.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+
     <style type="text/css">/* Chart.js */
         @keyframes chartjs-render-animation{
             from{opacity:.99}
@@ -56,8 +58,6 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-          <a class="navbar-brand brand-logo" href="#"><img src="{% static 'student_app/photo/logo.svg' %}" alt="logo"></a>
-          <a class="navbar-brand brand-logo-mini" href="#"><img src="{% static 'student_app/photo/logo-mini.svg' %}" alt="logo"></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -136,7 +136,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPractice()" aria-expanded="false" aria-controls="ui-basic">
-              <i class="mdi mdi-circle-outline menu-icon"></i>
+              <i class="mdi mdi-view-headline menu-icon"></i>
               <span class="menu-title">我的练习</span>
               <i class="menu-arrow"></i>
             </a>
@@ -144,7 +144,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToTest()">
-              <i class="mdi mdi-view-headline menu-icon"></i>
+              <i class="mdi mdi-candy-outline menu-icon"></i>
               <span class="menu-title">我的考试</span>
             </a>
           </li>
@@ -156,7 +156,7 @@
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="#" onclick="redirectToProfile()">
-              <i class="mdi mdi-grid-large menu-icon"></i>
+              <i class="mdi mdi-account menu-icon"></i>
               <span class="menu-title">个人中心</span>
             </a>
           </li>
