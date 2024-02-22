@@ -144,20 +144,21 @@ def run_cpp_code(request):
         try:
             start_time = time.time()  # 记录开始时间
             result = subprocess.run(
-                ['docker', 'run', '--rm', '-v', f"{os.getcwd()}:/app", '-w', '/app',
-                 '-m', '512m', '--cpus', '1', 'cpp-runner',
+                ['docker', 'run', '--rm', '-v', f"{os.getcwd()}:/app",
+                 '-w', '/app', '-m', '512m', '--cpus', '1', 'cpp-runner',
                  'bash', '-c', 'g++ temp.cpp -o temp && ./temp'],
                 capture_output=True, text=True, timeout=30
             )
             execution_time = time.time() - start_time  # 计算执行时间
 
-            if result.returncode == 0:
+            if result.returncode == 0:  # 如果运行成功
+                # 这里仅返回了执行结果和时间，与前端代码对应
                 return JsonResponse({'output': result.stdout, 'time': execution_time})
-            else:
+            else:  # 如果编译或运行出错
                 return JsonResponse({'error': result.stderr, 'time': execution_time})
-        except subprocess.TimeoutExpired:
+        except subprocess.TimeoutExpired:  # 如果运行超时
             return JsonResponse({'error': 'Execution timed out'})
-        except Exception as e:
+        except Exception as e:  # 如果发生其他异常
             return JsonResponse({'error': str(e)})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
