@@ -134,26 +134,21 @@ def call_node_api(request):
     return HttpResponse(response.json())
 
 
-@csrf_exempt  # 临时禁用 CSRF 保护，注意这在生产环境中可能是不安全的
 def run_cpp_code(request):
-    # 确保请求方法是 POST 并且内容类型是 JSON
-    if request.method == 'POST' and request.content_type == 'application/json':
-        data = json.loads(request.body.decode('utf-8'))  # 解析 JSON 数据
-        user_code = data.get('code', '')
+    if request.method == 'POST':
+        user_code = request.POST.get('code', '')  # 从表单数据中获取代码
 
         with open('temp.cpp', 'w') as f:
             f.write(user_code)
 
         try:
             start_time = time.time()  # 记录开始时间
-
             result = subprocess.run(
                 ['docker', 'run', '--rm', '-v', f"{os.getcwd()}:/app", '-w', '/app',
                  '-m', '512m', '--cpus', '1', 'cpp-runner',
                  'bash', '-c', 'g++ temp.cpp -o temp && ./temp'],
                 capture_output=True, text=True, timeout=30
             )
-
             execution_time = time.time() - start_time  # 计算执行时间
 
             if result.returncode == 0:
@@ -166,3 +161,37 @@ def run_cpp_code(request):
             return JsonResponse({'error': str(e)})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+# @csrf_exempt  # 临时禁用 CSRF 保护，注意这在生产环境中可能是不安全的
+# def run_cpp_code(request):
+#     # 确保请求方法是 POST 并且内容类型是 JSON
+#     if request.method == 'POST' and request.content_type == 'application/json':
+#         data = json.loads(request.body.decode('utf-8'))  # 解析 JSON 数据
+#         user_code = data.get('code', '')
+#
+#         with open('temp.cpp', 'w') as f:
+#             f.write(user_code)
+#
+#         try:
+#             start_time = time.time()  # 记录开始时间
+#
+#             result = subprocess.run(
+#                 ['docker', 'run', '--rm', '-v', f"{os.getcwd()}:/app", '-w', '/app',
+#                  '-m', '512m', '--cpus', '1', 'cpp-runner',
+#                  'bash', '-c', 'g++ temp.cpp -o temp && ./temp'],
+#                 capture_output=True, text=True, timeout=30
+#             )
+#
+#             execution_time = time.time() - start_time  # 计算执行时间
+#
+#             if result.returncode == 0:
+#                 return JsonResponse({'output': result.stdout, 'time': execution_time})
+#             else:
+#                 return JsonResponse({'error': result.stderr, 'time': execution_time})
+#         except subprocess.TimeoutExpired:
+#             return JsonResponse({'error': 'Execution timed out'})
+#         except Exception as e:
+#             return JsonResponse({'error': str(e)})
+#     else:
+#         return JsonResponse({'error': 'Invalid request'}, status=400)
