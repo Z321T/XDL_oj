@@ -21,334 +21,384 @@
 
 
     <style type="text/css">/* Chart.js */
-        @keyframes chartjs-render-animation{
-            from{opacity:.99}
-            to{opacity:1}}
-        .chartjs-render-monitor{animation:chartjs-render-animation 1ms}
-        .chartjs-size-monitor,
-        .chartjs-size-monitor-expand,
-        .chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}
-        .chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}
-        .chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}
+    @keyframes chartjs-render-animation {
+        from {
+            opacity: .99
+        }
+        to {
+            opacity: 1
+        }
+    }
+
+    .chartjs-render-monitor {
+        animation: chartjs-render-animation 1ms
+    }
+
+    .chartjs-size-monitor,
+    .chartjs-size-monitor-expand,
+    .chartjs-size-monitor-shrink {
+        position: absolute;
+        direction: ltr;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        pointer-events: none;
+        visibility: hidden;
+        z-index: -1
+    }
+
+    .chartjs-size-monitor-expand > div {
+        position: absolute;
+        width: 1000000px;
+        height: 1000000px;
+        left: 0;
+        top: 0
+    }
+
+    .chartjs-size-monitor-shrink > div {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        left: 0;
+        top: 0
+    }
     </style>
     <script>
         function redirectToHome() {
             window.location.href = "/administrator/home/"
         }
+
         function redirectToTest() {
             window.location.href = "/administrator/test/"
         }
+
         function redirectToNotice() {
             window.location.href = "/administrator/notice/"
         }
+
         function redirectToRepository() {
             window.location.href = "/administrator/repository/"
         }
+
         function redirectToProfile() {
             window.location.href = "/administrator/profile/"
         }
+
         function redirectToClass() {
             window.location.href = "/administrator/class/"
         }
+
         function redirectToPlagiarism() {
             window.location.href = "/administrator/plagiarism/"
         }
+
         function redirectToProblems() {
             window.location.href = "/administrator/problems/"
         }
+
         function redirectToInformation() {
             window.location.href = "/administrator/information/"
         }
     </script>
     <style>
-        body{
+        body {
             background: linear-gradient(to bottom, #EDE7F6 0%, #E8EAF6 25%, #ECEFF1 50%, #FFFFFF 100%);
         }
 
         table {
 
-    width: 100%; /* 表格宽度填满容器 */
+            width: 100%; /* 表格宽度填满容器 */
             height: 80%;
-    border-collapse: collapse; /* 边框合并为单一线条 */
-    text-align: left; /* 文本左对齐 */
-    margin-top: 10px; /* 与上方内容的间距 */
-}
+            border-collapse: collapse; /* 边框合并为单一线条 */
+            text-align: left; /* 文本左对齐 */
+            margin-top: 10px; /* 与上方内容的间距 */
+        }
 
-th, td {
-    border: 1px solid #ddd; /* 单元格边框 */
-    padding: 8px; /* 单元格内边距 */
-}
+        th, td {
+            border: 1px solid #ddd; /* 单元格边框 */
+            padding: 8px; /* 单元格内边距 */
+        }
 
-thead {
-    background-color: #f2f2f2; /* 表头背景颜色 */
-}
+        thead {
+            background-color: #f2f2f2; /* 表头背景颜色 */
+        }
 
 
         /* 居中容器的样式，包含书签和方框 */
-.centered-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%); /* 调整为居中 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0; /* 根据需要调整书签和方框之间的间距 */
-     max-height: 700px; /* 设置表格的最大高度 */
-    overflow-y: auto; /* 内容超出时显示垂直滚动条 */
-    border:2px solid purple; /* 可选，添加边框以便更清晰地看到表格的边界 */
-    border-radius: 10px;
-}
+        .centered-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%); /* 调整为居中 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0; /* 根据需要调整书签和方框之间的间距 */
+            max-height: 700px; /* 设置表格的最大高度 */
+            overflow-y: auto; /* 内容超出时显示垂直滚动条 */
+            border: 2px solid purple; /* 可选，添加边框以便更清晰地看到表格的边界 */
+            border-radius: 10px;
+        }
 
-          .tabs {
-              position: relative;
+        .tabs {
+            position: relative;
 
-    z-index: 2; /* 书签在方框之上 */
-               display: flex;
-    background-color: #ffffff;
-    border-radius: 10px 10px 0 0; /* 上左和上右圆角 */
-    overflow: hidden; /* 隐藏内部元素溢出的部分，确保书签的边框不会超出圆角 */
-}
+            z-index: 2; /* 书签在方框之上 */
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 10px 10px 0 0; /* 上左和上右圆角 */
+            overflow: hidden; /* 隐藏内部元素溢出的部分，确保书签的边框不会超出圆角 */
+        }
 
-.tab-link {
-    background-color: #fff; /* 与方框相同的背景颜色 */
-    border: 1px solid purple; /* 相似的边框样式 */
-    border-radius: 0 5px 0 0; /* 适用于第一个书签 */
-}
-.tab-link.active, .tab-link:hover {
-    background-color: mediumpurple; /* 激活或悬停时的背景颜色 */
-}
+        .tab-link {
+            background-color: #fff; /* 与方框相同的背景颜色 */
+            border: 1px solid purple; /* 相似的边框样式 */
+            border-radius: 0 5px 0 0; /* 适用于第一个书签 */
+        }
+
+        .tab-link.active, .tab-link:hover {
+            background-color: mediumpurple; /* 激活或悬停时的背景颜色 */
+        }
 
 
-.tab-link:last-child {
-    border-radius: 0 0 5px 0; /* 适用于最后一个书签 */
-}
+        .tab-link:last-child {
+            border-radius: 0 0 5px 0; /* 适用于最后一个书签 */
+        }
 
-.content-box {
-    position: relative;
-    width: 700px; /* 根据需要调整宽度 */
-      max-height: 650px; /* 或根据需要调整，以避免过高覆盖标签 */
-    overflow-y: auto; /* 添加滚动条 */
-    border: 1px solid #ccc;
-    border-radius: 0 0 10px 10px; /* 下左和下右圆角 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果增强立体感 */
-    padding: 20px;
-    background-color: #ffffff;
-}
+        .content-box {
+            position: relative;
+            width: 700px; /* 根据需要调整宽度 */
+            max-height: 650px; /* 或根据需要调整，以避免过高覆盖标签 */
+            overflow-y: auto; /* 添加滚动条 */
+            border: 1px solid #ccc;
+            border-radius: 0 0 10px 10px; /* 下左和下右圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果增强立体感 */
+            padding: 20px;
+            background-color: #ffffff;
+        }
 
-    .tab-content {
-    display: none; /* 默认隐藏所有内容 */
-}
+        .tab-content {
+            display: none; /* 默认隐藏所有内容 */
+        }
 
-.tab-content.active {
-    display: block; /* 显示激活的标签内容 */
-}
+        .tab-content.active {
+            display: block; /* 显示激活的标签内容 */
+        }
 
 
     </style>
 </head>
 <body>
 <div>
-  <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="navbar-brand-wrapper d-flex justify-content-center">
-        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-            <span class="mdi mdi-sort-variant"></span>
-          </button>
-        </div>
-      </div>
-    </nav>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="redirectToHome()">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">作业情况</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false" aria-controls="ui-basic">
-              <i class="mdi mdi-circle-outline menu-icon"></i>
-              <span class="menu-title">考试情况</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="redirectToNotice()">
-              <i class="mdi mdi-chart-pie menu-icon"></i>
-              <span class="menu-title">通知</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">我的题库</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">个人中心</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="redirectToClass()">
-              <i class="mdi mdi-view-headline menu-icon"></i>
-              <span class="menu-title">班级管理</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">————</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPlagiarism()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">查重管理</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProblems()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">题库管理</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToInformation()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">师生信息管理</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- partial -->
-
-        <div class="centered-container">
-            <div class="tabs">
-                <button class="tab-link" onclick="openTab('content1')">教师</button>
-                <button class="tab-link" onclick="openTab('content2')">学生</button>
-            </div>
-            <div class="content-box">
-                <div id="content1" class="tab-content">
-                    <!-- 表格内容 -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>姓名</th>
-                        <th>工号</th>
-                        <th>学院</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-                    <tr>
-                        <td>数据1</td>
-                        <td>数据2</td>
-                        <td>数据3</td>
-                    </tr>
-
-                    <!-- 更多行 -->
-                </tbody>
-            </table>
-
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex justify-content-center">
+                <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+                    <button class="navbar-toggler navbar-toggler align-self-center" type="button"
+                            data-toggle="minimize">
+                        <span class="mdi mdi-sort-variant"></span>
+                    </button>
                 </div>
-                <div id="content2" class="tab-content" style="display:none;">
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="redirectToHome()">
+                            <i class="mdi mdi-home menu-icon"></i>
+                            <span class="menu-title">作业情况</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()"
+                           aria-expanded="false" aria-controls="ui-basic">
+                            <i class="mdi mdi-circle-outline menu-icon"></i>
+                            <span class="menu-title">考试情况</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="redirectToNotice()">
+                            <i class="mdi mdi-chart-pie menu-icon"></i>
+                            <span class="menu-title">通知</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()"
+                           aria-expanded="false" aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">我的题库</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()"
+                           aria-expanded="false" aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">个人中心</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="redirectToClass()">
+                            <i class="mdi mdi-view-headline menu-icon"></i>
+                            <span class="menu-title">班级管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">————</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPlagiarism()"
+                           aria-expanded="false" aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">查重管理</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProblems()"
+                           aria-expanded="false" aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">题库管理</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToInformation()"
+                           aria-expanded="false" aria-controls="auth">
+                            <i class="mdi mdi-account menu-icon"></i>
+                            <span class="menu-title">师生信息管理</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+
+            <div class="centered-container">
+                <div class="tabs">
+                    <button class="tab-link" onclick="openTab('content1')">教师</button>
+                    <button class="tab-link" onclick="openTab('content2')">学生</button>
+                </div>
+                <div class="content-box">
+                    <div id="content1" class="tab-content">
+                        <!-- 表格内容 -->
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>工号</th>
+                                <th>学院</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                            </tr>
+
+                            <!-- 更多行 -->
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="content2" class="tab-content" style="display:none;">
                         <label for="classFilter">选择班级：</label>
                         <select id="classFilter" onchange="filterClass()">
                             <option value="all">所有班级</option>
@@ -358,90 +408,88 @@ thead {
                             <!-- 更多班级选项 -->
                         </select>
 
-    <!-- 根据选择的班级显示内容 -->
+                        <!-- 根据选择的班级显示内容 -->
                         <div id="classContent">
 
                             <!-- 班级相关内容将在这里显示 -->
                         </div>
-               </div>
+                    </div>
+                </div>
             </div>
+
+
+            <!-- partial -->
         </div>
-
-
-
-
-        <!-- partial -->
+        <!-- main-panel ends -->
     </div>
-      <!-- main-panel ends -->
-  </div>
     <!-- page-body-wrapper ends -->
 
 
-  <!-- container-scroller -->
+    <!-- container-scroller -->
 
- <!-- plugins:js -->
-  <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page-->
-  <script type="text/javascript" src="{% static 'administrator_app/js/Chart.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'administrator_app/js/jquery.dataTables.js' %}"></script>
-  <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4.js' %}"></script>
-  <!-- End plugin js for this page-->
-  <!-- inject:js -->
-  <script type="text/javascript" src="{% static 'administrator_app/js/off-canvas.js' %}"></script>
-  <script type="text/javascript" src="{% static 'administrator_app/js/hoverable-collapse.js' %}"></script>
-  <script type="text/javascript" src="{% static 'administrator_app/js/template.js' %}"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script type="text/javascript" src="{% static 'administrator_app/js/dashboard.js' %}"></script>
-  <script type="text/javascript"  src="{% static 'administrator_app/js/data-table.js' %}"></script>
-  <script type="text/javascript"  src="{% static 'administrator_app/js/jquery.dataTables(1).js' %}"></script>
-  <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4(1).js' %}"></script>
-  <!-- End custom js for this page-->
-  <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-<script>
-    function openTab(tabId) {
-    // 隐藏所有标签内容
-    var tabs = document.getElementsByClassName("tab-content");
-    for (var i = 0; i < tabs.length; i++) {
-        tabs[i].style.display = "none";
-    }
+    <!-- plugins:js -->
+    <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script type="text/javascript" src="{% static 'administrator_app/js/Chart.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/jquery.dataTables.js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4.js' %}"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script type="text/javascript" src="{% static 'administrator_app/js/off-canvas.js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/hoverable-collapse.js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/template.js' %}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script type="text/javascript" src="{% static 'administrator_app/js/dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/data-table.js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/jquery.dataTables(1).js' %}"></script>
+    <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4(1).js' %}"></script>
+    <!-- End custom js for this page-->
+    <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
+    <script>
+        function openTab(tabId) {
+            // 隐藏所有标签内容
+            var tabs = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = "none";
+            }
 
-    // 移除所有标签的"active"类
-    var tabLinks = document.getElementsByClassName("tab-link");
-    for (var i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].classList.remove("active");
-    }
+            // 移除所有标签的"active"类
+            var tabLinks = document.getElementsByClassName("tab-link");
+            for (var i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
 
-    // 显示选中的标签内容，并添加"active"类
-    document.getElementById(tabId).style.display = "block";
-    event.currentTarget.classList.add("active");
-}
+            // 显示选中的标签内容，并添加"active"类
+            document.getElementById(tabId).style.display = "block";
+            event.currentTarget.classList.add("active");
+        }
 
-function filterClass() {
-    var selectedClass = document.getElementById("classFilter").value;
-    var content = document.getElementById("classContent");
+        function filterClass() {
+            var selectedClass = document.getElementById("classFilter").value;
+            var content = document.getElementById("classContent");
 
-    // 清空当前内容
-    content.innerHTML = '';
+            // 清空当前内容
+            content.innerHTML = '';
 
-    // 根据选择的班级显示相应的内容
-    switch(selectedClass) {
-        case 'class1':
-            content.innerHTML = '<p>一班的相关内容...</p>';
-            break;
-        case 'class2':
-            content.innerHTML = '<p>二班的相关内容...</p>';
-            break;
-        case 'class3':
-            content.innerHTML = '<p>三班的相关内容...</p>';
-            break;
-        default:
-            content.innerHTML = '<p>所有班级的内容...</p>';
-    }
-}
+            // 根据选择的班级显示相应的内容
+            switch (selectedClass) {
+                case 'class1':
+                    content.innerHTML = '<p>一班的相关内容...</p>';
+                    break;
+                case 'class2':
+                    content.innerHTML = '<p>二班的相关内容...</p>';
+                    break;
+                case 'class3':
+                    content.innerHTML = '<p>三班的相关内容...</p>';
+                    break;
+                default:
+                    content.innerHTML = '<p>所有班级的内容...</p>';
+            }
+        }
 
-</script>
+    </script>
 
 
 </body>

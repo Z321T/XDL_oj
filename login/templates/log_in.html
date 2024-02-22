@@ -1,7 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap登录表单</title>
@@ -9,75 +9,79 @@
     <!--bootstrap的css文件-->
     <link rel="stylesheet" href="{% static 'login/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
-  </head>
-  <body>
-    <div class="d-flex justify-content-center align-items-center login-container">
-        <form class="login-form text-center">
-            <h1 class="mb-5 font-weight-linght ">登录</h1>
-            <div class="form-group">
-                <input type="text" class="form-control rounded-pill form-control-lg" id="username" placeholder="账号">
+</head>
+<body>
+<div class="d-flex justify-content-center align-items-center login-container">
+    <form class="login-form text-center">
+        <h1 class="mb-5 font-weight-linght ">登录</h1>
+        <div class="form-group">
+            <input type="text" class="form-control rounded-pill form-control-lg" id="username" placeholder="账号">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control rounded-pill form-control-lg" id="password" placeholder="密码">
+        </div>
+        <div class="forgot-link form-group d-flex justify-content-between align-items-center">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="remeber">
+                <label for="remeber" class="form-check-label">记住密码</label>
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control rounded-pill form-control-lg" id="password" placeholder="密码">
-            </div>
-            <div class="forgot-link form-group d-flex justify-content-between align-items-center">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="remeber">
-                    <label for="remeber" class="form-check-label">记住密码</label>
-                </div>
-                <button class="btn btn-link" onclick="showConfirmationModal()" >忘记密码？</button>
+            <button class="btn btn-link" onclick="showConfirmationModal()">忘记密码？</button>
 
-            </div>
-            <button type="button" onclick="performLogin()" class="btn mt-5 rounded-pill btn-lg btn-custom btn-block">登录</button>
+        </div>
+        <button type="button" onclick="performLogin()" class="btn mt-5 rounded-pill btn-lg btn-custom btn-block">登录
+        </button>
 
-            <p class="mt-3 font-weight-normal">
-                你还没有账号?
-                <a href="#">
-                    <strong>注册</strong>
-                </a>
-            </p>
-        </form>
-    </div>
-    
-    
-   <!-- 忘记密码确认窗口 -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmationModalLabel">确认</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>您确定要提交忘记密码请求吗？</p>
-                    <button onclick="submitRequest()" class="btn btn-primary">确定</button>
-                    <button onclick="hideConfirmationModal()" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                </div>
+        <p class="mt-3 font-weight-normal">
+            你还没有账号?
+            <a href="#">
+                <strong>注册</strong>
+            </a>
+        </p>
+    </form>
+</div>
+
+
+<!-- 忘记密码确认窗口 -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">确认</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要提交忘记密码请求吗？</p>
+                <button onclick="submitRequest()" class="btn btn-primary">确定</button>
+                <button onclick="hideConfirmationModal()" class="btn btn-secondary" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
-     
-    <!-- Password Error Modal -->
-    <div class="modal fade" id="passwordErrorModal" tabindex="-1" role="dialog" aria-labelledby="passwordErrorModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="passwordErrorModalLabel">密码错误</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    请输入正确的密码。
-                </div>
+</div>
+
+<!-- Password Error Modal -->
+<div class="modal fade" id="passwordErrorModal" tabindex="-1" role="dialog" aria-labelledby="passwordErrorModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordErrorModalLabel">密码错误</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                请输入正确的密码。
             </div>
         </div>
     </div>
-    
-    <!-- Empty Password Modal -->
-<div class="modal fade" id="emptyPasswordModal" tabindex="-1" role="dialog" aria-labelledby="emptyPasswordModalLabel" aria-hidden="true">
+</div>
+
+<!-- Empty Password Modal -->
+<div class="modal fade" id="emptyPasswordModal" tabindex="-1" role="dialog" aria-labelledby="emptyPasswordModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,41 +97,43 @@
     </div>
 </div>
 
-    <!-- Empty username Modal -->
-    <div class="modal fade" id="emptyusernameModal" tabindex="-1" role="dialog" aria-labelledby="emptyusernameModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="emptyusernameModalLabel">账号不能为空</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    请输入账号。
-                </div>
+<!-- Empty username Modal -->
+<div class="modal fade" id="emptyusernameModal" tabindex="-1" role="dialog" aria-labelledby="emptyusernameModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emptyusernameModalLabel">账号不能为空</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                请输入账号。
             </div>
         </div>
     </div>
-     <!-- username Error Modal -->
-    <div class="modal fade" id="usernameErrorModal" tabindex="-1" role="dialog" aria-labelledby="usernameErrorModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="usernameErrorModalLabel">账号错误</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    请输入正确的账号。
-                </div>
+</div>
+<!-- username Error Modal -->
+<div class="modal fade" id="usernameErrorModal" tabindex="-1" role="dialog" aria-labelledby="usernameErrorModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usernameErrorModalLabel">账号错误</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                请输入正确的账号。
             </div>
         </div>
     </div>
-    <script src="{% static 'login/js/jquery-3.7.1.min.js' %}"></script>
-    <script src="{% static 'login/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'login/js/login.js' %}"></script>
-    <script src="{% static 'login/js/ForgetPassword.js' %}"></script>
-  </body>
+</div>
+<script src="{% static 'login/js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'login/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'login/js/login.js' %}"></script>
+<script src="{% static 'login/js/ForgetPassword.js' %}"></script>
+</body>
 </html>
