@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'teacher_app/css/style.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
-
+    <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
     <style type="text/css">/* Chart.js */
         @keyframes chartjs-render-animation{
             from{opacity:.99}
@@ -56,31 +56,6 @@
         }
     </script>
     <style>
-        .content-container {
-              position: relative; /* 设置相对定位 */
-              left:250px;
-              width:60%; /* 固定宽度 */
-
-              height: 800px; /* 固定高度 */
-              border: 2px solid purple; /* 边框，以便内容窗口可见 */
-            border-radius: 10px;
-        }
-
-.content-window {
-    display: flex; /* 使用Flexbox布局 */
-  align-items: start; /* 使表格和控制按钮顶部对齐 */
-  width: 90%;
-  height:90%; /* 充满容器 */
-    max-height: 1200px; /* 设置表格的最大高度 */
-  overflow-y: auto; /* 如果内容超出，显示滚动条 */
-}
-.table-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:100%;
-
-}
 
 
  .table-container table {
@@ -109,99 +84,7 @@
   }
 
 
-  /* 新增的标题样式 */
-.table-title {
-    width: 80px; /* 标题宽度充满容器 */
-    margin-bottom: 5px; /* 在标题和表格之间添加一些空间 */
-    font-size: 20px; /* 设置标题的字体大小 */
-    font-weight: bold; /* 设置标题的字体加粗 */
-}
 
-
-
-
-
-.control-button-right {
-  margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
-  padding: 10px 20px; /* 按钮内边距 */
-  background-color: #007bff; /* 背景颜色 */
-  color: #ffffff; /* 文本颜色 */
-  border: none; /* 移除边框 */
-  border-radius: 5px; /* 圆角边框 */
-  cursor: pointer; /* 鼠标悬停时的指针样式 */
-    right:2px;
-    position: absolute;
-  display: none; /* 默认不显示 */
-
-}
-#newClassButton
-{
-  margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
-  padding: 10px 20px; /* 按钮内边距 */
-  background-color: #007bff; /* 背景颜色 */
-  color: #ffffff; /* 文本颜色 */
-  border: none; /* 移除边框 */
-  border-radius: 5px; /* 圆角边框 */
-  cursor: pointer; /* 鼠标悬停时的指针样式 */
-    right:2px;
-    position: absolute;
-}
-
-#newClassButton:hover {
-    background-color: #0056b3; /* 鼠标悬停时的背景颜色变化 */
-}
-    .button-class{
-        border-radius: 10px;
-        border: 1px solid purple;
-        background-color: white;
-        color: #0d111b;
-        padding:5px 10px;
-    }
-    .button-class:hover{
-        background-color: mediumpurple;
-    }
-
-/* 弹窗背景 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1; / Sit on top /
-    left: 0;
-    top: 0;
-    width: 100%; / Full width /
-    height: 100%; / Full height /
-    overflow: auto; / Enable scroll if needed /
-    background-color: rgb(0,0,0); / Fallback color /
-    background-color: rgba(0,0,0,0.4); / Black w/ opacity */
-
-}
-/*弹窗内部样式 */
-.modal-content {
-background-color: #fefefe;
-margin: 15% auto; / 15% from the top and centered /
-padding: 20px;
-border: 1px solid #888;
-width: 30%; / Could be more or less, depending on screen size */
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-
-/* 关闭按钮样式 */
-.close {
-color: #aaa;
-float: right;
-font-size: 28px;
-font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-color: black;
-text-decoration: none;
-cursor: pointer;
-background-color: #f0f8ff;
-}
     </style>
 </head>
 <body>
@@ -230,20 +113,20 @@ background-color: #f0f8ff;
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false" aria-controls="ui-basic">
-              <i class="mdi mdi-circle-outline menu-icon"></i>
+              <i class="mdi mdi-chart-pie menu-icon"></i>
               <span class="menu-title">作业情况</span>
               <i class="menu-arrow"></i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="redirectToNotice()">
-              <i class="mdi mdi-chart-pie menu-icon"></i>
+              <i class="mdi mdi-bulletin-board menu-icon"></i>
               <span class="menu-title">通知</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
+              <i class="mdi mdi-source-repository-multiple menu-icon"></i>
               <span class="menu-title">我的题库</span>
               <i class="menu-arrow"></i>
             </a>
@@ -257,7 +140,7 @@ background-color: #f0f8ff;
           </li>
             <li class="nav-item active">
             <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToClass()" aria-expanded="false" aria-controls="auth">
-              <i class="mdi mdi-account menu-icon"></i>
+              <i class="mdi mdi-microsoft-teams menu-icon"></i>
               <span class="menu-title">班级管理</span>
               <i class="menu-arrow"></i>
             </a>

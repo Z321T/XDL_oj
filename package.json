@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "monaco-editor": "^0.46.0"
   },
   "devDependencies": {
