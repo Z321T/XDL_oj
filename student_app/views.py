@@ -4,13 +4,15 @@ import time
 import requests
 import subprocess
 
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from student_app.models import Student
+from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
+                                ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Teacher, Class, Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
 from CodeBERT_app.views import analyze_code
 from .forms import StudentForm
@@ -135,6 +137,47 @@ def call_node_api(request):
     return HttpResponse(response.json())
 
 
+# 标记完成的题目
+def mark_exercise_question_as_completed(student, exercise_question):
+    ExerciseQuestionCompletion.objects.create(
+        student=student,
+        exercise_question=exercise_question,
+        completed_at=timezone.now()
+    )
+    # 检查是否所有的练习题都已经完成
+    all_questions = exercise_question.exercise.questions.all()
+    completed_questions = ExerciseQuestionCompletion.objects.filter(
+        student=student,
+        exercise_question__in=all_questions
+    )
+    if all_questions.count() == completed_questions.count():
+        ExerciseCompletion.objects.create(
+            student=student,
+            exercise=exercise_question.exercise,
+            completed_at=timezone.now()
+        )
+
+
+def mark_exam_question_as_completed(student, exam_question):
+    ExamQuestionCompletion.objects.create(
+        student=student,
+        exam_question=exam_question,
+        completed_at=timezone.now()
+    )
+    all_questions = exam_question.exam.questions.all()
+    completed_questions = ExamQuestionCompletion.objects.filter(
+        student=student,
+        exam_question__in=all_questions
+    )
+    if all_questions.count() == completed_questions.count():
+        ExamCompletion.objects.create(
+            student=student,
+            exam=exam_question.exam,
+            completed_at=timezone.now()
+        )
+
+
+# 运行C++代码
 def run_cpp_code(request):
     student = Student.objects.get(userid=request.session.get('user_id'))
     if request.method == 'POST':
@@ -156,9 +199,30 @@ def run_cpp_code(request):
             execution_time = time.time() - start_time  # 计算执行时间
 
             if result.returncode == 0:  # 如果运行成功
-                analyze_code(student, user_code, types, question_id)  # 调用 analyze_code 函数
-                # 这里仅返回了执行结果和时间，与前端代码对应
-                return JsonResponse({'output': result.stdout, 'time': execution_time})
+                if types == 'exercise':
+                    question = ExerciseQuestion.objects.get(id=question_id)
+                else:
+                    question = ExamQuestion.objects.get(id=question_id)
+                if question.answer == result.stdout:
+                    if types == 'exercise':
+                        mark_exercise_question_as_completed(student, question)
+                        Score.objects.create(
+                            student=student,
+                            exercise_question=question,
+                            score=10
+                        )
+                    else:
+                        mark_exam_question_as_completed(student, question)
+                        Score.objects.create(
+                            student=student,
+                            exam_question=question,
+                            score=10
+                        )
+                    analyze_code(student, user_code, types, question_id)
+                    # 这里仅返回了执行结果和时间，与前端代码对应
+                    return JsonResponse({'output': result.stdout, 'time': execution_time})
+                else:
+                    return JsonResponse({'output': result.stdout, 'error': 'Wrong answer', 'time': execution_time})
             else:  # 如果编译或运行出错
                 return JsonResponse({'error': result.stderr, 'time': execution_time})
         except subprocess.TimeoutExpired:  # 如果运行超时

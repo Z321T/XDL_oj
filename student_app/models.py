@@ -1,5 +1,5 @@
 from django.db import models
-from teacher_app.models import Class, ExerciseQuestion, ExamQuestion
+from teacher_app.models import Class, ExerciseQuestion, ExamQuestion, Exercise, Exam
 
 
 # Create your models here.
@@ -24,3 +24,46 @@ class Score(models.Model):
     def __str__(self):
         return f"{self.student.name} - {self.exercise_question or self.exam_question} - {self.score}"
 
+
+class ExerciseCompletion(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='exercise_completions')
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, verbose_name="练习",
+                                 related_name='exercise_completions')
+    completed_at = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.exercise.title} - 完成: {bool(self.completed_at)}"
+
+
+class ExerciseQuestionCompletion(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='exercise_question_completions')
+    exercise_question = models.ForeignKey(ExerciseQuestion, on_delete=models.CASCADE, verbose_name="练习题",
+                                          related_name='exercise_question_completions')
+    completed_at = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.exercise_question} - 完成: {bool(self.completed_at)}"
+
+
+class ExamCompletion(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='exam_completions')
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, verbose_name="考试",
+                             related_name='exam_completions')
+    completed_at = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.exam.title} - 完成: {bool(self.completed_at)}"
+
+
+class ExamQuestionCompletion(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='exam_question_completions')
+    exam_question = models.ForeignKey(ExamQuestion, on_delete=models.CASCADE, verbose_name="考试题",
+                                      related_name='exam_question_completions')
+    completed_at = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.exam_question} - 完成: {bool(self.completed_at)}"
