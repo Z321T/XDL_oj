@@ -96,9 +96,11 @@
                 table tbody tr:hover {
                     background-color: #f2f2f2;
                 }
-                     .card:hover {
-        background-color: #f2f2f2;
-    }
+                     .card-item.card-title:hover {
+                        background-color: #f2f2f2;
+                         cursor: pointer;
+
+                     }
 
     </style>
 </head>
@@ -476,7 +478,7 @@
                </script>
                 <script>
                     // 给每个卡片添加点击事件
-                $('.card').on('click', function() {
+                $('.card-item.card-title').on('click', function() {
                     // 跳转到另一个页面
                     window.location.href = 'your_url_here';
                 });
