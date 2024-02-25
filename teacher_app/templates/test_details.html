@@ -91,6 +91,11 @@
         }
 
     </script>
+ <style>
+           table tbody tr:hover {
+                    background-color: #f2f2f2;
+                }
+ </style>
 
 
     <!-- 引入Echarts -->
@@ -256,29 +261,6 @@
             <div class="content-wrapper">
 
                 <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div class="d-flex align-items-end flex-wrap">
-                                <div class="mr-md-3 mr-xl-5">
-                                    <h2>Welcome to CUMT-OJ</h2>
-                                    <p class="mb-md-0">你的代码教学助手</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row d-flex" id="proBanner">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card bg-gradient-primary border-0">
-                            <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-md-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body dashboard-tabs p-0">
@@ -294,7 +276,6 @@
                                                 <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
                                                 <div class="d-flex flex-column justify-content-around">
                                                     <small class="mb-1 text-muted">代码查重和规范性评估</small>
-                                                    <h5 class="mr-2 mb-0">详情</h5>
                                                 </div>
                                             </div>
                                             <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
@@ -311,40 +292,50 @@
                                         <div class="col-md-7 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="card-title">重复提交次数</p>
-                                                    <!-- 折线图的容器 -->
-                                                    <div id="lineChart" style="width: 600px;height:400px;"></div>
+                                                    <p class="card-title">班级完成情况</p>
+                                                     <!-- 图表的容器 -->
+                                                    <div id="myChart" style="width: 600px;height:400px;"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--作业完成率-->
+                                        <!--作业列表-->
                                         <div class="col-md-5 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="card-title">作业完成率</p>
-                                                    <div class="row">
-                                                        <div class="form-check col-md-4">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="remeber">
-                                                            <label for="remeber" class="form-check-label">1班</label>
-                                                        </div>
-                                                        <div class="form-check col-md-4">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="remeber">
-                                                            <label for="remeber" class="form-check-label">2班</label>
-                                                        </div>
-                                                        <div class="form-check col-md-4">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="remeber">
-                                                            <label for="remeber" class="form-check-label">3班</label>
-                                                        </div>
+                                                     <!-- 添加切换按钮 -->
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-secondary">练习</button>
+                                                        <button type="button" class="btn btn-secondary">作业</button>
                                                     </div>
+                                                     <div class="row">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">名称</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">1</th>
+                                                                <td>1班</td>
 
-                                                    <div id="total-sales-chart-legend"></div>
-                                                    <!-- 图表的容器 -->
-                                                    <div id="myChart" style="width: 600px;height:400px;"></div>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">2</th>
+                                                                <td>2班</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">3</th>
+                                                                <td>3班</td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                                <!--饼状图-->
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -403,7 +394,25 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
+                <div class=" stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">题目作答情况</p>
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                            <div class="table-responsive">
+                                <div class="card-container">
+                                    <div id="zhutu" style="width:1000px;height:400px;"></div>
+                                </div>
+                            </div>
 
+                            <!-- partial -->
+                        </div>
+                        <!-- main-panel ends -->
+                    </div>
+                    <!-- page-body-wrapper ends -->
+                </div>
+                <!-- container-scroller -->
+            </div>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->
@@ -411,7 +420,7 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
+</div>
     <!-- plugins:js -->
     <script type="text/javascript" src="{% static 'teacher_app/js/vendor.bundle.base.js' %}"></script>
     <!-- endinject -->
@@ -432,37 +441,46 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-    <script>
-        <!-- 折线图的容器 -->
+#查重跳转
+   <script>
+               // JavaScript
+        function redirectToOtherPage() {
+            window.location.href = "/other_page/";
+        }
 
+        document.querySelector("mb-1 text-muted").addEventListener("click", redirectToOtherPage);
+   </script>
+ <script>
+             // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('myChart'));
-        var lineChart = echarts.init(document.getElementById('lineChart'));
 
-        var chartoption = {
-            title: {
-                text: '教师主页饼状图',
-                subtext: '示例',
-                left: 'center'
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+
+                x:'center'
             },
-            tooltip: {
-                trigger: 'item'
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
             },
             legend: {
                 orient: 'vertical',
-                left: 'left'
+                left: 'left',
+                data: ['已完成','未完成']
             },
-            series: [
+            series : [
                 {
-                    name: '访问来源',
+                    name: '完成情况',
                     type: 'pie',
-                    radius: '50%',
-                    data: [
-                        {value: {{ chart_data.data.0 }}, name: '{{ chart_data.categories.0 }}'},
-                        {value: {{ chart_data.data.1 }}, name: '{{ chart_data.categories.1 }}'},
-                        {value: {{ chart_data.data.2 }}, name: '{{ chart_data.categories.2 }}'}
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:335, name:'已完成'},
+                        {value:310, name:'未完成'}
                     ],
-                    emphasis: {
-                        itemStyle: {
+                    itemStyle: {
+                        emphasis: {
                             shadowBlur: 10,
                             shadowOffsetX: 0,
                             shadowColor: 'rgba(0, 0, 0, 0.5)'
@@ -472,53 +490,31 @@
             ]
         };
 
-        // 指定折线图的配置项和数据
-        var lineOption = {
-            title: {
-                text: '',
-                subtext: '纯属虚构'
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: ['最多提交次数', '最少提交次数']
-            },
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+ </script>
+<script>
+            // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('zhutu'));
+
+        // 指定图表的配置项和数据
+        var option = {
             xAxis: {
                 type: 'category',
-                boundaryGap: false,
-                data: {{ line_chart_data.dates|safe }}
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
             },
             yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value} 次'
-                }
+                type: 'value'
             },
-            series: [
-                {
-                    name: '提交次数',
-                    type: 'line',
-                    data: {{ line_chart_data.values|safe }},
-                    markPoint: {
-                        data: [
-                            {type: 'max', name: '最大值'},
-                            {type: 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            {type: 'average', name: '平均值'}
-                        ]
-                    }
-                }
-            ]
+            series: [{
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: 'bar'
+            }]
         };
 
         // 使用刚指定的配置项和数据显示图表。
-        lineChart.setOption(lineOption);
-        myChart.setOption(chartoption);
-    </script>
+        myChart.setOption(option);
+        </script>
 
 </body>
 </html>
