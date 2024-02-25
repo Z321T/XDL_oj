@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
-from student_app.models import Student
+from student_app.models import Student, ExerciseCompletion, ExamCompletion, Score
 
 
 # Create your views here.
@@ -53,23 +53,45 @@ def test_teacher(request):
     return render(request, 'test_teacher.html',
                   {'dropdown_menu1': dropdown_menu1, 'coursework': exercises, 'classes': classes})
 
-    # # 初始化图表数据
-    # chart_data = {
-    #     'categories': [],
-    #     'data': []
-    # }
-    # 遍历所有班级，获取每个班级的学生人数
-    # for class_obj in classes:
-    #     total_students = class_obj.students.count()
-    #     # 获取完成练习的学生数
-    #     completed_students = class_obj.students.filter(
-    #         exercise_completions__completed_at__isnull=False).distinct().count()
-    #
-    # '''
-    # exercises = teacher.exercise_set.all()
-    # '''
+
+# 作业情况：获取数据
+def test_data(request):
+    if request.method == 'POST':
+        data_type = request.POST.get('type')
+        item_id = request.POST.get('id')
+        response_data = []
+
+        if data_type == 'exercise':
+            exercise = get_object_or_404(Exercise, id=item_id)
+            related_classes = exercise.classes.all()
+        elif data_type == 'exam':
+            exam = get_object_or_404(Exam, id=item_id)
+            related_classes = exam.classes.all()
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)
+
+        for class_group in related_classes:
+            students = class_group.students.all()
+            total_students = students.count()
+            student_ids = students.values_list('id', flat=True)
+
+        if data_type == 'exercise':
+            completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
+        else:
+            completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
+
+        completion_rate = (completed_count / total_students * 100) if total_students > 0 else 0
+        response_data.append({
+            'class_name': class_group.name,
+            'completion_rate': completion_rate
+        })
+        return JsonResponse({'data': response_data})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
+def test_details(request):
+    return render(request, 'test_details.html')
 
 # # 作业情况：练习详情
 # def test_exercise_list(request, exercise_id):
@@ -438,7 +460,4 @@ def reset_password(request):
             return JsonResponse({'status': 'error', 'message': '初始化密码失败'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
-
-def test_details(request):
-    return render(request, 'test_details.html')
 
