@@ -18,9 +18,9 @@ urlpatterns = [
     # 教师使用界面
     # path('home/student/', home_student_views.***, name='')
     path('home/', home_teacher, name='home_teacher'),
-    path('test/', test_teacher, name='test_teacher'),
     path('profile/', profile_teacher, name='test_details'),
-    #有关test的操作
+    # 有关test的操作
+    path('test/', test_teacher, name='test_teacher'),
     path('test/details/', test_details, name='test_details'),
     # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),

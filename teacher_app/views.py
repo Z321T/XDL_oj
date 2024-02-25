@@ -48,26 +48,27 @@ def test_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
-
-    # 获取与当前教师关联的所有班级
     classes = teacher.classes_assigned.all()
-    # 初始化图表数据
-    chart_data = {
-        'categories': [],
-        'data': []
-    }
-    # 遍历所有班级，获取每个班级的学生人数
-    for class_obj in classes:
-        total_students = class_obj.students.count()
-        # 获取完成练习的学生数
-        completed_students = class_obj.students.filter(
-            exercise_completions__completed_at__isnull=False).distinct().count()
 
-    '''
-    exercises = teacher.exercise_set.all()
-    '''
     return render(request, 'test_teacher.html',
-                  {'dropdown_menu1': dropdown_menu1,})
+                  {'dropdown_menu1': dropdown_menu1, 'coursework': exercises, 'classes': classes})
+
+    # # 初始化图表数据
+    # chart_data = {
+    #     'categories': [],
+    #     'data': []
+    # }
+    # 遍历所有班级，获取每个班级的学生人数
+    # for class_obj in classes:
+    #     total_students = class_obj.students.count()
+    #     # 获取完成练习的学生数
+    #     completed_students = class_obj.students.filter(
+    #         exercise_completions__completed_at__isnull=False).distinct().count()
+    #
+    # '''
+    # exercises = teacher.exercise_set.all()
+    # '''
+
 
 
 # # 作业情况：练习详情
