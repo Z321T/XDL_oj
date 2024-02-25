@@ -43,6 +43,41 @@ def home_teacher(request):
     return render(request, 'home_teacher.html', context)
 
 
+# 作业情况
+def test_teacher(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
+
+    # 获取与当前教师关联的所有班级
+    classes = teacher.classes_assigned.all()
+    # 初始化图表数据
+    chart_data = {
+        'categories': [],
+        'data': []
+    }
+    # 遍历所有班级，获取每个班级的学生人数
+    for class_obj in classes:
+        total_students = class_obj.students.count()
+        # 获取完成练习的学生数
+        completed_students = class_obj.students.filter(
+            exercise_completions__completed_at__isnull=False).distinct().count()
+
+    '''
+    exercises = teacher.exercise_set.all()
+    '''
+    return render(request, 'test_teacher.html',
+                  {'dropdown_menu1': dropdown_menu1,})
+
+
+# # 作业情况：练习详情
+# def test_exercise_list(request, exercise_id):
+#
+#
+# # 作业情况：考试详情
+# def test_exam_list(request, exam_id):
+
+
 # 通知界面
 def notice_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
@@ -310,12 +345,6 @@ def examquestion_delete(request):
         return JsonResponse({'status': 'error', 'message': '考试题未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
-
-
-# 作业情况
-def test_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'test_teacher.html', {'dropdown_menu1': dropdown_menu1})
 
 
 # 班级管理
