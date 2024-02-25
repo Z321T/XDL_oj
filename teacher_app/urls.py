@@ -6,6 +6,7 @@ from .views import (exercise_list_default, exercise_list,
 from .views import (exam_list_default, exam_list,
                     create_exam, exam_delete, exam_edit, examquestion_delete)
 from .views import create_notice, delete_notice, notification_content
+from .views import test_details
 
 from django.contrib.staticfiles.views import serve
 
@@ -18,7 +19,9 @@ urlpatterns = [
     # path('home/student/', home_student_views.***, name='')
     path('home/', home_teacher, name='home_teacher'),
     path('test/', test_teacher, name='test_teacher'),
-    path('profile/', profile_teacher, name='profile_teacher'),
+    path('profile/', profile_teacher, name='test_details'),
+    #有关test的操作
+    path('test/details/', test_details, name='test_details'),
     # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),
     path('notice/create/', create_notice, name='create_notice'),

@@ -437,3 +437,7 @@ def reset_password(request):
             return JsonResponse({'status': 'error', 'message': '初始化密码失败'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
+
+def test_details(request):
+    return render(request, 'test_details.html')
+
