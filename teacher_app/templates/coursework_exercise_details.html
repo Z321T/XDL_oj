@@ -67,27 +67,27 @@
     </style>
     <script>
         function redirectToHome() {
-            window.location.href = "/teacher/home/"
+            window.location.href = "{% url 'teacher_app:home_teacher' %}"
         }
 
         function redirectToNotice() {
-            window.location.href = "/teacher/notice/";
+            window.location.href = "{% url 'teacher_app:notice_teacher' %}";
         }
 
         function redirectToTest() {
-            window.location.href = "/teacher/test/";
+            window.location.href = "{% url 'teacher_app:coursework_exercise' %}";
         }
 
         function redirectToProfile() {
-            window.location.href = "/teacher/profile/"
+            window.location.href = "{% url 'teacher_app:profile_teacher' %}"
         }
 
         function redirectToRepository() {
-            window.location.href = "/teacher/repository/"
+            window.location.href = "{% url 'teacher_app:repository_teacher' %}"
         }
 
         function redirectToClass() {
-            window.location.href = "/teacher/class/"
+            window.location.href = "{% url 'teacher_app:class_teacher' %}"
         }
 
     </script>
@@ -304,88 +304,32 @@
                                                 <div class="card-body">
                                                      <!-- 添加切换按钮 -->
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button type="button" class="btn btn-secondary">练习</button>
-                                                        <button type="button" class="btn btn-secondary">作业</button>
+                                                        <button type="button" class="btn btn-secondary" data-type="exercise">练习</button>
+                                                        <button type="button" class="btn btn-secondary exam-button" data-type="exam">作业</button>
                                                     </div>
-                                                     <div class="row">
+                                                    <div class="row">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">#</th>
                                                                 <th scope="col">名称</th>
+                                                                <th scope="col">发布时间</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>1班</td>
-
+                                                        {% for question in coursework %}
+                                                            <tr data-id="{{ question.id }}">
+                                                                <td>{{ question.title }}</td>
+                                                                <td>{{ question.published_at }}</td>
                                                             </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>2班</td>
-
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td>3班</td>
-
-                                                            </tr>
+                                                        {% endfor %}
                                                         </tbody>
                                                     </table>
-                                                </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                                        <div class="d-flex flex-wrap justify-content-xl-between">
-                                            <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                                                <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                                                <div class="d-flex flex-column justify-content-around">
-                                                    <small class="mb-1 text-muted">Start date</small>
-                                                    <div class="dropdown">
-                                                        <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium"
-                                                           href="https://majestic.bootmb.com/#" role="button"
-                                                           id="dropdownMenuLinkA" data-toggle="dropdown"
-                                                           aria-haspopup="true" aria-expanded="false">
-                                                            <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                                                        </a>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="purchases" role="tabpanel"
-                                         aria-labelledby="purchases-tab">
-                                        <div class="d-flex flex-wrap justify-content-xl-between">
-                                            <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                                                <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                                                <div class="d-flex flex-column justify-content-around">
-                                                    <small class="mb-1 text-muted">Start date</small>
-                                                    <div class="dropdown">
-                                                        <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium"
-                                                           href="https://majestic.bootmb.com/#" role="button"
-                                                           id="dropdownMenuLinkA" data-toggle="dropdown"
-                                                           aria-haspopup="true" aria-expanded="false">
-                                                            <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                                                        </a>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                                            <a class="dropdown-item"
-                                                               href="https://majestic.bootmb.com/#">12 Aug 2018</a>
-                                                            <a class="dropdown-item"
-                                                               href="https://majestic.bootmb.com/#">22 Sep 2018</a>
-                                                            <a class="dropdown-item"
-                                                               href="https://majestic.bootmb.com/#">21 Oct 2018</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -441,16 +385,16 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-#查重跳转
-   <script>
+{#查重跳转#}
+    <script>
                // JavaScript
         function redirectToOtherPage() {
             window.location.href = "/other_page/";
         }
 
         document.querySelector("mb-1 text-muted").addEventListener("click", redirectToOtherPage);
-   </script>
- <script>
+    </script>
+    <script>
              // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('myChart'));
 
@@ -492,8 +436,8 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
- </script>
-<script>
+    </script>
+    <script>
             // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zhutu'));
 
@@ -514,7 +458,64 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        </script>
+    </script>
+
+    <script>
+    $(function () {
+        $('.btn-group .btn-secondary[data-type="exercise"]').addClass('active')
+
+        $('.btn-group .btn-secondary.exam-button').click(function () {
+            window.location.href = "{% url 'teacher_app:coursework_exam' %}"
+        });
+
+        $('table tbody').on('click', 'tr', function () {
+            var id = $(this).data('id');
+            var type = $('.btn-group .btn-secondary.active').data('type');
+            $.ajax({
+                url: "{% url 'teacher_app:coursework_data' %}",
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'type': type,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    updateChart(response.data);
+                },
+                error: function (response) {
+                    alert(response.responseJSON.message);
+                }
+            });
+        });
+    })
+
+    // 更新柱状图的函数
+    function updateChart(data) {
+        var myChart = echarts.init(document.getElementById('cash-deposits-chart'));
+        var classNames = data.map(function (item) {
+            return item.class_name;
+        });
+        var completionRates = data.map(function (item) {
+            return item.completion_rate;
+        });
+        var option = {
+            tooltip: {},
+            legend: {
+                data: ['完成情况']
+            },
+            xAxis: {
+                data: classNames
+            },
+            yAxis: {},
+            series: [{
+                name: '完成情况',
+                type: 'bar',
+                data: completionRates
+            }]
+        };
+        myChart.setOption(option);
+    }
+</script>
 
 </body>
 </html>

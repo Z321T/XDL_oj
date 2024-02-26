@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 
 from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
@@ -44,18 +44,28 @@ def home_teacher(request):
 
 
 # 作业情况
-def test_teacher(request):
+def coursework_exercise(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
     classes = teacher.classes_assigned.all()
 
-    return render(request, 'test_teacher.html',
+    return render(request, 'coursework_exercise.html',
                   {'dropdown_menu1': dropdown_menu1, 'coursework': exercises, 'classes': classes})
 
 
+def coursework_exam(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
+    classes = teacher.classes_assigned.all()
+
+    return render(request, 'coursework_exam.html',
+                  {'dropdown_menu1': dropdown_menu1, 'coursework': exams, 'classes': classes})
+
+
 # 作业情况：获取数据
-def test_data(request):
+def coursework_data(request):
     if request.method == 'POST':
         data_type = request.POST.get('type')
         item_id = request.POST.get('id')
@@ -75,25 +85,57 @@ def test_data(request):
             total_students = students.count()
             student_ids = students.values_list('id', flat=True)
 
-        if data_type == 'exercise':
-            completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
-        else:
-            completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
+            if total_students > 0:
+                if data_type == 'exercise':
+                    completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
+                else:
+                    completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
 
-        completion_rate = (completed_count / total_students * 100) if total_students > 0 else 0
-        response_data.append({
-            'class_name': class_group.name,
-            'completion_rate': completion_rate
-        })
+                completion_rate = (completed_count / total_students) * 100
+                response_data.append({
+                    'class_name': class_group.name,
+                    'completion_rate': completion_rate
+                })
+            else:
+                response_data.append({
+                    'class_name': class_group.name,
+                    'completion_rate': 0
+                })
+
         return JsonResponse({'data': response_data})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
-def test_details(request):
-    return render(request, 'test_details.html')
+# 作业情况：练习详情
+def coursework_exercise_details(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    if request.method == 'POST':
+        try:
+            class_item = Class.objects.get(id=request.POST.get('class_id'))
+            exercise = Exercise.objects.get(classes=class_item)
+            return render(request, 'coursework_exercise_details.html',
+                          {'dropdown_menu1': dropdown_menu1, 'coursework': exercise})
+        except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
+            return HttpResponseNotFound('所请求的数据不存在')
+    
+    # class_item = Class.objects.get(id=classId)
+    # teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    # exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
+    # return render(request, 'coursework_exercise_details.html',
+    #               {'dropdown_menu1': dropdown_menu1, 'coursework': exercises})
 
-# # 作业情况：练习详情
+
+# 作业情况：考试详情
+def coursework_exam_details(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    # class_item = Class.objects.get(id=classId)
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
+    return render(request, 'coursework_exam_details.html',
+                  {'dropdown_menu1': dropdown_menu1, 'coursework': exams})
+
+#
 # def test_exercise_list(request, exercise_id):
 #
 #
