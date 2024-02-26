@@ -336,7 +336,7 @@
                             <div class="table-responsive">
                                 <div class="card-container">
                                     {% for class in classes %}
-                                        <div class="card" data-class-id="{{ class.id }}">
+                                        <div class="card class-id" data-class-id="{{ class.id }}">
                                             <div class="card-item card-title">{{ class.name }}</div>
                                         </div>
                                     {% endfor %}
@@ -451,21 +451,9 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('.card').on('click', function () {
+         $('.class-id').on('click', function () {
             var classId = $(this).data('class-id');
-            $.ajax({
-                url: "{% url 'teacher_app:coursework_exercise_details' %}",
-                type: 'POST',
-                data: {
-                    'class_id': classId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (response) {
-                },
-                error: function (response) {
-                    alert(response.responseJSON.message);
-                }
-            });
+            window.location.href = "{% url 'teacher_app:coursework_exercise_details' '123' %}".replace('123', classId);
         });
     });
 </script>

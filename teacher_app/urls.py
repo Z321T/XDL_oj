@@ -7,7 +7,7 @@ from .views import (exam_list_default, exam_list,
                     create_exam, exam_delete, exam_edit, examquestion_delete)
 from .views import create_notice, delete_notice, notification_content
 from .views import (coursework_exercise, coursework_exam, coursework_data,
-                    coursework_exercise_details, coursework_exam_details)
+                    coursework_exercise_details, coursework_exam_details, coursework_details_data)
 
 from django.contrib.staticfiles.views import serve
 
@@ -22,8 +22,9 @@ urlpatterns = [
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),
     path('coursework/data/', coursework_data, name='coursework_data'),
-    path('coursework/exercise/details/', coursework_exercise_details, name='coursework_exercise_details'),
-    path('coursework/exam/details/', coursework_exam_details, name='coursework_exam_details'),
+    path('coursework/exercise/details/<int:class_id>', coursework_exercise_details, name='coursework_exercise_details'),
+    path('coursework/exam/details/<int:class_id>', coursework_exam_details, name='coursework_exam_details'),
+    path('coursework/details/data/', coursework_details_data, name='coursework_details_data'),
     # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),
     path('notice/create/', create_notice, name='create_notice'),

@@ -7,7 +7,8 @@ from django.http import JsonResponse, HttpResponseNotFound
 
 from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
-from student_app.models import Student, ExerciseCompletion, ExamCompletion, Score
+from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
+                                Score, ExerciseQuestionCompletion, ExamQuestionCompletion)
 
 
 # Create your views here.
@@ -108,39 +109,88 @@ def coursework_data(request):
 
 
 # 作业情况：练习详情
-def coursework_exercise_details(request):
+def coursework_exercise_details(request, class_id):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
-            class_item = Class.objects.get(id=request.POST.get('class_id'))
-            exercise = Exercise.objects.get(classes=class_item)
+            class_item = Class.objects.get(id=class_id)
+            exercises = Exercise.objects.filter(classes=class_item).order_by('-published_at')
             return render(request, 'coursework_exercise_details.html',
-                          {'dropdown_menu1': dropdown_menu1, 'coursework': exercise})
+                          {'dropdown_menu1': dropdown_menu1, 'coursework': exercises, 'class_id': class_id})
         except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
             return HttpResponseNotFound('所请求的数据不存在')
-    
-    # class_item = Class.objects.get(id=classId)
-    # teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    # exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
-    # return render(request, 'coursework_exercise_details.html',
-    #               {'dropdown_menu1': dropdown_menu1, 'coursework': exercises})
 
 
 # 作业情况：考试详情
-def coursework_exam_details(request):
+def coursework_exam_details(request, class_id):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    # class_item = Class.objects.get(id=classId)
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
-    return render(request, 'coursework_exam_details.html',
-                  {'dropdown_menu1': dropdown_menu1, 'coursework': exams})
+    if request.method == 'GET':
+        try:
+            class_item = Class.objects.get(id=class_id)
+            exams = Exam.objects.filter(classes=class_item).order_by('-published_at')
+            return render(request, 'coursework_exam_details.html',
+                          {'dropdown_menu1': dropdown_menu1, 'coursework': exams})
+        except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
+            return HttpResponseNotFound('所请求的数据不存在')
 
-#
-# def test_exercise_list(request, exercise_id):
-#
-#
-# # 作业情况：考试详情
-# def test_exam_list(request, exam_id):
+
+# 作业情况-详情界面：获取数据
+def coursework_details_data(request):
+    if request.method == 'POST':
+        data_type = request.POST.get('type')
+        item_id = request.POST.get('id')
+        class_item = get_object_or_404(Class, id=request.POST.get('class_id'))
+        students = class_item.students.all()
+        total_students = students.count()
+        student_ids = students.values_list('id', flat=True)
+
+        if data_type == 'exercise':
+            exercise = get_object_or_404(Exercise, id=item_id)
+            exercise_completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
+            exercise_completion_rate = (exercise_completed_count / total_students) * 100 if total_students > 0 else 0
+            exercise_data = [{
+                'completion_rate': exercise_completion_rate
+            }]
+
+            questions = ExerciseQuestion.objects.filter(exercise=exercise)
+            exercisequestion_data = []
+            for question in questions:
+                question_completed_count = ExerciseQuestionCompletion.objects.filter(exercise_question=question, student_id__in=student_ids).count()
+                question_completion_rate = (question_completed_count / total_students) * 100 if total_students > 0 else 0
+                exercisequestion_data.append({
+                    'question_title': question.title,
+                    'completion_rate': question_completion_rate
+                })
+
+            context = {
+                'exercise_data': exercise_data,
+                'exercisequestion_data': exercisequestion_data
+            }
+            return JsonResponse({'data': context})
+
+        elif data_type == 'exam':
+            exam = get_object_or_404(Exam, id=item_id)
+            exam_completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
+            exam_completion_rate = (exam_completed_count / total_students) * 100 if total_students > 0 else 0
+            exam_data = [{
+                'completion_rate': exam_completion_rate
+            }]
+
+            questions = ExamQuestion.objects.filter(exam=exam)
+            examquestion_data = []
+            for question in questions:
+                question_completed_count = ExamQuestionCompletion.objects.filter(exam_question=question, student_id__in=student_ids).count()
+                question_completion_rate = (question_completed_count / total_students) * 100 if total_students > 0 else 0
+                examquestion_data.append({
+                    'question_title': question.title,
+                    'completion_rate': question_completion_rate
+                })
+
+            context = {
+                'exam_data': exam_data,
+                'examquestion_data': examquestion_data
+            }
+            return JsonResponse({'data': context})
 
 
 # 通知界面

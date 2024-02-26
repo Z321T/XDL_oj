@@ -333,7 +333,7 @@
                             <div class="table-responsive">
                                 <div class="card-container">
                                     {% for class in classes %}
-                                        <div class="card" data-class-id="{{ class.id }}">
+                                        <div class="card class-id" data-class-id="{{ class.id }}">
                                             <div class="card-item card-title">{{ class.name }}</div>
                                         </div>
                                     {% endfor %}
@@ -446,8 +446,11 @@
     }
 </script>
 <script>
-    $('.card-item.card-title').on('click', function () {
-        window.location.href = "{% url 'teacher_app:test_details' %}";
+    $(document).ready(function () {
+         $('.class-id').on('click', function () {
+            var classId = $(this).data('class-id');
+            window.location.href = "{% url 'teacher_app:coursework_exam_details' '123' %}".replace('123', classId);
+        });
     });
 </script>
 </body>
