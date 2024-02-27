@@ -129,7 +129,7 @@ def coursework_exam_details(request, class_id):
             class_item = Class.objects.get(id=class_id)
             exams = Exam.objects.filter(classes=class_item).order_by('-published_at')
             return render(request, 'coursework_exam_details.html',
-                          {'dropdown_menu1': dropdown_menu1, 'coursework': exams})
+                          {'dropdown_menu1': dropdown_menu1, 'coursework': exams, 'class_id': class_id})
         except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
             return HttpResponseNotFound('所请求的数据不存在')
 

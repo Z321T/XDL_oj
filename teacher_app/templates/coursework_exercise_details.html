@@ -441,13 +441,13 @@
         var option = {
             xAxis: {
                 type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                data: ['第一题', '第二题', '第三题', '第四题', '第五题', '第六题']
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [0.56, 0.24, 1, 0.76, 0.69, 0.34],
                 type: 'bar'
             }]
         };
@@ -469,7 +469,7 @@
             var classId = {{ class_id }};
             var type = $('.btn-group .btn-secondary.active').data('type');
             $.ajax({
-                url: "{% url 'teacher_app:coursework_data' %}",
+                url: "{% url 'teacher_app:coursework_details_data' %}",
                 type: 'POST',
                 data: {
                     'id': id,

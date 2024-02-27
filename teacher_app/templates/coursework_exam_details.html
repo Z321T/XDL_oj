@@ -441,13 +441,13 @@
         var option = {
             xAxis: {
                 type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                data: ['第一题', '第二题', '第三题', '第四题', '第五题', '第六题']
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [0.56, 0.24, 1, 0.76, 0.69, 0.34],
                 type: 'bar'
             }]
         };
@@ -469,7 +469,7 @@
             var classId = {{ class_id }};
             var type = $('.btn-group .btn-secondary.active').data('type');
             $.ajax({
-                url: "{% url 'teacher_app:coursework_data' %}",
+                url: "{% url 'teacher_app:coursework_details_data' %}",
                 type: 'POST',
                 data: {
                     'id': id,
@@ -478,7 +478,9 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    updateChart(response.data);
+                    var data = response.data;
+                    updatePieChart(data.exercise_data || data.exam_data);
+                    updateBarChart(data.exercisequestion_data || data.examquestion_data);
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
@@ -486,29 +488,62 @@
             });
         });
     })
-
-    // 更新柱状图的函数
-    function updateChart(data) {
-        var myChart = echarts.init(document.getElementById('cash-deposits-chart'));
-        var classNames = data.map(function (item) {
-            return item.class_name;
-        });
-        var completionRates = data.map(function (item) {
-            return item.completion_rate;
-        });
+    // 更新饼图的函数
+    function updatePieChart(data) {
+        var myChart = echarts.init(document.getElementById('myChart'));
         var option = {
-            tooltip: {},
+            title : {
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
             legend: {
-                data: ['完成情况']
+                orient: 'vertical',
+                left: 'left',
+                data: ['已完成','未完成']
             },
+            series : [
+                {
+                    name: '完成情况',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: [
+                        {value: data[0].completion_rate, name:'已完成'},
+                        {value: 100 - data[0].completion_rate, name:'未完成'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+    // 更新柱状图的函数
+    function updateBarChart(data) {
+        var myChart = echarts.init(document.getElementById('zhutu'));
+        var option = {
             xAxis: {
-                data: classNames
+                type: 'category',
+                data: data.map(function (item) {
+                    return item.question_title;
+                })
             },
-            yAxis: {},
+            yAxis: {
+                type: 'value'
+            },
             series: [{
-                name: '完成情况',
-                type: 'bar',
-                data: completionRates
+                data: data.map(function (item) {
+                    return item.completion_rate;
+                }),
+                type: 'bar'
             }]
         };
         myChart.setOption(option);
