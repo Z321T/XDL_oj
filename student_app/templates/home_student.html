@@ -293,6 +293,7 @@
                         </div>
                     </div>
                 </div>
+                <!--
                 <div class="row">
                     <div class="col-md-12 grid-margin stretch-card">
                         <div class="card">
@@ -306,12 +307,7 @@
                                                 <div class="d-flex flex-column justify-content-around">
                                                     <small class="mb-1 text-muted">好题集</small>
                                                     <div class="dropdown">
-                                                        <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium"
-                                                           href="https://majestic.bootmb.com/#" role="button"
-                                                           id="dropdownMenuLinkA" data-toggle="dropdown"
-                                                           aria-haspopup="true" aria-expanded="false">
-                                                            <h5 class="mb-0 d-inline-block">5</h5>
-                                                        </a>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -343,63 +339,56 @@
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <!-- 左边的表格 -->
-                            <div class="col-md-7 stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="card-title">未完成作业</p>
-                                        <div class="table-responsive"
-                                             style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                                            <table id="incomplete-tasks" class="table dataTable no-footer" role="grid">
-                                                <thead>
-                                                <tr role="row">
-                                                    <th>作业</th>
-                                                    <th>截止时间</th>
-                                                    <th>发布人</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <!-- 在此处添加左边表格的行数据 -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                -->
+                 <div class="row">
+                    <div class="col-md-12 stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title">作业列表</p>
+                                <div class="table-responsive"
+                                     style="max-height: 450px; overflow-y: auto; overflow-x: hidden;">
+                                    <!-- 添加了 style 属性 -->
+                                    <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table id="recent-purchases-listing" class="table dataTable no-footer"
+                                                       role="grid">
+                                                    <thead>
+                                                    <tr role="row">
+                                                         <th class="sorting_asc" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label="Name: activate to sort column descending"
+                                                        style="width: 167.95px;">题目
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 155.6px;">截止时间
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Price: activate to sort column ascending"
+                                                        style="width: 72.575px;">操作
+                                                    </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <!-- 表格内容 -->
 
-                            <div class="col-md-4 stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="card-title">我的练习</p>
-
-                                        <!-- 新增的输入框和按钮 -->
-                                        <div class="add-exercise-form">
-                                            <input type="text" id="exercise-input" placeholder="输入练习名称"/>
-                                            <button id="add-exercise-btn">添加</button>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
 
-                                        <div class="table-responsive"
-                                             style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                                            <table class="table dataTable no-footer" role="grid">
-                                                <thead>
-                                                <tr role="row">
-                                                    <th>题目</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <!-- 在此处动态添加表格行数据 -->
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
 

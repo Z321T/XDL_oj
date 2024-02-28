@@ -2,7 +2,7 @@
 from django.urls import path
 from django.contrib.staticfiles.views import serve
 
-from .views import home_student, practice_student, test_student, profile_student
+from .views import home_student, practice_student, test_student, profile_student, report_student
 from .views import text_list, practice_list, notification_content
 from .views import coding_exercise, coding_exam, run_cpp_code
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('home/', home_student, name='home_student'),
     path('profile/', profile_student, name='profile_student'),
     path('notification_content/', notification_content, name='notification_content'),
+    path('home/submit', report_student, name='report_student'),
     # 练习相关
     path('practice/', practice_student, name='practice_student'),
     path('practice/practice_list/<int:exercise_id>', practice_list, name='practice_list'),

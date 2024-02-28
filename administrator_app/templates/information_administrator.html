@@ -104,9 +104,7 @@
         }
     </script>
     <style>
-        body {
-            background: linear-gradient(to bottom, #EDE7F6 0%, #E8EAF6 25%, #ECEFF1 50%, #FFFFFF 100%);
-        }
+
 
         table {
 
@@ -285,15 +283,9 @@
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">教师列表</p>
-                            <div class="table-responsive"
-                                 style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                            <div class="table-responsive" style="max-height: 580px; overflow-y: auto; overflow-x: hidden;">
                                 <!-- 添加了 style 属性 -->
-                                <div id="recent-purchases-listing_wrapper"
-                                     class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6"></div>
-                                        <div class="col-sm-12 col-md-6"></div>
-                                    </div>
+                                <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <table id="recent-purchases-listing" class="table dataTable no-footer"
@@ -340,6 +332,7 @@
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
+                                           </div>
                                         </div>
                                     </div>
                                 </div>
