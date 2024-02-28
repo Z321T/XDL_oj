@@ -2,7 +2,7 @@
 from django.urls import path
 from django.contrib.staticfiles.views import serve
 
-from .views import home_student, practice_student, test_student, profile_student, report_student
+from .views import home_student, practice_student, test_student, profile_student, report_student,analyse_student
 from .views import text_list, practice_list, notification_content
 from .views import coding_exercise, coding_exam, run_cpp_code
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path('test/', test_student, name='test_student'),
     path('test/text_list/<int:exam_id>', text_list, name='text_list'),
     path('coding_exam/<int:examquestion_id>/', coding_exam, name='coding_exam'),
+    path('analyse/', analyse_student, name='analyse_student'),
 
     path('profile/', profile_student, name='profile_student'),
 

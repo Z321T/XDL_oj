@@ -235,3 +235,7 @@ def report_student(request):
        return render(request, 'report_student.html')
 
 
+def analyse_student(request):
+    return render(request, 'analyse_student.html')
+
+
