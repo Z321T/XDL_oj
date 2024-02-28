@@ -40,7 +40,7 @@ def create_notice(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     if request.method == 'POST':
         title = request.POST.get('title')
-        content = request.POST.get('content')
+        content = request.POST.get('message')
         if title and content:
             adminnotification = AdminNotification.objects.create(
                 title=title,
