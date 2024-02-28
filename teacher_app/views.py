@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 
+from administrator_app.models import AdminNotification
 from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
 from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
@@ -23,7 +24,9 @@ def home_teacher(request):
         teacher = Teacher.objects.get(userid=user_id)
     except ObjectDoesNotExist:
         return redirect('/login/')
-        # 假设这是你的饼状图数据
+
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    # 假设这是你的饼状图数据
     chart_data = {
         'categories': ['分类1', '分类2', '分类3'],
         'data': [30, 50, 20]
@@ -36,7 +39,8 @@ def home_teacher(request):
     }
 
     context = {
-        'dropdown_menu1': dropdown_menu1,  # 添加 teacher 对象
+        'dropdown_menu1': dropdown_menu1,
+        'adminnotifications': adminnotifications,
         'chart_data': chart_data,  # 添加图表数据
         'line_chart_data': line_chart_data,  # 添加折线图数据
     }
@@ -47,22 +51,36 @@ def home_teacher(request):
 # 作业情况
 def coursework_exercise(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
     classes = teacher.classes_assigned.all()
 
-    return render(request, 'coursework_exercise.html',
-                  {'dropdown_menu1': dropdown_menu1, 'coursework': exercises, 'classes': classes})
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'coursework': exercises,
+        'classes': classes,
+        'adminnotifications': adminnotifications
+    }
+
+    return render(request, 'coursework_exercise.html', context)
 
 
 def coursework_exam(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
     classes = teacher.classes_assigned.all()
 
-    return render(request, 'coursework_exam.html',
-                  {'dropdown_menu1': dropdown_menu1, 'coursework': exams, 'classes': classes})
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'coursework': exams,
+        'classes': classes,
+        'adminnotifications': adminnotifications
+    }
+
+    return render(request, 'coursework_exam.html', context)
 
 
 # 作业情况：获取数据
@@ -111,12 +129,19 @@ def coursework_data(request):
 # 作业情况：练习详情
 def coursework_exercise_details(request, class_id):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
             class_item = Class.objects.get(id=class_id)
             exercises = Exercise.objects.filter(classes=class_item).order_by('-published_at')
-            return render(request, 'coursework_exercise_details.html',
-                          {'dropdown_menu1': dropdown_menu1, 'coursework': exercises, 'class_id': class_id})
+
+            context = {
+                'dropdown_menu1': dropdown_menu1,
+                'coursework': exercises,
+                'class_id': class_id,
+                'adminnotifications': adminnotifications
+            }
+            return render(request, 'coursework_exercise_details.html', context)
         except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
             return HttpResponseNotFound('所请求的数据不存在')
 
@@ -124,12 +149,19 @@ def coursework_exercise_details(request, class_id):
 # 作业情况：考试详情
 def coursework_exam_details(request, class_id):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
             class_item = Class.objects.get(id=class_id)
             exams = Exam.objects.filter(classes=class_item).order_by('-published_at')
-            return render(request, 'coursework_exam_details.html',
-                          {'dropdown_menu1': dropdown_menu1, 'coursework': exams, 'class_id': class_id})
+
+            context = {
+                'dropdown_menu1': dropdown_menu1,
+                'coursework': exams,
+                'class_id': class_id,
+                'adminnotifications': adminnotifications
+            }
+            return render(request, 'coursework_exam_details.html', context)
         except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
             return HttpResponseNotFound('所请求的数据不存在')
 
@@ -197,10 +229,16 @@ def coursework_details_data(request):
 def notice_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     classes = teacher.classes_assigned.all()
     notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
-    return render(request, 'notice_teacher.html',
-                  {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+        'adminnotifications': adminnotifications
+    }
+    return render(request, 'notice_teacher.html', context)
 
 
 # 发布通知
@@ -251,8 +289,8 @@ def notification_content(request):
 # 教师个人中心
 def profile_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    user_id = request.session.get('user_id')
-    teacher = Teacher.objects.get(userid=user_id)
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
     if request.method == 'POST':
         form = TeacherForm(request.POST, instance=teacher)
@@ -261,21 +299,29 @@ def profile_teacher(request):
             return redirect('teacher_app:profile_teacher')
         else:
             # 如果表单无效，将错误信息返回到模板
-            return render(request, 'profile_teacher.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
+            return render(request, 'profile_teacher.html',
+                          {'form': form, 'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
     else:
         form = TeacherForm(instance=teacher)
-    return render(request, 'profile_teacher.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
+    return render(request, 'profile_teacher.html',
+                  {'form': form, 'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
 
 
 # 题库管理
 def repository_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
 
-    return render(request, 'repository_teacher.html',
-                  {'dropdown_menu1': dropdown_menu1, 'exercises': exercises, 'exams': exams})
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'exercises': exercises,
+        'exams': exams,
+        'adminnotifications': adminnotifications
+    }
+    return render(request, 'repository_teacher.html', context)
 
 
 # 题库管理：练习列表
@@ -335,9 +381,14 @@ def create_exercise(request, exercise_id):
 
 # 题库管理：练习列表-修改练习题
 def exercise_edit(request, exercise_id):
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         exercise = Exercise.objects.get(id=exercise_id)
-        return render(request, 'exercise_edit.html', {'exercise': exercise})
+        context = {
+            'exercise': exercise,
+            'adminnotifications': adminnotifications
+        }
+        return render(request, 'exercise_edit.html', context)
 
 
 # 题库管理：练习列表-删除练习
@@ -427,9 +478,14 @@ def create_exam(request, exam_id):
 
 # 题库管理：考试列表-修改考试题
 def exam_edit(request, exam_id):
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
-        return render(request, 'exam_edit.html', {'exam': exam})
+        context = {
+            'exam': exam,
+            'adminnotifications': adminnotifications
+        }
+        return render(request, 'exam_edit.html', context)
 
 
 # 题库管理：考试列表-删除考试
@@ -465,14 +521,26 @@ def examquestion_delete(request):
 # 班级管理
 def class_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     classes = Class.objects.filter(teacher=teacher)
-    return render(request, 'class_teacher.html',
-                  {'classes': classes, 'dropdown_menu1': dropdown_menu1})
+
+    context = {
+        'classes': classes,
+        'dropdown_menu1': dropdown_menu1,
+        'adminnotifications': adminnotifications
+    }
+    return render(request, 'class_teacher.html', context)
 
 
 # 班级管理：创建班级
 def create_class(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'adminnotifications': adminnotifications
+    }
     if request.method == 'POST':
         class_name = request.POST.get('className')
         initial_password = request.POST.get('initialPassword')
@@ -492,7 +560,7 @@ def create_class(request):
                     class_assigned=new_class
                 )
             return redirect('teacher_app:class_teacher')
-    return render(request, 'create_class.html')
+    return render(request, 'create_class.html', context)
 
 
 # 班级管理：删除班级
@@ -513,10 +581,17 @@ def delete_class(request):
 
 # 班级管理：班级详情
 def class_details(request, class_id):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
             students = Student.objects.filter(class_assigned=class_id)
-            return render(request, 'class_details.html', {'students': students})
+            context = {
+                'students': students,
+                'dropdown_menu1': dropdown_menu1,
+                'adminnotifications': adminnotifications
+            }
+            return render(request, 'class_details.html', context)
         except Class.DoesNotExist:
             return redirect('teacher_app:class_teacher')
     else:
