@@ -131,56 +131,30 @@
                 </li>
             </ul>
             <ul class="navbar-nav navbar-nav-right">
-
                 <li class="nav-item dropdown mr-4">
                     <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown"
-                       id="notificationDropdown" href="https://majestic.bootmb.com/#" data-toggle="dropdown">
+                        id="notificationDropdown" href="#" data-toggle="dropdown">
                         <i class="mdi mdi-bell mx-0"></i>
-                        <span class="count"></span>
+                        <span class="count">{{ adminnotifications.count }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                         aria-labelledby="notificationDropdown">
+                        aria-labelledby="notificationDropdown" style="height: 200px; overflow-y: auto;">
                         <p class="mb-0 font-weight-normal float-left dropdown-header">公告</p>
-                        <a class="dropdown-item">
-                            <div class="item-thumbnail">
-                                <div class="item-icon bg-success">
-                                    <i class="mdi mdi-information mx-0"></i>
+                        {% for adminnotification in adminnotifications %}
+                            <a class="dropdown-item adminnotification-item" data-adminnotification-id="{{ adminnotification.id }}">
+                                <div class="item-thumbnail">
+                                    <div class="item-icon bg-success">
+                                        <i class="mdi mdi-information mx-0"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--可替换消息-->
-                            <div class="item-content">
-                                <h6 class="font-weight-normal">Application Error</h6>
-                                <p class="font-weight-light small-text mb-0 text-muted">
-                                    Just now
-                                </p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item">
-                            <div class="item-thumbnail">
-                                <div class="item-icon bg-warning">
-                                    <i class="mdi mdi-settings mx-0"></i>
+                                <div class="item-content">
+                                    <h6 class="font-weight-normal">{{ adminnotification.title|truncatechars:30 }}</h6>
+                                    <p class="font-weight-light small-text mb-0 text-muted">
+                                        {{ adminnotification.date_posted }}
+                                    </p>
                                 </div>
-                            </div>
-                            <div class="item-content">
-                                <h6 class="font-weight-normal">设置</h6>
-                                <p class="font-weight-light small-text mb-0 text-muted">
-                                    Private message
-                                </p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item">
-                            <div class="item-thumbnail">
-                                <div class="item-icon bg-info">
-                                    <i class="mdi mdi-account-box mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="item-content">
-                                <h6 class="font-weight-normal">New user registration</h6>
-                                <p class="font-weight-light small-text mb-0 text-muted">
-                                    2 days ago
-                                </p>
-                            </div>
-                        </a>
+                            </a>
+                        {% endfor %}
                     </div>
                 </li>
 
@@ -353,6 +327,26 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">通知</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="notificationModalContent">
+                <!-- 通知内容将在这里显示 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'teacher_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
@@ -454,6 +448,31 @@
          $('.class-id').on('click', function () {
             var classId = $(this).data('class-id');
             window.location.href = "{% url 'teacher_app:coursework_exercise_details' '123' %}".replace('123', classId);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.adminnotification-item').on('click', function () {
+            var adminnotificationId = $(this).data('adminnotification-id');
+            $.ajax({
+                url: "{% url 'administrator_app:notification_content' %}",
+                type: 'POST',
+                data: {
+                    'notification_id': adminnotificationId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    // 更新模态框的内容
+                    $('#notificationModalLabel').text(response.title);
+                    $('#notificationModalContent').text(response.content);
+                    // 显示模态框
+                    $('#notificationModal').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseJSON.message);
+                }
+            });
         });
     });
 </script>
