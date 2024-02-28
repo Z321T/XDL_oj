@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
+    <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,6 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -104,95 +103,157 @@
         }
     </script>
     <style>
-        body {
-            background: linear-gradient(to bottom, #EDE7F6 0%, #E8EAF6 25%, #ECEFF1 50%, #FFFFFF 100%);
+        input[type="text"],
+        input[type="password"],
+        input[type="file"],
+        input[type="text"]:hover,
+        input[type="password"]:hover,
+        input[type="file"]:hover {
+            /* 其他样式保持不变 */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
-        table {
-
-            width: 100%; /* 表格宽度填满容器 */
-            height: 80%;
-            border-collapse: collapse; /* 边框合并为单一线条 */
-            text-align: left; /* 文本左对齐 */
-            margin-top: 10px; /* 与上方内容的间距 */
+        input[type="text"]:hover,
+        input[type="password"]:hover,
+        input[type="file"]:hover {
+            border-color: #66afe9; /* 悬停时的边框颜色 */
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* 悬停时的立体阴影效果 */
         }
 
-        th, td {
-            border: 1px solid #ddd; /* 单元格边框 */
-            padding: 8px; /* 单元格内边距 */
+        /* 添加到你的CSS文件中 */
+        .form-group {
+            margin-bottom: 15px;
         }
 
-        thead {
-            background-color: #f2f2f2; /* 表头背景颜色 */
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: 700;
         }
 
-
-        /* 居中容器的样式，包含书签和方框 */
-        .centered-container {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%); /* 调整为居中 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0; /* 根据需要调整书签和方框之间的间距 */
-            max-height: 700px; /* 设置表格的最大高度 */
-            overflow-y: auto; /* 内容超出时显示垂直滚动条 */
-            border: 2px solid purple; /* 可选，添加边框以便更清晰地看到表格的边界 */
-            border-radius: 10px;
-        }
-
-        .tabs {
-            position: relative;
-
-            z-index: 2; /* 书签在方框之上 */
-            display: flex;
-            background-color: #ffffff;
-            border-radius: 10px 10px 0 0; /* 上左和上右圆角 */
-            overflow: hidden; /* 隐藏内部元素溢出的部分，确保书签的边框不会超出圆角 */
-        }
-
-        .tab-link {
-            background-color: #fff; /* 与方框相同的背景颜色 */
-            border: 1px solid purple; /* 相似的边框样式 */
-            border-radius: 0 5px 0 0; /* 适用于第一个书签 */
-        }
-
-        .tab-link.active, .tab-link:hover {
-            background-color: mediumpurple; /* 激活或悬停时的背景颜色 */
-        }
-
-
-        .tab-link:last-child {
-            border-radius: 0 0 5px 0; /* 适用于最后一个书签 */
-        }
-
-        .content-box {
-            position: relative;
-            width: 700px; /* 根据需要调整宽度 */
-            max-height: 650px; /* 或根据需要调整，以避免过高覆盖标签 */
-            overflow-y: auto; /* 添加滚动条 */
+        input[type="text"],
+        input[type="password"],
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
             border: 1px solid #ccc;
-            border-radius: 0 0 10px 10px; /* 下左和下右圆角 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果增强立体感 */
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+
+        input[type="file"] {
+            height: auto;
+        }
+
+        .btn-default {
+            background-color: #ffffff; /* White background */
+            color: #333333; /* Dark text */
+            border: 1px solid #cccccc; /* Light gray border */
+            padding: 10px 20px; /* Padding inside the button */
+            font-size: 16px; /* Text size */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+            transition: all 0.3s; /* Smooth transition for hover effects */
+        }
+
+        .btn-default:hover, .btn-default:focus {
+            border-color: #66afe9; /* Blue border on hover/focus */
+            outline: none; /* Remove outline on focus */
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* More pronounced shadow on hover/focus */
+        }
+
+        .form-control-file {
+            border: none !important;
+            box-shadow: none /* 如果有的话也移除阴影 */ !important;
+        }
+
+
+        /* 以下是导航栏和侧边栏的样式，根据你的实际结构进行调整 */
+        .navbar {
+            background-color: #f8f8f8;
+            border-color: #e7e7e7;
+        }
+
+        .navbar-brand-wrapper {
+            width: 100%;
+        }
+
+        .navbar-toggler {
+            border: none;
+            background: transparent;
+        }
+
+        .sidebar-offcanvas {
+            background: white;
+            color: #fff;
+        }
+
+        .nav .nav-item .nav-link {
+            color: #fff;
+        }
+
+        .nav .nav-item .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav .nav-item.active .nav-link,
+        .nav .nav-item.active .nav-link:hover {
+            color: #fff;
+            background-color: #495057;
+        }
+
+        .menu-icon {
+            margin-right: 5px;
+        }
+
+        .menu-title {
+            font-size: 16px;
+        }
+
+        .menu-arrow {
+            float: right;
+        }
+
+        .page-body-wrapper {
+            padding-top: 70px; /* 确保顶部导航栏不覆盖内容 */
+        }
+
+        .main-panel {
+            background: #fff;
             padding: 20px;
-            background-color: #ffffff;
         }
 
-        .tab-content {
-            display: none; /* 默认隐藏所有内容 */
-        }
+        /* 对响应式布局的支持 */
+        @media (max-width: 768px) {
+            .sidebar-offcanvas {
+                position: absolute;
+                top: 0;
+                right: -250px; /* 根据侧边栏的宽度调整 */
+                width: 250px;
+                height: 100%;
+                transition: all .3s ease;
+            }
 
-        .tab-content.active {
-            display: block; /* 显示激活的标签内容 */
+            .sidebar-offcanvas.active {
+                right: 0;
+            }
         }
 
 
     </style>
 </head>
 <body>
-<div>
-    <div class="container-scroller">
+ <div class="container-scroller">
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="navbar-brand-wrapper d-flex justify-content-center">
@@ -278,98 +339,26 @@
                     </li>
                 </ul>
             </nav>
-            <!-- partial -->
-            <div class="main-panel">
-            <div class="row">
-                <div class="col-md-12 stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">教师列表</p>
-                            <div class="table-responsive"
-                                 style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                                <!-- 添加了 style 属性 -->
-                                <div id="recent-purchases-listing_wrapper"
-                                     class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6"></div>
-                                        <div class="col-sm-12 col-md-6"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table id="recent-purchases-listing" class="table dataTable no-footer"
-                                                   role="grid">
-                                                <thead>
-                                                <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-sort="ascending"
-                                                        aria-label="Name: activate to sort column descending"
-                                                        style="width: 167.95px;">教师
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">班级
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">操作
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for teacher in teachers %}
-                                                    <tr role="row"
-                                                        class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1"><input type="checkbox"
-                                                                                 id="teacher{{ teacher.id }}"> {{ teacher.name }}
-                                                    </td>
-                                                    <td>
-                                                        {% for class in teacher.classes_assigned.all %}
-                                                            {{ class.name }}
-                                                        {% empty %}
-                                                            No classes assigned
-                                                        {% endfor %}
-                                                    </td>
-                                                    <td>
-                                                        <button class="button-class delete-teacher"
-                                                                data-teacher-id="{{ teacher.id }}">删除
-                                                        </button>
-                                                    </td>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5"></div>
-                                <div class="col-sm-12 col-md-7">
-                                    <button onclick="window.location.href='{% url 'administrator_app:add_teacher' %}'"
-                                            style="float: right;">添加教师
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- partial -->
+        <div class="main-panel">
+            <form action="{% url 'administrator_app:add_teacher' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="initialPasswordInput">初始化密码:</label>
+                    <input type="password" class="form-control" id="initialPasswordInput" name="initialPassword"
+                           required>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="excelFileInput">上传Excel文件:</label>
+                    <input type="file" class="form-control-file" id="excelFileInput" name="excelFile" required>
+                </div>
+                <button type="submit" class="btn btn-default">创建</button>
+            </form>
         </div>
-
-
-
-            <!-- partial -->
-        </div>
-        <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
 </div>
 
-    <!-- container-scroller -->
-
-    <!-- plugins:js -->
+<!-- plugins:js -->
     <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page-->
@@ -389,28 +378,5 @@
     <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-    <script>
-    $(document).ready(function () {
-        $('.delete-teacher').on('click', function () {
-            var teacherId = $(this).data('teacher-id');
-            $.ajax({
-                url: "{% url 'administrator_app:delete_teacher' %}",
-                type: 'POST',
-                data: {
-                    'teacher_id': teacherId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (response) {
-                    alert(response.message);
-                    window.location.href = "{% url 'administrator_app:information_administrator' %}";
-                },
-                error: function (response) {
-                    alert(response.responseJSON.message);
-                }
-            });
-        });
-    });
-</script>
-
 </body>
 </html>

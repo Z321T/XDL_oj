@@ -18,9 +18,8 @@ def log_in(request):
         username = data.get('username')
         password = data.get('password')
 
-        # 使用Django的authenticate函数验证用户,根据用户类型选择相应的认证方式
         user = None
-        user_type = None  # 添加用户类型变量
+        user_type = None
 
         if Student.objects.filter(userid=username).exists():
             user = Student.objects.get(userid=username)
@@ -28,39 +27,30 @@ def log_in(request):
                 user_type = 'student'
             else:
                 user = None
-            # user = authenticate(request, student_id=username, password=password)
-            # user_type = 'student'
         elif Teacher.objects.filter(userid=username).exists():
             user = Teacher.objects.get(userid=username)
             if password == user.password:
                 user_type = 'teacher'
             else:
                 user = None
-            # user = authenticate(request, teacher_id=username, password=password)
-            # user_type = 'teacher'
         elif Administrator.objects.filter(userid=username).exists():
             user = Administrator.objects.get(userid=username)
             if password == user.password:
                 user_type = 'administrator'
             else:
                 user = None
-            # user = authenticate(request, admin_id=username, password=password)
-            # user_type = 'administrator'
         else:
-            # 用户不存在，返回错误消息
             error_message = 'Userid is incorrect'
-            # messages.error(request, error_message)
             return JsonResponse({'status': 'error', 'message': error_message})
 
         if user is not None:
             # 用户验证成功，登录用户
             login(request, user)
-            request.session['user_id'] = user.userid  # 保存用户id
+            request.session['user_id'] = user.userid
             return JsonResponse({'status': 'success', 'message': user_type})
         else:
             # 用户验证失败，显示不同的错误消息
             error_message = 'Password is incorrect'
-            # messages.error(request, error_message)
             return JsonResponse({'status': 'error', 'message': error_message})
 
     return render(request, "log_in.html")
