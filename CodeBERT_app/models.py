@@ -1,5 +1,6 @@
 from django.db import models
 
+from administrator_app.models import ProgrammingExercise
 from student_app.models import Student
 from teacher_app.models import ExerciseQuestion, ExamQuestion
 
@@ -17,5 +18,17 @@ class CodeFeature(models.Model):
     def __str__(self):
         return (f"{self.student.name if self.student else '无关联学生'} - "
                 f"{self.exercise_question or self.exam_question} - {self.feature}")
+
+
+class ProgrammingCodeFeature(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, verbose_name="学生",
+                                related_name='programming_code_features', null=True)
+    programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="练习题",
+                                             related_name='programming_code_features', null=True, blank=True)
+    feature = models.TextField(verbose_name="特征值")
+
+    def __str__(self):
+        return (f"{self.student.name if self.student else '无关联学生'} - "
+                f"{self.programming_question} - {self.feature}")
 
 

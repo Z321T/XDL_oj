@@ -231,8 +231,9 @@ def run_cpp_code(request):
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
+
 def report_student(request):
-       return render(request, 'report_student.html')
+    return render(request, 'report_student.html')
 
 
 def analyse_student(request):

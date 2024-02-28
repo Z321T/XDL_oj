@@ -1,7 +1,5 @@
 from django.db import models
 
-from teacher_app.models import Teacher
-
 
 # Create your models here.
 class Administrator(models.Model):
@@ -18,3 +16,12 @@ class AdminNotification(models.Model):
     content = models.TextField(verbose_name="通知内容")
     date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
 
+
+class ProgrammingExercise(models.Model):
+    title = models.CharField(verbose_name="题目标题", max_length=255)
+    description = models.TextField(verbose_name="题目描述")
+    posted_by = models.ForeignKey(Administrator, verbose_name="发布者", on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
+
+    def __str__(self):
+        return self.title
