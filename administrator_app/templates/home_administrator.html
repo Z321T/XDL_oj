@@ -67,7 +67,7 @@
     </style>
     <script>
         function redirectToHome() {
-            window.location.href = "/administrator/home/"
+            window.location.href = "{% url 'administrator_app:home_administrator' %}"
         }
 
         function redirectToTest() {
@@ -99,7 +99,7 @@
         }
 
         function redirectToInformation() {
-            window.location.href = "/administrator/information/"
+            window.location.href = "{% url 'administrator_app:information_administrator' %}"
         }
     </script>
 </head>
@@ -211,7 +211,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#" onclick="redirectToHome()">
                         <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">教师主页</span>
+                        <span class="menu-title">管理员主页</span>
                     </a>
                 </li>
                 <li class="nav-item">

@@ -68,7 +68,7 @@
     </style>
     <script>
         function redirectToHome() {
-            window.location.href = "/administrator/home/"
+            window.location.href = "{% url 'administrator_app:home_administrator' %}"
         }
 
         function redirectToTest() {
@@ -100,7 +100,7 @@
         }
 
         function redirectToInformation() {
-            window.location.href = "/administrator/information/"
+            window.location.href = "{% url 'administrator_app:information_administrator' %}"
         }
     </script>
     <style>

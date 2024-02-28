@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
-from administrator_app.models import Administrator
+from administrator_app.models import Administrator, AdminNotification
 from administrator_app.forms import AdministratorForm
 from teacher_app.models import Teacher
 
@@ -27,16 +27,58 @@ def home_administrator(request):
     return render(request, 'home_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
-# 发布通知
+# 通知界面
 def notice_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'notice_administrator.html', {'dropdown_menu1': dropdown_menu1})
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted').distinct()
+    return render(request, 'notice_administrator.html',
+                  {'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
+
+
+# 通知界面：发布通知
+def create_notice(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        if title and content:
+            adminnotification = AdminNotification.objects.create(
+                title=title,
+                content=content,
+            )
+            adminnotification.save()
+            return redirect('administrator_app:notice_administrator')
+    return render(request, 'create_notice_admin.html',
+                  {'dropdown_menu1': dropdown_menu1})
+
+
+# 通知界面：删除通知
+def delete_notice(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        try:
+            notification = AdminNotification.objects.filter(id=notification_id).first()
+            notification.delete()
+            return JsonResponse({'status': 'success'})
+        except AdminNotification.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': '通知未找到'}, status=404)
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
+
+
+# 通知界面：通知内容
+def notification_content(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        notification = AdminNotification.objects.get(id=notification_id)
+        return JsonResponse({'title': notification.title, 'content': notification.content})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
 # 管理员个人中心
 def profile_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-
     administrator = Administrator.objects.get(userid=request.session.get('user_id'))
 
     if request.method == 'POST':

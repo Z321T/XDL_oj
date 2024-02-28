@@ -235,7 +235,7 @@ def delete_notice(request):
                 return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': '通知未找到'}, status=400)
     else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
 
 
 # 通知详情

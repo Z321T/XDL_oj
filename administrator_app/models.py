@@ -17,4 +17,4 @@ class AdminNotification(models.Model):
     title = models.CharField(verbose_name="通知标题", max_length=255, null=True, blank=True)
     content = models.TextField(verbose_name="通知内容")
     date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
-    recipients = models.ManyToManyField(Teacher, verbose_name="接收教师")
+

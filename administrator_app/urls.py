@@ -1,10 +1,9 @@
 from django.urls import path
 from django.contrib.staticfiles.views import serve
-from django.contrib import admin
 
 from .views import home_administrator
 from .views import class_administrator
-from .views import notice_administrator
+from .views import notice_administrator, create_notice, delete_notice, notification_content
 from .views import profile_administrator
 from .views import repository_administrator
 from .views import test_administrator
@@ -19,8 +18,15 @@ urlpatterns = [
     # 管理员使用界面
     path('home/', home_administrator, name='home_administrator'),
     path('class/', class_administrator, name='class_administrator'),
+    # 有关通知的操作
     path('notice/', notice_administrator, name='notice_administrator'),
+    path('notice/create/', create_notice, name='create_notice'),
+    path('notice/delete/', delete_notice, name='delete_notice'),
+    path('notice/notification_content/', notification_content, name='notification_content'),
+    # 个人中心
     path('profile/', profile_administrator, name='profile_administrator'),
+
+
     path('repository/', repository_administrator, name='repository_administrator'),
     path('test/', test_administrator, name='test_administrator'),
     path('plagiarism/', plagiarism_administrator, name='plagiarism_administrator'),
