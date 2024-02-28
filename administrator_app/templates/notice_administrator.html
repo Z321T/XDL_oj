@@ -444,7 +444,7 @@
         $('.content-notification').on('click', function () {
             var notificationId = $(this).data('notification-id');
             $.ajax({
-                url: "{% url 'student_app:notification_content' %}",
+                url: "{% url 'administrator_app:notification_content' %}",
                 type: 'POST',
                 data: {
                     'notification_id': notificationId,
