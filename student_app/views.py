@@ -10,10 +10,11 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 
+from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import analyze_code
+from CodeBERT_app.views import analyze_code, analyze_programming_code
 from .forms import StudentForm
 
 
@@ -30,9 +31,22 @@ def home_student(request):
 
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    programing_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
-    return render(request, 'home_student.html',
-                  {'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+        'programing_exercises': programing_exercises,
+    }
+
+    return render(request, 'home_student.html', context)
+
+
+# 学生主页：提交报告
+def report_student(request, programmingexercise_id):
+    programing_exercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
+    if request.method == 'GET':
+        return render(request, 'report_student.html', {'programing_exercise': programing_exercise})
 
 
 # 我的练习
@@ -243,12 +257,6 @@ def run_cpp_code(request):
             return JsonResponse({'error': str(e)})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
-
-
-def report_student(request):
-    return render(request, 'report_student.html')
-
-
 
 
 
