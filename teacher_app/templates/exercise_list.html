@@ -338,8 +338,7 @@
                                                 {% for question in exercise.questions.all %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td>
-                                                            <input type="checkbox" id="question{{ question.id }}">
+                                                        <td id="question{{ question.id }}">
                                                             {{ question.title }}
                                                         </td>
                                                         <td>{{ exercise.published_at }}</td>

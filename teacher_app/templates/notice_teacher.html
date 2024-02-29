@@ -151,7 +151,7 @@
                 </li>
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+                        <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
                         <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -280,8 +280,7 @@
                                                 {% for notification in notifications %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox"
-                                                                                     id="notification{{ notification.id }}">{{ notification.title }}
+                                                        <td class="sorting_1" id="notification{{ notification.id }}">{{ notification.title }}
                                                         </td>
                                                         <td>{{ notification.date_posted }}</td>
                                                         <td>
@@ -290,10 +289,10 @@
                                                             {% endfor %}
                                                         </td>
                                                         <td>
-                                                            <button class="button-class delete-notification"
+                                                            <button class="button-class delete-notification btn-default"
                                                                     data-notification-id="{{ notification.id }}">删除
                                                             </button>
-                                                            <button class="button-class content-notification"
+                                                            <button class="button-class content-notification btn-default"
                                                                     data-notification-id="{{ notification.id }}">详情
                                                             </button>
                                                         </td>

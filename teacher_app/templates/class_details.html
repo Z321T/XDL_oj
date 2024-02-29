@@ -300,7 +300,7 @@
                 </li>
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+                        <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
                         <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -374,7 +374,7 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="row">
+          <div class="content-wrapper">
                 <div class="col-md-12 stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -421,16 +421,15 @@
                                                 {% for student in students %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1"><input type="checkbox"
-                                                                                 id="student{{ student.id }}"> {{ student.name }}
+                                                    <td class="sorting_1" id="student{{ student.id }}"> {{ student.name }}
                                                     </td>
                                                     <td>{{ student.userid }}</td>
                                                     <td>{{ student.email }}</td>
                                                     <td>
-                                                        <button class="button-class delete-student"
+                                                        <button class="button-class delete-student btn-default"
                                                                 data-student-id="{{ student.id }}">删除
                                                         </button>
-                                                        <button class="button-class reset-password"
+                                                        <button class="button-class reset-password btn-default
                                                                 data-student-id="{{ student.id }}">初始化密码
                                                         </button>
                                                     </td>
@@ -452,7 +451,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+          </div>
         </div>
     </div>
 </div>

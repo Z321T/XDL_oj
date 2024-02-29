@@ -156,7 +156,7 @@
 
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+                        <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
                         <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -272,7 +272,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--作业列表-->
+                                        <!--练习考试切换-->
                                         <div class="col-md-5 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
@@ -281,7 +281,8 @@
                                                         <button type="button" class="btn btn-secondary" data-type="exercise">练习</button>
                                                         <button type="button" class="btn btn-secondary exam-button" data-type="exam">考试</button>
                                                     </div>
-                                                    <div class="row">
+                                                     <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                                        <div class="row">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -299,6 +300,7 @@
                                                         </tbody>
                                                     </table>
                                                     </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>

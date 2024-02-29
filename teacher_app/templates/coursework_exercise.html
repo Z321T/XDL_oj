@@ -103,6 +103,10 @@
 
         }
 
+        .table{
+            max-height: 200px; /* 你可以根据需要设置这个值 */
+            overflow-y: auto;
+    }
     </style>
 </head>
 <body>
@@ -160,7 +164,7 @@
 
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+                        <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
                         <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -258,7 +262,7 @@
                                         </div>
                                     </div>
 
-                                    <!--作业完成率-->
+                                    <!--练习考试切换-->
                                     <div class="col-md-5 grid-margin stretch-card">
                                         <div class="card">
                                             <div class="card-body">
@@ -271,6 +275,7 @@
                                                             data-type="exam">考试
                                                     </button>
                                                 </div>
+                                              <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                                 <div class="row">
                                                     <table class="table">
                                                         <thead>
@@ -289,6 +294,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                              </div>
                                             </div>
                                         </div>
                                     </div>
