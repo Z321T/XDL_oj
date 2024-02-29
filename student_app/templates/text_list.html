@@ -20,6 +20,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -265,7 +266,7 @@
                                                         <td>{{ exam.teacher.name }}</td>
                                                         <td>{{ exam.deadline }}</td>
                                                         <td>
-                                                            <button class="button-class doing-question"
+                                                            <button class="button-class doing-question btn-default"
                                                                     data-question-id="{{ question.id }}">开始作答
                                                             </button>
                                                         </td>
@@ -285,7 +286,7 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'student_app:test_student' %}'"
-                                            style="float: right;">返回
+                                          class="btn-default"  style="float: right;">返回
                                     </button>
                                 </div>
                             </div>

@@ -88,75 +88,7 @@
             window.location.href = "/student/analyse/";
         }
     </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
 
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-
-        /* 为两个列表都设置相同的最小高度和边框样式 */
-        .homework-list > table,
-        #completed-tasks ul {
-            min-height: 600px; /* 设置最小高度 */
-            border: 1px solid #ddd; /* 确保边框可见 */
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table {
-            margin-bottom: auto; /* 保证表格和下面的空间分隔 */
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: white;
-        }
-
-        tbody:before {
-            content: '-';
-            display: block;
-            line-height: 180px; /* 设置与表格最小高度相近的值 */
-            text-align: center;
-            color: transparent;
-            border-top: 1px solid #ddd;
-        }
-
-        #completed-tasks ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0; /* 移除默认的margin */
-            display: flex;
-            flex-direction: column; /* 确保列表项垂直排列 */
-            justify-content: center; /* 在容器中垂直居中列表项 */
-        }
-
-        #completed-tasks li {
-            padding: 8px;
-            background-color: #f2f2f2;
-            margin-bottom: 5px;
-            border-bottom: 1px solid #ddd; /* 每个列表项之间的分隔线 */
-        }
-
-        #completed-tasks ul:empty:before {
-            content: 'No completed tasks'; /* 当列表为空时显示的文本 */
-            color: #ccc; /* 文本颜色 */
-            text-align: center;
-        }
-    </style>
 
 </head>
 <body>
@@ -213,7 +145,7 @@
                 </li>
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="{% static student_app/photo/face5.jpg'' %}" alt="profile">
+                        <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
                         <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -276,7 +208,6 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-
                 <div class="row">
                     <div class="col-md-12 grid-margin">
                         <div class="d-flex justify-content-between flex-wrap">
@@ -297,8 +228,6 @@
                         </div>
                     </div>
                 </div>
-
-                 <div class="row">
                     <div class="col-md-12 stretch-card">
                         <div class="card">
                             <div class="card-body">
@@ -308,9 +237,12 @@
                                     <!-- 添加了 style 属性 -->
                                     <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                                         <div class="row">
+                                            <div class="col-sm-12 col-md-6"></div>
+                                            <div class="col-sm-12 col-md-6"></div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="recent-purchases-listing" class="table dataTable no-footer"
-                                                       role="grid">
+                                                <table  class="table dataTable no-footer" role="grid">
                                                     <thead>
                                                     <tr role="row">
                                                          <th class="sorting_asc" tabindex="0"
@@ -350,7 +282,7 @@
                                                             <td>{{ exercise.posted_by.name }}</td>
                                                             <td>{{ exercise.deadline }}</td>
                                                             <td>
-                                                                <button class="button-class doing-exercise"
+                                                                <button class="button-class doing-exercise btn-default"
                                                                     data-exercise-id="{{ exercise.id }}">提交程序设计报告
                                                                 </button>
                                                             </td>
@@ -370,7 +302,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
 
 
                 <!-- content-wrapper ends -->

@@ -20,7 +20,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
         from {
@@ -264,7 +264,7 @@
                                                         <td>{{ exercise.teacher.name }}</td>
                                                         <td>{{ exercise.deadline }}</td>
                                                         <td>
-                                                            <button class="button-class doing-exercise"
+                                                            <button class="button-class doing-exercise btn-default"
                                                                     data-exercise-id="{{ exercise.id }}">查看练习
                                                             </button>
                                                         </td>
