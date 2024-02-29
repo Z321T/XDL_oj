@@ -1,11 +1,11 @@
 import pandas as pd
 
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
-from administrator_app.models import Administrator, AdminNotification
+from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise
 from administrator_app.forms import AdministratorForm
 from teacher_app.models import Teacher
 
@@ -73,7 +73,7 @@ def notification_content(request):
         notification = AdminNotification.objects.get(id=notification_id)
         return JsonResponse({'title': notification.title, 'content': notification.content})
     else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
 
 
 # 管理员个人中心
@@ -92,14 +92,51 @@ def profile_administrator(request):
             return redirect('profile_administrator')
     else:
         form = AdministratorForm(instance=administrator)
-    return render(request, 'profile_administrator.html', {'form': form, 'dropdown_menu1': dropdown_menu1})
+    return render(request, 'profile_administrator.html',
+                  {'form': form, 'dropdown_menu1': dropdown_menu1})
 
 
 # 我的题库
 def repository_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'repository_administrator.html',
-                  {'dropdown_menu1': dropdown_menu1})
+    programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'programming_exercises': programming_exercises,
+    }
+    return render(request, 'repository_administrator.html', context)
+
+
+def programmingexercise_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('content')
+        deadline = request.POST.get('deadline')
+        posted_by = request.session.get('user_id')
+
+        if title and description and deadline and posted_by:
+            ProgrammingExercise.objects.create(
+                title=title,
+                description=description,
+                deadline=deadline,
+                posted_by=Administrator.objects.get(userid=posted_by)
+            )
+            return redirect('administrator_app:repository_administrator')
+    return render(request, 'programmingexercise_create.html')
+
+
+# 题库管理：删除程序设计题
+def programmingexercise_delete(request):
+    if request.method == 'POST':
+        exercise_id = request.POST.get('exercise_id')
+        if exercise_id:
+            exercise_to_delete = ProgrammingExercise.objects.filter(id=exercise_id)
+            exercise_to_delete.delete()
+            return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': '练习未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
 
 
 # 考试情况（不考虑保留）

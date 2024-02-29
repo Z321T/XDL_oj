@@ -264,7 +264,7 @@
                 <div class="col-md-12 stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">题目列表</p>
+                            <p class="card-title">程序设计题目列表</p>
                             <div class="table-responsive"
                                  style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                 <!-- 添加了 style 属性 -->
@@ -294,7 +294,7 @@
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">发布人
+                                                        style="width: 72.575px;">截止时间
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
@@ -304,86 +304,38 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <!-- 表格内容不变 -->
-                                                <tr role="row" class="odd">
-
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Alvin
-                                                        Fisher
-                                                    </td>
-                                                    <td>Ui design completed</td>
-                                                    <td>East Mayra</td>
-
-
-                                                </tr>
-                                                <tr role="row" class="even">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Betty
-                                                        Hunt
-                                                    </td>
-                                                    <td>Ui design not completed</td>
-                                                    <td>Lake Sandrafort</td>
-
-
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Emily
-                                                        Cunningham
-                                                    </td>
-                                                    <td>support</td>
-                                                    <td>Makennaton</td>
-
-
-                                                </tr>
-                                                <tr role="row" class="even">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Ernest
-                                                        Wade
-                                                    </td>
-                                                    <td>Levelled up</td>
-                                                    <td>West Fidelmouth</td>
-
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Jacob
-                                                        Kennedy
-                                                    </td>
-                                                    <td>New project</td>
-                                                    <td>Cletaborough</td>
-
-
-                                                </tr>
-                                                <tr role="row" class="even">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Jeremy
-                                                        Ortega
-                                                    </td>
-                                                    <td>Levelled up</td>
-                                                    <td>Catalinaborough</td>
-
-
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Minnie
-                                                        Farmer
-                                                    </td>
-                                                    <td>support</td>
-                                                    <td>Agustinaborough</td>
-
-
-                                                </tr>
-                                                <tr role="row" class="even">
-                                                    <td class="sorting_1"><input type="checkbox" id="question1">Myrtie
-                                                        Lambert
-                                                    </td>
-                                                    <td>Ui design completed</td>
-                                                    <td>Cassinbury</td>
-
-
-                                                </tr>
+                                                {% for exercise in programming_exercises %}
+                                                    <tr role="row"
+                                                        class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                        <td class="sorting_1"><input type="checkbox"
+                                                                                     id="exercise{{ exercise.id }}"> {{ exercise.title }}
+                                                        </td>
+                                                        <td>{{ exercise.date_posted }}</td>
+                                                        <td>{{ exercise.deadline }}</td>
+                                                        <td>
+                                                            <button class="button-class delete-exercise"
+                                                                    data-exercise-id="{{ exercise.id }}">删除
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="4" style="text-align: center;">暂无题目</td>
+                                                    </tr>
+                                                {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
+                                </div>
+                                </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-5"></div>
-                                        <div class="col-sm-12 col-md-7"></div>
+                                        <div class="col-sm-12 col-md-7">
+                                            <button onclick="window.location.href='{% url 'administrator_app:programmingexercise_create' %}'"
+                                                    style="float: right;">发布题目
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -391,19 +343,15 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-           
-
-
-
-                <!-- partial:partials/_footer.html -->
 
                 <!-- partial -->
-            </div>
+
             <!-- main-panel ends -->
-        </div>
+
         <!-- page-body-wrapper ends -->
-    </div>
+
     <!-- container-scroller -->
 
     <!-- plugins:js -->
@@ -427,54 +375,25 @@
     <!-- End custom js for this page-->
     <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
     <script>
-        // 初始化年份和月份下拉菜单
-        function initDateFilter() {
-            const yearSelect = document.getElementById('yearSelect');
-            const monthSelect = document.getElementById('monthSelect');
-            const currentYear = new Date().getFullYear();
-
-            // 填充年份选项
-            for (let i = currentYear; i >= 1900; i--) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
-            }
-
-            // 填充月份选项
-            for (let i = 1; i <= 12; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i.toString().padStart(2, '0');
-                monthSelect.appendChild(option);
-            }
-
-            updateDays(); // 初始填充日期
-        }
-
-        // 根据选定的年份和月份更新日期选项
-        function updateDays() {
-            const yearSelect = document.getElementById('yearSelect');
-            const monthSelect = document.getElementById('monthSelect');
-            const daySelect = document.getElementById('daySelect');
-
-            const year = yearSelect.value;
-            const month = monthSelect.value;
-            const daysInMonth = new Date(year, month, 0).getDate();
-
-            daySelect.innerHTML = ''; // 清空日期选项
-
-            // 填充日期选项
-            for (let i = 1; i <= daysInMonth; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i.toString().padStart(2, '0');
-                daySelect.appendChild(option);
-            }
-        }
-
-        // 页面加载完成时初始化日期筛选器
-        window.onload = initDateFilter;
-    </script>
+    $(document).ready(function () {
+        $('.delete-exercise').on('click', function () {
+            var exerciseId = $(this).data('exercise-id');
+            $.ajax({
+                url: "{% url 'administrator_app:programmingexercise_delete' %}",
+                type: 'POST',
+                data: {
+                    'exercise_id': exerciseId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    window.location.href = "{% url 'administrator_app:repository_administrator' %}";
+                },
+                error: function (response) {
+                    alert(response.responseJSON.message);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
