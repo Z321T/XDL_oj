@@ -25,9 +25,10 @@ urlpatterns = [
     path('notice/notification_content/', notification_content, name='notification_content'),
     # 个人中心
     path('profile/', profile_administrator, name='profile_administrator'),
-
-
+    # 有关题库的操作
     path('repository/', repository_administrator, name='repository_administrator'),
+
+
     path('test/', test_administrator, name='test_administrator'),
     path('plagiarism/', plagiarism_administrator, name='plagiarism_administrator'),
     # 教师管理

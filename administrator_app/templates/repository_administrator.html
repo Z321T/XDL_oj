@@ -19,85 +19,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-
     <style>
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-
-        .list-container,
-        .newproblem-container {
-            width: 50%; /* 容器宽度各占一半 */
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 10px;
-            border: 2px solid purple;
-        }
-
-        .list-container {
-            position: relative;
-            background-color: #f0f0f5; /* 左侧列表背景色 */
-        }
-
-        .newproblem-container {
-            position: relative; /* 为了绝对定位标题行 */
-            width: 50%; /* 或您需要的宽度 */
-            padding: 20px;
-            box-sizing: border-box;
-
-        }
-
-        .editable-title {
-            width: 100%; /* 或根据需要调整 */
-            font-size: 16px;
-            text-align: center; /* 文本居中 */
-            margin: 0;
-            border: none; /* 移除边框 */
-            padding: 0; /* 移除内边距 */
-            box-sizing: border-box; /* 确保边框和内边距不会增加尺寸 */
-            resize: none; /* 禁止调整大小 */
-        }
-
-        .title-line {
-            width: 100%;
-            height: 1px;
-            background-color: #ccc;
-            margin-bottom: 20px; /* 与内容区域的间距 */
-        }
-
-
-        .editable-content {
-            width: 100%; /* 视口宽度 */
-            height: 500px; /* 视口高度 */
-            margin: 0;
-            border: none; /* 移除边框 */
-            padding: 0; /* 移除内边距 */
-            box-sizing: border-box; /* 确保边框和内边距不会增加尺寸 */
-            resize: none; /* 禁止调整大小 */
-
-        }
-
-        .input-container {
-            position: relative; /* 绝对定位 */
-            right: 0;
-            bottom: 1px; /* 放置在方框的底部 */
-            width: 400px;
-            height: 70px;
-            padding: 0;
-            display: flex; /* 使用Flexbox布局 */
-            justify-content: space-between; /* 输入框之间有间隔 */
-            box-sizing: border-box;
-
-        }
-
-        .input-group {
-
-            display: flex; /* 同样应用Flexbox */
-            flex-direction: column; /* 使标签在输入框上方 */
-            align-items: flex-start; /* 左对齐 */
-        }
-
         .input-group label {
             margin-bottom: 8px; /* 与输入框的间距 */
         }
@@ -115,52 +37,6 @@
             text-align: center;
         }
 
-        #eventList {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .button-container {
-            position: absolute;
-            bottom: 20px;
-            right: 10px;
-            display: flex;
-            justify-content: space-between; /* 输入框之间有间隔 */
-            box-sizing: border-box;
-        }
-
-        .btn-answer,
-        .btn-save {
-            border-radius: 10px;
-            border: 1px solid purple;
-            right: 2px;
-            bottom: 50px;
-            margin-top: 10px; /* 在按钮上方添加一些间距 */
-            padding: 5px 15px; /* 按钮内部的填充 */
-            background-color: #f0f0f0; /* 按钮的背景色 */
-            cursor: pointer; /* 鼠标悬停时的指针形状 */
-        }
-
-        .btn-answer:hover,
-        .btn-save:hover {
-            background-color: #e0e0e0; /* 鼠标悬停时按钮的背景色 */
-        }
-
-        .btn-answer {
-            margin-right: 20px;
-        }
-
-        #confirmButton {
-            background-color: #4CAF50; /* 按钮背景颜色 */
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #confirmButton:hover {
-            background-color: #45a049;
-        }
 
         #eventList li {
             padding: 10px;
@@ -217,9 +93,10 @@
         top: 0
     }
     </style>
+
     <script>
         function redirectToHome() {
-            window.location.href = "/administrator/home/"
+            window.location.href = "{% url 'administrator_app:home_administrator'%}"
         }
 
         function redirectToTest() {
@@ -227,7 +104,7 @@
         }
 
         function redirectToNotice() {
-            window.location.href = "/administrator/notice/"
+            window.location.href = "{% url 'administrator_app:notice_administrator'%}"
         }
 
         function redirectToRepository() {
@@ -235,7 +112,7 @@
         }
 
         function redirectToProfile() {
-            window.location.href = "/administrator/profile/"
+            window.location.href = "{% url 'administrator_app:profile_administrator'%}"
         }
 
         function redirectToClass() {
@@ -251,7 +128,7 @@
         }
 
         function redirectToInformation() {
-            window.location.href = "/administrator/information/"
+            window.location.href = "{% url 'administrator_app:information_administrator'%}"
         }
     </script>
 </head>
@@ -266,7 +143,41 @@
                 </button>
             </div>
         </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <ul class="navbar-nav mr-lg-4 w-100">
+                <li class="nav-item nav-search d-none d-lg-block w-100">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                <span class="input-group-text" id="search">
+                  <i class="mdi mdi-magnify"></i>
+                </span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search now" aria-label="search"
+                               aria-describedby="search">
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item nav-profile dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                        <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+                        <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                        <a class="dropdown-item">
+                            <i class="mdi mdi-settings text-primary"></i>
+                            设置
+                        </a>
+                        <a class="dropdown-item">
+                            <i class="mdi mdi-logout text-primary"></i>
+                            退出登录
+                        </a>
+                    </div>
+                </li>
+            </ul>
 
+
+        </div>
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
@@ -276,7 +187,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToHome()">
                         <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">教师主页</span>
+                        <span class="menu-title">管理员主页</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -346,17 +257,7 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="date-filter">
-                <select id="yearSelect" onchange="updateDays()">
-                    <!-- JavaScript将在这里动态填充年份选项 -->
-                </select>
-                <select id="monthSelect" onchange="updateDays()">
-                    <!-- JavaScript将在这里动态填充月份选项 -->
-                </select>
-                <select id="daySelect">
-                    <!-- JavaScript将在这里动态填充日期选项 -->
-                </select>
-            </div>
+
 
 
             <div class="row">
@@ -388,12 +289,17 @@
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">添加时间
+                                                        style="width: 155.6px;">发布时间
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Price: activate to sort column ascending"
                                                         style="width: 72.575px;">发布人
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Price: activate to sort column ascending"
+                                                        style="width: 72.575px;">操作
                                                     </th>
                                                 </tr>
                                                 </thead>
@@ -486,46 +392,9 @@
                 </div>
             </div>
 
-            <div class="container">
-                <!-- 左侧空列表 -->
-                <div class="list-container">
-                    <h3>待发布列表</h3>
-                    <ul id="eventList">
-                        <li>1</li>
-                        <li>1</li>
-                        <li>1</li>
-                        <li>1</li>
-                        <!-- 列表项将在这里添加 -->
-                    </ul>
-                    <div class="button-container">
-                        <button type="button" class="btn-answer">发布考试</button>
-                        <button type="button" class="btn-save">发布作业</button>
-                    </div>
-                </div>
-
-                <!-- 右侧时间选择器和发布按钮 -->
-                <div class="newproblem-container">
-                    <input type="text" class="editable-title" placeholder="编辑标题">
-                    <div class="title-line"></div>
-                    <textarea class="editable-content" placeholder="编辑题目内容..."></textarea>
-                    <div class="input-container">
-                        <div class="input-group">
-                            <label for="memoryLimit">内存限制:</label>
-                            <input type="text" id="memoryLimit" name="memoryLimit" placeholder="例如，256MB">
-                        </div>
-                        <div class="input-group">
-                            <label for="timeLimit">时间限制:</label>
-                            <input type="text" id="timeLimit" name="timeLimit" placeholder="例如，1s">
-                        </div>
-                    </div>
-                    <!-- 添加按钮 -->
-                    <div class="button-container">
-                        <button type="button" class="btn-answer">上传答案</button>
-                        <button type="button" class="btn-save">保存</button>
-                    </div>
+           
 
 
-                </div>
 
                 <!-- partial:partials/_footer.html -->
 

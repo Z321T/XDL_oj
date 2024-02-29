@@ -98,7 +98,8 @@ def profile_administrator(request):
 # 我的题库
 def repository_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'repository_administrator.html', {'dropdown_menu1': dropdown_menu1})
+    return render(request, 'repository_administrator.html',
+                  {'dropdown_menu1': dropdown_menu1})
 
 
 # 考试情况（不考虑保留）
