@@ -1,8 +1,8 @@
 # XDL_cumt
 Django项目
 软件包如下：
-Package     Version
------------ -------
+Package            Version
+------------------ ----------
 asgiref            3.7.2
 certifi            2024.2.2
 charset-normalizer 3.3.2
@@ -14,6 +14,7 @@ fsspec             2024.2.0
 huggingface-hub    0.20.3
 idna               3.6
 Jinja2             3.1.3
+lxml               5.1.0
 MarkupSafe         2.1.5
 mpmath             1.3.0
 mysqlclient        2.2.1
@@ -25,6 +26,7 @@ pandas             2.2.0
 pip                23.3.2
 PyMySQL            1.1.0
 python-dateutil    2.8.2
+python-docx        1.1.0
 pytz               2024.1
 PyYAML             6.0.1
 regex              2023.12.25
@@ -42,4 +44,5 @@ typing_extensions  4.9.0
 tzdata             2023.4
 urllib3            2.2.1
 wheel              0.42.0
+
 
