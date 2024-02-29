@@ -1,8 +1,8 @@
 import os
-import json
 import time
 import requests
 import subprocess
+
 
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 
+from docx import Document
 from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
@@ -44,9 +45,26 @@ def home_student(request):
 
 # 学生主页：提交报告
 def report_student(request, programmingexercise_id):
-    programing_exercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    programming_exercise = get_object_or_404(ProgrammingExercise, id=programmingexercise_id)
     if request.method == 'GET':
-        return render(request, 'report_student.html', {'programing_exercise': programing_exercise})
+        return render(request, 'report_student.html',
+                      {'programming_exercise': programming_exercise})
+    if request.method == 'POST':
+        word_file = request.FILES.get('wordFile')
+        document = Document(word_file)
+        full_text = []
+        for paragraph in document.paragraphs:
+            for run in paragraph.runs:
+                for inline in run._element.inline_items():
+                    if inline.tag.endswith('drawing'):
+                        inline.getparent().remove(inline)
+            full_text.append(paragraph.text)
+        # 获得纯文本代码，去除了图片
+        code = '\n'.join(full_text)
+        # 分析代码特征
+        analyze_programming_code(student, code, programmingexercise_id)
+        return redirect('student_app:home_student')
 
 
 # 我的练习
