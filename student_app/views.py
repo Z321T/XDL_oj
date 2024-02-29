@@ -12,7 +12,7 @@ from django.http import JsonResponse, HttpResponse
 
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
-from teacher_app.models import Teacher, Class, Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
+from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
 from CodeBERT_app.views import analyze_code
 from .forms import StudentForm
 
@@ -77,6 +77,19 @@ def text_list(request, exam_id):
         exam = Exam.objects.get(id=exam_id)
         return render(request, 'text_list.html',
                       {'dropdown_menu1': dropdown_menu1, 'exam': exam, 'notifications': notifications})
+
+
+# 学情分析
+def analyse_student(request):
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+    }
+    return render(request, 'analyse_student.html', context)
 
 
 # 学生个人中心
@@ -236,7 +249,6 @@ def report_student(request):
     return render(request, 'report_student.html')
 
 
-def analyse_student(request):
-    return render(request, 'analyse_student.html')
+
 
 

@@ -20,7 +20,7 @@ class AdminNotification(models.Model):
 class ProgrammingExercise(models.Model):
     title = models.CharField(verbose_name="题目标题", max_length=255)
     description = models.TextField(verbose_name="题目描述")
-    posted_by = models.ForeignKey(Administrator, verbose_name="发布者", on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(Administrator, verbose_name="发布教师", on_delete=models.CASCADE)
     date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
     deadline = models.DateTimeField(verbose_name="截止时间")
 

@@ -67,39 +67,23 @@
     </style>
     <script>
         function redirectToHome() {
-            window.location.href = "/administrator/home/"
+            window.location.href = "/student/home/"
+        }
+
+        function redirectToPractice() {
+            window.location.href = "/student/practice/";
         }
 
         function redirectToTest() {
-            window.location.href = "/administrator/test/"
-        }
-
-        function redirectToNotice() {
-            window.location.href = "/administrator/notice/"
-        }
-
-        function redirectToRepository() {
-            window.location.href = "/administrator/repository/"
+            window.location.href = "/student/test/";
         }
 
         function redirectToProfile() {
-            window.location.href = "/administrator/profile/"
+            window.location.href = "/student/profile/"
         }
 
-        function redirectToClass() {
-            window.location.href = "/administrator/class/"
-        }
-
-        function redirectToPlagiarism() {
-            window.location.href = "/administrator/plagiarism/"
-        }
-
-        function redirectToProblems() {
-            window.location.href = "/administrator/problems/"
-        }
-
-        function redirectToInformation() {
-            window.location.href = "/administrator/information/"
+         function redirectToAnalyse() {
+            window.location.href = "/student/analyse/";
         }
     </script>
     <style>
@@ -292,7 +276,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" onclick="redirectToAnalyse()">
                         <i class="mdi mdi-chart-pie menu-icon"></i>
                         <span class="menu-title">学情分析</span>
                     </a>
