@@ -5,7 +5,7 @@ from .views import home_administrator
 from .views import class_administrator
 from .views import notice_administrator, create_notice, delete_notice, notification_content
 from .views import profile_administrator
-from .views import repository_administrator
+from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import test_administrator
 from .views import plagiarism_administrator
 from .views import information_administrator, add_teacher, delete_teacher
@@ -27,6 +27,8 @@ urlpatterns = [
     path('profile/', profile_administrator, name='profile_administrator'),
     # 有关题库的操作
     path('repository/', repository_administrator, name='repository_administrator'),
+    path('repository/programmingexercise_delete/', programmingexercise_delete, name='programmingexercise_delete'),
+    path('repository/programmingexercise_create/', programmingexercise_create, name='programmingexercise_create'),
 
 
     path('test/', test_administrator, name='test_administrator'),

@@ -22,6 +22,7 @@ class ProgrammingExercise(models.Model):
     description = models.TextField(verbose_name="题目描述")
     posted_by = models.ForeignKey(Administrator, verbose_name="发布者", on_delete=models.CASCADE)
     date_posted = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
+    deadline = models.DateTimeField(verbose_name="截止时间")
 
     def __str__(self):
         return self.title
