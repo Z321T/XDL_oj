@@ -19,6 +19,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -444,7 +445,7 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'teacher_app:class_teacher' %}'"
-                                            style="float: right;">返回
+                                       class="btn-default"     style="float: right;">返回
                                     </button>
                                 </div>
                             </div>

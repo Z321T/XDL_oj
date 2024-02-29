@@ -19,7 +19,9 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-   <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
+    <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
+    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
+
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
         from {
@@ -249,7 +251,7 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="row">
+            <div class="content-wrapper">
                 <div class="col-md-12 stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -293,10 +295,10 @@
                                                     </td>
                                                     <td>{{ class.students.count }}</td>
                                                     <td>
-                                                        <button class="button-class delete-class"
+                                                        <button class="button-class delete-class btn-default"
                                                                 data-class-id="{{ class.id }}">删除
                                                         </button>
-                                                        <button class="button-class class-details"
+                                                        <button class="button-class class-details btn-default"
                                                                 data-class-id="{{ class.id }}">详情
                                                         </button>
                                                     </td>
@@ -311,13 +313,14 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'teacher_app:create_class' %}'"
-                                            style="float: right;">创建班级
+                                         class="btn-default"   style="float: right;">创建班级
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

@@ -18,157 +18,10 @@
     <link rel="stylesheet" href="{% static 'teacher_app/css/style.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
-    <style>
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-
-        .list-container,
-        .newproblem-container {
-            width: 50%; /* 容器宽度各占一半 */
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 10px;
-            border: 2px solid purple;
-        }
-
-        .list-container {
-            position: relative;
-            background-color: #f0f0f5; /* 左侧列表背景色 */
-        }
-
-        .newproblem-container {
-            position: relative; /* 为了绝对定位标题行 */
-            width: 50%; /* 或您需要的宽度 */
-            padding: 20px;
-            box-sizing: border-box;
-
-        }
-
-        .editable-title {
-            width: 100%; /* 或根据需要调整 */
-            font-size: 16px;
-            text-align: center; /* 文本居中 */
-            margin: 0;
-            border: none; /* 移除边框 */
-            padding: 0; /* 移除内边距 */
-            box-sizing: border-box; /* 确保边框和内边距不会增加尺寸 */
-            resize: none; /* 禁止调整大小 */
-        }
-
-        .title-line {
-            width: 100%;
-            height: 1px;
-            background-color: #ccc;
-            margin-bottom: 20px; /* 与内容区域的间距 */
-        }
+    <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
 
 
-        .editable-content {
-            width: 100%; /* 视口宽度 */
-            height: 500px; /* 视口高度 */
-            margin: 0;
-            border: none; /* 移除边框 */
-            padding: 0; /* 移除内边距 */
-            box-sizing: border-box; /* 确保边框和内边距不会增加尺寸 */
-            resize: none; /* 禁止调整大小 */
-
-        }
-
-        .input-container {
-            position: relative; /* 绝对定位 */
-            right: 0;
-            bottom: 1px; /* 放置在方框的底部 */
-            width: 400px;
-            height: 70px;
-            padding: 0;
-            display: flex; /* 使用Flexbox布局 */
-            justify-content: space-between; /* 输入框之间有间隔 */
-            box-sizing: border-box;
-
-        }
-
-        .input-group {
-
-            display: flex; /* 同样应用Flexbox */
-            flex-direction: column; /* 使标签在输入框上方 */
-            align-items: flex-start; /* 左对齐 */
-        }
-
-        .input-group label {
-            margin-bottom: 8px; /* 与输入框的间距 */
-        }
-
-        .input-group input {
-            width: calc(100% - 20px); /* 输入框宽度填满，考虑内边距 */
-            padding: 5px;
-            margin-top: 5px; /* 与标签的间距 */
-            border-radius: 10px;
-            border: 1px solid darkgray;
-        }
-
-        .newproblem-container h3,
-        .list-container h3 {
-            text-align: center;
-        }
-
-        #eventList {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .button-container {
-            position: absolute;
-            bottom: 20px;
-            right: 10px;
-            display: flex;
-            justify-content: space-between; /* 输入框之间有间隔 */
-            box-sizing: border-box;
-        }
-
-        .btn-answer,
-        .btn-save {
-            border-radius: 10px;
-            border: 1px solid purple;
-            right: 2px;
-            bottom: 50px;
-            margin-top: 10px; /* 在按钮上方添加一些间距 */
-            padding: 5px 15px; /* 按钮内部的填充 */
-            background-color: #f0f0f0; /* 按钮的背景色 */
-            cursor: pointer; /* 鼠标悬停时的指针形状 */
-        }
-
-        .btn-answer:hover,
-        .btn-save:hover {
-            background-color: #e0e0e0; /* 鼠标悬停时按钮的背景色 */
-        }
-
-        .btn-answer {
-            margin-right: 20px;
-        }
-
-        #confirmButton {
-            background-color: #4CAF50; /* 按钮背景颜色 */
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #confirmButton:hover {
-            background-color: #45a049;
-        }
-
-        #eventList li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc; /* 添加分割线 */
-        }
-
-        #eventList li:last-child {
-            border-bottom: none; /* 最后一个列表项不需要分割线 */
-        }
-    </style>
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -180,24 +33,7 @@
         }
     }
 
-    .chartjs-render-monitor {
-        animation: chartjs-render-animation 1ms
-    }
 
-    .chartjs-size-monitor,
-    .chartjs-size-monitor-expand,
-    .chartjs-size-monitor-shrink {
-        position: absolute;
-        direction: ltr;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-        pointer-events: none;
-        visibility: hidden;
-        z-index: -1
-    }
 
     .chartjs-size-monitor-expand > div {
         position: absolute;
@@ -312,11 +148,12 @@
                 </li>
             </ul>
         </div>
+
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+       <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToHome()">
@@ -327,23 +164,22 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false"
                        aria-controls="ui-basic">
-                        <i class="mdi mdi-circle-outline menu-icon"></i>
+                        <i class="mdi mdi-chart-pie menu-icon"></i>
                         <span class="menu-title">作业情况</span>
                         <i class="menu-arrow"></i>
                     </a>
 
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToNotice()">
-                        <i class="mdi mdi-chart-pie menu-icon"></i>
+                        <i class="mdi mdi-bulletin-board menu-icon"></i>
                         <span class="menu-title">通知</span>
                     </a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()"
                        aria-expanded="false" aria-controls="auth">
-                        <i class="mdi mdi-account menu-icon"></i>
+                        <i class="mdi mdi-source-repository-multiple menu-icon"></i>
                         <span class="menu-title">我的题库</span>
                         <i class="menu-arrow"></i>
                     </a>
@@ -361,7 +197,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToClass()"
                        aria-expanded="false" aria-controls="auth">
-                        <i class="mdi mdi-account menu-icon"></i>
+                        <i class="mdi mdi-microsoft-teams menu-icon"></i>
                         <span class="menu-title">班级管理</span>
                         <i class="menu-arrow"></i>
                     </a>
@@ -371,8 +207,9 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="row">
-                <div class="col-md-12 stretch-card">
+          <div class="content-wrapper">
+
+                <div class="stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">练习题列表</p>
@@ -445,7 +282,7 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'teacher_app:repository_teacher' %}'"
-                                            style="float: right;">返回
+                                        class="btn-default"    style="float: right;">返回
                                     </button>
                                 </div>
                             </div>
@@ -453,6 +290,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

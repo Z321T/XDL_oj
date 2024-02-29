@@ -19,6 +19,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
 
     <style>
         .recipient-container {
@@ -134,20 +135,6 @@
             flex-direction: row;
             align-items: center;
             gap: 10px;
-        }
-
-        .button-group button {
-            /* 按钮样式 */
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .button-group button:hover {
-            background-color: #45a049;
         }
     </style>
 
@@ -371,10 +358,10 @@
                         </div>
                     </div>
                     <div class="button-group">
-                        <button type="submit" id="submit-button">发布考试</button>
+                        <button type="submit" id="submit-button" class="btn-default" >发布考试</button>
                     </div>
                 </form>
-                <button onclick="window.location.href='{% url 'teacher_app:create_exam' exam.id %}'">创建考试题</button>
+                <button class="btn-default" onclick="window.location.href='{% url 'teacher_app:create_exam' exam.id %}'">创建考试题</button>
             </div>
 
         </div>

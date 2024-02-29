@@ -20,34 +20,7 @@
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
-    <style>
-        .input-group label {
-            margin-bottom: 8px; /* 与输入框的间距 */
-        }
-
-        .input-group input {
-            width: calc(100% - 20px); /* 输入框宽度填满，考虑内边距 */
-            padding: 5px;
-            margin-top: 5px; /* 与标签的间距 */
-            border-radius: 10px;
-            border: 1px solid darkgray;
-        }
-
-        .newproblem-container h3,
-        .list-container h3 {
-            text-align: center;
-        }
-
-
-        #eventList li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc; /* 添加分割线 */
-        }
-
-        #eventList li:last-child {
-            border-bottom: none; /* 最后一个列表项不需要分割线 */
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -250,10 +223,8 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-
-
-            <div class="row">
-                <div class="col-md-12 stretch-card">
+             <div class="content-wrapper">
+                <div class="stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">练习列表</p>
@@ -320,10 +291,10 @@
                                                             {% endfor %}
                                                         </td>
                                                         <td>
-                                                            <button class="button-class delete-exercise"
+                                                            <button class="button-class delete-exercise btn-default"
                                                                     data-exercise-id="{{ exercise.id }}">删除
                                                             </button>
-                                                            <button class="button-class edit-exercise"
+                                                            <button class="button-class edit-exercise btn-default"
                                                                     data-exercise-id="{{ exercise.id }}">编辑
                                                             </button>
                                                         </td>
@@ -343,16 +314,16 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'teacher_app:exercise_list_default' %}'"
-                                            style="float: right;">发布练习
+                                       class="btn-default"     style="float: right;">发布练习
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 stretch-card">
+             </div>
+            <div class="content-wrapper">
+                <div class="stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">考试列表</p>
@@ -418,10 +389,10 @@
                                                             {% endfor %}
                                                         </td>
                                                         <td>
-                                                            <button class="button-class delete-exam"
+                                                            <button class="button-class delete-exam btn-default"
                                                                     data-exam-id="{{ exam.id }}">删除
                                                             </button>
-                                                            <button class="button-class edit-exam"
+                                                            <button class="button-class edit-exam btn-default"
                                                                     data-exam-id="{{ exam.id }}">编辑
                                                             </button>
                                                         </td>
@@ -441,13 +412,14 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'teacher_app:exam_list_default' %}'"
-                                            style="float: right;">发布考试
+                                         class="btn-default"   style="float: right;">发布考试
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

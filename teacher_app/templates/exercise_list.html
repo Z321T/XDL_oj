@@ -19,6 +19,8 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
+
     <style>
         .recipient-container {
             display: flex; /* 使用 Flexbox 实现横向排列 */
@@ -135,19 +137,6 @@
             gap: 10px;
         }
 
-        .button-group button {
-            /* 按钮样式 */
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .button-group button:hover {
-            background-color: #45a049;
-        }
     </style>
 
     <style type="text/css">/* Chart.js */
@@ -370,10 +359,10 @@
                         </div>
                     </div>
                     <div class="button-group">
-                        <button type="submit" id="submit-button">发布练习</button>
+                        <button type="submit" id="submit-button" class="btn-default">发布练习</button>
                     </div>
                 </form>
-                <button onclick="window.location.href='{% url 'teacher_app:create_exercise' exercise.id %}'">
+                <button class="btn-default" onclick="window.location.href='{% url 'teacher_app:create_exercise' exercise.id %}'">
                     创建练习题
                 </button>
             </div>
