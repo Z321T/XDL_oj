@@ -319,6 +319,11 @@
                                                         aria-label="Name: activate to sort column descending"
                                                         style="width: 167.95px;">题目
                                                     </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="exam-listing"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 155.6px;">发布时间
+                                                    </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
@@ -337,8 +342,24 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <!-- 表格内容 -->
-
+                                                    {% for exercise in programing_exercises %}
+                                                        <tr role="row"
+                                                            class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                            <td class="sorting_1">{{ exercise.title }}</td>
+                                                            <td>{{ exercise.date_posted }}</td>
+                                                            <td>{{ exercise.posted_by.name }}</td>
+                                                            <td>{{ exercise.deadline }}</td>
+                                                            <td>
+                                                                <button class="button-class doing-exercise"
+                                                                    data-exercise-id="{{ exercise.id }}">提交程序设计报告
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    {% empty %}
+                                                        <tr>
+                                                            <td colspan="4" style="text-align: center;">暂无题目</td>
+                                                        </tr>
+                                                    {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -428,6 +449,14 @@
                     alert(response.responseJSON.message);
                 }
             });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.doing-exercise').on('click', function () {
+            var exerciseId = $(this).data('exercise-id');
+            window.location.href = "{% url 'student_app:report_student' '123' %}".replace('123', exerciseId);
         });
     });
 </script>
