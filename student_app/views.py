@@ -49,8 +49,16 @@ def report_student(request, programmingexercise_id):
     student = Student.objects.get(userid=request.session.get('user_id'))
     programming_exercise = get_object_or_404(ProgrammingExercise, id=programmingexercise_id)
     if request.method == 'GET':
-        return render(request, 'report_student.html',
-                      {'programming_exercise': programming_exercise})
+        dropdown_menu1 = {'user_id': request.session.get('user_id')}
+        notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+        context = {
+            'dropdown_menu1': dropdown_menu1,
+            'notifications': notifications,
+            'programming_exercise': programming_exercise,
+        }
+        return render(request, 'report_student.html', context)
+
     if request.method == 'POST':
         word_file = request.FILES.get('wordFile')
         document = Document(word_file)
