@@ -1,6 +1,7 @@
 import torch
 import json
 from transformers import AutoTokenizer, AutoModel
+from scipy.spatial.distance import cosine
 
 from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature
 from administrator_app.models import ProgrammingExercise
@@ -50,4 +51,24 @@ def analyze_programming_code(student, code, question_id):
     feature_as_json = json.dumps(concatenated_features.tolist())
 
     question = ProgrammingExercise.objects.get(id=question_id)
-    ProgrammingCodeFeature.objects.create(student=student, exercise_question=question, feature=feature_as_json)
+    ProgrammingCodeFeature.objects.create(student=student, programming_question=question, feature=feature_as_json)
+
+
+# 计算程序设计报告的相似度
+def calculate_cosine_similarity(feature_json1, feature_json2):
+    # 加载特征值
+    feature1 = torch.Tensor(json.loads(feature_json1))
+    feature2 = torch.Tensor(json.loads(feature_json2))
+
+    # 计算余弦相似度
+    similarity_score = 1 - cosine(feature1, feature2)
+
+    return similarity_score
+
+    # # 假设你有两个代码的特征值
+    # feature_as_json1 = analyze_programming_code(student1, code1, question_id1)
+    # feature_as_json2 = analyze_programming_code(student2, code2, question_id2)
+    #
+    # # 计算相似度
+    # similarity_score = calculate_cosine_similarity(feature_as_json1, feature_as_json2)
+    # print(f"Similarity score: {similarity_score}")
