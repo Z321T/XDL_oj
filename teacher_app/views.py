@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 
+from CodeBERT_app.models import ProgrammingCodeFeature
+from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
 from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
@@ -39,18 +41,71 @@ def home_teacher(request):
 
 # 教师主页：查看报告详情
 def repeat_report(request, programmingexercise_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    classes = Class.objects.filter(teacher=teacher)
+    if request.method == 'POST':
+        programmingexercise_id = request.POST.get('programmingexercise_id')
+        class_id = request.POST.get('class_id')
+        students = Student.objects.filter(class_assigned=class_id)
+        programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
+        student_similarities = []
 
-    context = {
-        'dropdown_menu1': dropdown_menu1,
-        'adminnotifications': adminnotifications,
-        'classes': classes,
-        'programmingexercise_id': programmingexercise_id
-    }
-    return render(request, 'repeat_report.html', context)
+        for student in students:
+            # 尝试获取当前学生对于特定练习题的编程特征，否则为None
+            try:
+                student_feature = ProgrammingCodeFeature.objects.get(student=student,
+                                                                     programming_question=programmingexercise)
+            except ProgrammingCodeFeature.DoesNotExist:
+                student_feature = None
+
+            if student_feature:
+                max_similarity = 0
+                other_features = ProgrammingCodeFeature.objects.filter(
+                    programming_question=programmingexercise).exclude(student=student)
+                for other_feature_record in other_features:
+                    similarity = compute_cosine_similarity(student_feature.feature, other_feature_record.feature)
+                    if similarity > max_similarity:
+                        max_similarity = similarity
+
+                # 在列表中为当前学生存储最大相似度值和学生对象
+                student_similarities.append((student, max_similarity))
+
+                # 更新或创建当前学生的余弦相似度记录
+                ProgrammingCodeFeature.objects.update_or_create(
+                    student=student,
+                    programming_question=programmingexercise,
+                    defaults={'cosine_similarity': max_similarity}
+                )
+            else:
+                # 如果没有学生特征，我们将相似度设置为None
+                student_similarities.append((student, None))
+
+        dropdown_menu1 = {'user_id': request.session.get('user_id')}
+        teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+        adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+        classes = Class.objects.filter(teacher=teacher)
+
+        context = {
+            'dropdown_menu1': dropdown_menu1,
+            'adminnotifications': adminnotifications,
+            'classes': classes,
+            'programmingexercise_id': programmingexercise_id,
+            'students': students,
+            'student_similarities': student_similarities,
+        }
+        return render(request, 'repeat_report.html', context)
+
+    else:
+        dropdown_menu1 = {'user_id': request.session.get('user_id')}
+        teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+        adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+        classes = Class.objects.filter(teacher=teacher)
+
+        context = {
+            'dropdown_menu1': dropdown_menu1,
+            'adminnotifications': adminnotifications,
+            'classes': classes,
+            'programmingexercise_id': programmingexercise_id
+        }
+        return render(request, 'repeat_report.html', context)
 
 
 # 作业情况

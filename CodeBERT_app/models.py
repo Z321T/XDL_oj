@@ -26,6 +26,7 @@ class ProgrammingCodeFeature(models.Model):
     programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="练习题",
                                              related_name='programming_code_features', null=True, blank=True)
     feature = models.TextField(verbose_name="特征值")
+    cosine_similarity = models.FloatField(verbose_name="余弦相似度", null=True, blank=True)
 
     def __str__(self):
         return (f"{self.student.name if self.student else '无关联学生'} - "

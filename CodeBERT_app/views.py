@@ -1,7 +1,7 @@
 import torch
 import json
 from transformers import AutoTokenizer, AutoModel
-from scipy.spatial.distance import cosine
+from torch.nn.functional import cosine_similarity
 
 from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature
 from administrator_app.models import ProgrammingExercise
@@ -55,13 +55,16 @@ def analyze_programming_code(student, code, question_id):
 
 
 # 计算程序设计报告的相似度
-def calculate_cosine_similarity(feature_json1, feature_json2):
-    # 加载特征值
-    feature1 = torch.Tensor(json.loads(feature_json1))
-    feature2 = torch.Tensor(json.loads(feature_json2))
+def compute_cosine_similarity(feature_json1, feature_json2):
+    feature1 = torch.tensor(json.loads(feature_json1)).float()
+    feature2 = torch.tensor(json.loads(feature_json2)).float()
 
-    # 计算余弦相似度
-    similarity_score = 1 - cosine(feature1, feature2)
+    feature1 = feature1.view(1, -1)
+    feature2 = feature2.view(1, -1)
+
+    similarity_tensor = cosine_similarity(feature1, feature2)
+
+    similarity_score = similarity_tensor.item()
 
     return similarity_score
 

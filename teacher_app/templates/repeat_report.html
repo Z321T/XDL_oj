@@ -288,7 +288,8 @@
                                                             <td>{{ class.students.count }}</td>
                                                             <td>
                                                                 <button class="button-class class-details btn-default"
-                                                                    data-class-id="{{ class.id }}">查看报告详情
+                                                                    data-class-id="{{ class.id }}"
+                                                                    data-programmingexercise-id="{{ programmingexercise.id }}">查看报告详情
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -347,43 +348,38 @@
                                                             aria-label="Office: activate to sort column ascending"
                                                             style="width: 155.6px;">查重得分
                                                             </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Price: activate to sort column ascending"
-                                                            style="width: 72.575px;">操作
-                                                            </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for exercise in programing_exercises %}
+                                                        {% for student in students %}
                                                             <tr role="row"
                                                                 class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                                <td class="sorting_1">{{ exercise.title }}</td>
-                                                                <td>{{ exercise.date_posted }}</td>
-                                                                <td>{{ exercise.posted_by.name }}</td>
-                                                                <td>{{ exercise.deadline }}</td>
+                                                                <td class="sorting_1">{{ student.name }}</td>
+                                                                <td>{{ student.userid }}</td>
+                                                                <td>{{ student.class_assigned }}</td>
                                                                 <td>
-                                                                    <button class="button-class doing-exercise btn-default"
-                                                                        data-exercise-id="{{ exercise.id }}">程序设计报告详情
-                                                                    </button>
+                                                                    {% if similarity != None %}
+                                                                        {{ similarity|floatformat:2 }}
+                                                                    {% else %}
+                                                                        未评定
+                                                                    {% endif %}
                                                                 </td>
                                                             </tr>
                                                         {% empty %}
                                                             <tr>
-                                                                <td colspan="4" style="text-align: center;">暂无题目</td>
+                                                                <td colspan="4" style="text-align: center;">暂无学生</td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-            </div>
+                    </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
 
@@ -394,7 +390,6 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-</div>
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
      aria-hidden="true">
@@ -435,7 +430,23 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-
+    <script>
+    $(document).ready(function () {
+        $('.class-details').on('click', function () {
+            var classId = $(this).data('class-id');
+            var programmingExerciseId = $(this).data('programmingexercise-id');
+            $.ajax({
+                url: "{% url 'teacher_app:repeat_report' '123' %}".replace('123', programmingExerciseId),
+                type: 'POST',
+                data: {
+                    'class_id': classId,
+                    'programmingexercise_id': programmingExerciseId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+            });
+        });
+    });
+    </script>
     <script>
     $(document).ready(function () {
         $('.adminnotification-item').on('click', function () {
