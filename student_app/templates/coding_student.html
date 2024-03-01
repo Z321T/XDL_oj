@@ -88,9 +88,10 @@
 <body>
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex justify-content-center">
             <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="mdi mdi-sort-variant"></span>
                 </button>
@@ -106,38 +107,43 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" onclick="redirectToHome()">
-                        <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">学生主页</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPractice()"
-                       aria-expanded="false" aria-controls="ui-basic">
-                        <i class="mdi mdi-view-headline menu-icon"></i>
-                        <span class="menu-title">我的练习</span>
-                        <i class="menu-arrow"></i>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="mdi mdi-list-box menu-icon"></i>
+                        <span class="menu-title">题目列表</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToTest()">
-                        <i class="mdi mdi-candy-outline menu-icon"></i>
-                        <span class="menu-title">我的考试</span>
+                    <a class="nav-link" href="#">
+                        <i class="mdi menu-icon"></i>
+                        <span class="menu-title">——————</span>
+                    </a>
+                </li>
+                {% for question in question_set.questions.all %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);"
+                           onclick="redirectToSpecificQuestion({{ question.id }})">
+                            <i class="mdi mdi-dice-1 menu-icon"></i>
+                            <span class="menu-title">{{ question.title }}</span>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="nav-item">
+                        <span class="nav-link">暂无题目</span>
+                    </li>
+                {% endfor %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="mdi  menu-icon"></i>
+                        <span class="menu-title">——————</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToAnalyse()">
-                        <i class="mdi mdi-chart-pie menu-icon"></i>
-                        <span class="menu-title">学情分析</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToProfile()">
-                        <i class="mdi mdi-account menu-icon"></i>
-                        <span class="menu-title">个人中心</span>
+                    <a class="nav-link" href="#" onclick="redirectToList({{ question_set.id }})">
+                        <i class="mdi mdi-keyboard-return menu-icon"></i>
+                        <span class="menu-title">返回</span>
                     </a>
                 </li>
             </ul>
