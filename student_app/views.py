@@ -147,7 +147,6 @@ def analyse_data(request):
     if request.method == 'POST':
         data_type = request.POST.get('type')
         item_id = request.POST.get('id')
-        response_data = []
 
         if data_type == 'exercise':
             # 获取所有的练习题的综合得分
@@ -174,11 +173,11 @@ def analyse_data(request):
                     'scores': scores
                 })
 
-            return JsonResponse({
-                'status': 'success',
+            context = {
                 'avg_scores': exercise_avg_scores,
                 'question_scores': question_scores,
-            })
+            }
+            return JsonResponse({'data': context})
 
         elif data_type == 'exam':
             # 获取所有的考试题的综合得分
@@ -205,11 +204,11 @@ def analyse_data(request):
                     'scores': scores
                 })
 
-            return JsonResponse({
-                'status': 'success',
+            context = {
                 'avg_scores': exam_avg_scores,
                 'question_scores': question_scores,
-            })
+            }
+            return JsonResponse({'data': context})
 
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)

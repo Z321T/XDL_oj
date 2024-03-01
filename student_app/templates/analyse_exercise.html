@@ -236,10 +236,10 @@
                                    <div class="col-md-7 grid-margin stretch-card">
                                         <div class="card">
                                             <div class="card-body">
-                                                <p class="card-title">我的成绩</p>
+                                                <p class="card-title">题目得分</p>
                                                 <div id="cash-deposits-chart-legend" class="d-flex justify-content-center pt-3"></div>
                                                 <!-- Replace the content of this div -->
-                                                <div id="lineChart" style="width: 600px;height:400px;"></div>
+                                                <div id="barChart" style="width: 600px;height:400px;"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -279,8 +279,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -292,12 +290,10 @@
             <div class=" stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-title">题目得分</p>
-                           <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                        <p class="card-title">我的成绩</p>
                                <div class="card-container">
-                                  <div id="barChart" style="width: 1200px;height:400px;"></div>
+                                  <div id="lineChart" style="width: 1200px;height:400px;"></div>
                                </div>
-                           </div>
                         <!-- main-panel ends -->
                     </div>
                     <!-- page-body-wrapper ends -->
@@ -306,6 +302,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
@@ -352,11 +349,9 @@
 <script src="{% static 'student_app/js/homework.js' %}"></script>
 <script src="{% static 'student_app/js/current-homework.js' %}"></script>
 <script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
-<!--//初始化折线图-->
 <script>
     // 基于准备好的dom，初始化echarts实例
     var lineChart = echarts.init(document.getElementById('lineChart'));
-
     // 指定图表的配置项和数据
     var lineOption = {
         title: {
@@ -391,7 +386,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] // 示例数据
+            data: ['练习一', '练习二', '练习三', '练习四', '练习五', '练习六']
         },
         yAxis: {
             type: 'value'
@@ -402,19 +397,15 @@
                 type: 'line',
                 stack: '总量',
                 areaStyle: {normal: {}},
-                data: [120, 132, 101, 134, 90, 230, 210] // 示例数据
+                data: [2.6, 7.0, 5.4, 10, 6.1, 3.4]
             }
         ]
     };
-
-    // 使用刚指定的配置项和数据显示图表。
     lineChart.setOption(lineOption);
 </script>
-<!--//初始化柱状图-->
 <script>
     // 基于准备好的dom，初始化echarts实例
     var barChart = echarts.init(document.getElementById('barChart'));
-
     // 指定图表的配置项和数据
     var option = {
         title : {
@@ -447,12 +438,10 @@
             {
                 name: '得分',
                 type: 'bar',
-                data: [5, 20, 36, 10, 10, 20, 30] // 示例得分数据
+                data: [5, 10, 6, 3, 10, 4, 7] // 示例得分数据
             }
         ]
     };
-
-    // 使用刚指定的配置项和数据显示图表。
     barChart.setOption(option);
 </script>
 <script>
@@ -475,7 +464,9 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    updateChart(response.data);
+                    var data = response.data;
+                    updateLineChart(data.avg_scores);
+                    updateBarChart(data.question_scores);
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
@@ -483,7 +474,6 @@
             });
         });
     })
-
     // 更新折线图的函数
 function updateLineChart(data) {
     var myChart = echarts.init(document.getElementById('lineChart'));
@@ -505,7 +495,7 @@ function updateLineChart(data) {
         xAxis: {
             type: 'category',
             data: data.map(function (item) {
-                return item.name; // 假设每个数据点的名称存储在item.name字段
+                return item.exercise_title;
             })
         },
         yAxis: {
@@ -515,29 +505,12 @@ function updateLineChart(data) {
             name: '得分',
             type: 'line',
             data: data.map(function (item) {
-                return item.score; // 假设每个数据点的得分存储在item.score字段
+                return item.avg_score;
             })
         }]
     };
     myChart.setOption(option);
 }
-
-// 假设的数据更新过程，通常会在一个事件处理器或者特定逻辑的回调函数中调用
-$('#updateLineChartBtn').on('click', function() {
-    // 发起AJAX请求来获取数据
-    $.ajax({
-        url: 'your-line-chart-data-endpoint', // API端点
-        type: 'GET', // 请求方式
-        success: function(response) {
-            // 假设返回的数据为：[{name: '标签1', score: 10}, {name: '标签2', score: 20}, ... ]
-            updateLineChart(response); // 更新折线图
-        },
-        error: function(error) {
-            console.error('Error fetching line chart data:', error);
-        }
-    });
-});
-
 // 更新柱状图的函数
 function updateBarChart(data) {
     var barChart = echarts.init(document.getElementById('barChart'));
@@ -551,7 +524,7 @@ function updateBarChart(data) {
         xAxis: {
             type: 'category',
             data: data.map(function (item) {
-                return item.question_title; // 假设每个题目的名称存储在item.question_title字段
+                return item.question_title;
             })
         },
         yAxis: {
@@ -561,31 +534,13 @@ function updateBarChart(data) {
             name: '题目',
             type: 'bar',
             data: data.map(function (item) {
-                return item.score; // 假设每个题目的得分存储在item.score字段
+                return item.scores;
             })
         }]
     };
     barChart.setOption(option);
 }
-
-// 绑定一个按钮点击事件来更新柱状图
-$('#updateBarChartBtn').on('click', function() {
-    // 使用AJAX请求获取数据
-    $.ajax({
-        url: 'your-bar-chart-data-endpoint', // 替换为你柱状图数据的API端点
-        type: 'GET', // 请求方法类型
-        success: function(response) {
-            // 假设返回的数据结构是 response = { data: [{question_title: '题目1', score: 5}, ...] }
-            updateBarChart(response.data); // 使用返回的数据更新图表
-        },
-        error: function(error) {
-            console.error('Error fetching bar chart data:', error);
-        }
-    });
-});
-
 </script>
-<!--通知显示-->
 <script>
     $(document).ready(function () {
         $('.notification-item').on('click', function () {
