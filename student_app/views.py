@@ -5,6 +5,7 @@ import subprocess
 
 
 from django.utils import timezone
+from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -141,17 +142,75 @@ def analyse_exam(request):
 
 
 def analyse_data(request):
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    class_assigned = student.class_assigned
     if request.method == 'POST':
         data_type = request.POST.get('type')
         item_id = request.POST.get('id')
         response_data = []
 
         if data_type == 'exercise':
+            # 获取所有的练习题的综合得分
+            exercises = Exercise.objects.filter(classes=class_assigned)
+            exercise_avg_scores = []
+            for ex in exercises:
+                ex_questions = ExerciseQuestion.objects.filter(exercise=ex)
+                avg_score = Score.objects.filter(student=student,
+                                                 exercise_question__in=ex_questions).aggregate(Avg('score'))
+                exercise_avg_scores.append({
+                    'exercise_title': ex.title,
+                    'avg_score': avg_score['score__avg'] if avg_score['score__avg'] is not None else 0
+                })
+            # 获取每个练习题的得分
             exercise = get_object_or_404(Exercise, id=item_id)
-            related_classes = exercise.classes.all()
+            questions = ExerciseQuestion.objects.filter(exercise=exercise)
+            question_scores = []
+            for question in questions:
+                scores = Score.objects.filter(student=student,
+                                              exercise_question=question).values_list('score', flat=True)
+                scores = [float(score) for score in scores]
+                question_scores.append({
+                    'question_title': question.title,
+                    'scores': scores
+                })
+
+            return JsonResponse({
+                'status': 'success',
+                'avg_scores': exercise_avg_scores,
+                'question_scores': question_scores,
+            })
+
         elif data_type == 'exam':
+            # 获取所有的考试题的综合得分
+            exam = Exam.objects.filter(classes=class_assigned)
+            exam_avg_scores = []
+            for ex in exam:
+                ex_questions = ExamQuestion.objects.filter(exam=ex)
+                avg_score = Score.objects.filter(student=student,
+                                                 exam_question__in=ex_questions).aggregate(Avg('score'))
+                exam_avg_scores.append({
+                    'exam_title': ex.title,
+                    'avg_score': avg_score['score__avg'] if avg_score['score__avg'] is not None else 0
+                })
+            # 获取每个考试题的得分
             exam = get_object_or_404(Exam, id=item_id)
-            related_classes = exam.classes.all()
+            questions = ExamQuestion.objects.filter(exam=exam)
+            question_scores = []
+            for question in questions:
+                scores = Score.objects.filter(student=student,
+                                              exam_question=question).values_list('score', flat=True)
+                scores = [float(score) for score in scores]
+                question_scores.append({
+                    'question_title': question.title,
+                    'scores': scores
+                })
+
+            return JsonResponse({
+                'status': 'success',
+                'avg_scores': exam_avg_scores,
+                'question_scores': question_scores,
+            })
+
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)
 
