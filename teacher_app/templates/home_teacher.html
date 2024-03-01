@@ -262,32 +262,32 @@
                                                 <table  class="table dataTable no-footer" role="grid">
                                                     <thead>
                                                     <tr role="row">
-                                                         <th class="sorting_asc" tabindex="0"
+                                                        <th class="sorting_asc" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-sort="ascending"
                                                         aria-label="Name: activate to sort column descending"
                                                         style="width: 167.95px;">题目
-                                                    </th>
-                                                    <th class="sorting" tabindex="0" aria-controls="exam-listing"
+                                                        </th>
+                                                        <th class="sorting" tabindex="0" aria-controls="exam-listing"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">发布时间
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">发布教师
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">截止时间
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Price: activate to sort column ascending"
                                                         style="width: 72.575px;">操作
-                                                    </th>
+                                                        </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -300,7 +300,7 @@
                                                             <td>{{ exercise.deadline }}</td>
                                                             <td>
                                                                 <button class="button-class doing-exercise btn-default"
-                                                                    data-exercise-id="{{ exercise.id }}">提交程序设计报告
+                                                                    data-exercise-id="{{ exercise.id }}">程序设计报告详情
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -396,6 +396,13 @@
         });
     });
 </script>
-
+<script>
+    $(document).ready(function () {
+        $('.doing-exercise').on('click', function () {
+            var exerciseId = $(this).data('exercise-id');
+            window.location.href = "{% url 'teacher_app:repeat_report' '123' %}".replace('123', exerciseId);
+        });
+    });
+</script>
 </body>
 </html>

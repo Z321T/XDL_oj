@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 
-from administrator_app.models import AdminNotification
+from administrator_app.models import AdminNotification, ProgrammingExercise
 from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
 from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
@@ -26,26 +26,31 @@ def home_teacher(request):
         return redirect('/login/')
 
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    # 假设这是你的饼状图数据
-    chart_data = {
-        'categories': ['分类1', '分类2', '分类3'],
-        'data': [30, 50, 20]
-    }
-    # 你可以传递一个包含所有信息的上下文字典给模板
-    # 这里是你的数据，通常是从数据库中查询得到的
-    line_chart_data = {
-        'dates': ['1', '2', '3', '4', '5'],
-        'values': [120, 132, 101, 134, 90]
-    }
+    programing_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
         'dropdown_menu1': dropdown_menu1,
         'adminnotifications': adminnotifications,
-        'chart_data': chart_data,  # 添加图表数据
-        'line_chart_data': line_chart_data,  # 添加折线图数据
+        'programing_exercises': programing_exercises
     }
 
     return render(request, 'home_teacher.html', context)
+
+
+# 教师主页：查看报告详情
+def repeat_report(request, programmingexercise_id):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    classes = Class.objects.filter(teacher=teacher)
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'adminnotifications': adminnotifications,
+        'classes': classes,
+        'programmingexercise_id': programmingexercise_id
+    }
+    return render(request, 'repeat_report.html', context)
 
 
 # 作业情况
@@ -628,6 +633,3 @@ def reset_password(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
-# 查重报告
-def repete_report(request):
-   return render(request, 'create_class.html')

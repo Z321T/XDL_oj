@@ -1,11 +1,12 @@
 from django.urls import path
-from .views import home_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher,repete_report
-from .views import create_class, delete_class, class_details, delete_student, reset_password
+from .views import home_teacher, repeat_report
+from .views import profile_teacher, repository_teacher
+from .views import class_teacher, create_class, delete_class, class_details, delete_student, reset_password
 from .views import (exercise_list_default, exercise_list,
                     create_exercise, exercise_delete, exercise_edit, exercisequestion_delete)
 from .views import (exam_list_default, exam_list,
                     create_exam, exam_delete, exam_edit, examquestion_delete)
-from .views import create_notice, delete_notice, notification_content
+from .views import notice_teacher, create_notice, delete_notice, notification_content
 from .views import (coursework_exercise, coursework_exam, coursework_data,
                     coursework_exercise_details, coursework_exam_details, coursework_details_data)
 
@@ -18,12 +19,13 @@ app_name = 'teacher_app'
 urlpatterns = [
     # 教师使用界面
     path('home/', home_teacher, name='home_teacher'),
+    path('home/repeat_report/<int:programmingexercise_id>/', repeat_report, name='repeat_report'),
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),
     path('coursework/data/', coursework_data, name='coursework_data'),
-    path('coursework/exercise/details/<int:class_id>', coursework_exercise_details, name='coursework_exercise_details'),
-    path('coursework/exam/details/<int:class_id>', coursework_exam_details, name='coursework_exam_details'),
+    path('coursework/exercise/details/<int:class_id>/', coursework_exercise_details, name='coursework_exercise_details'),
+    path('coursework/exam/details/<int:class_id>/', coursework_exam_details, name='coursework_exam_details'),
     path('coursework/details/data/', coursework_details_data, name='coursework_details_data'),
     # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),
@@ -41,7 +43,7 @@ urlpatterns = [
     # 有关题库的操作：考试
     path('repository/exam_list/', exam_list_default, name='exam_list_default'),
     path('repository/exam_list/<int:exam_id>/', exam_list, name='exam_list'),
-    path('repository/exam_list/create_exam/<int:exam_id>', create_exam, name='create_exam'),
+    path('repository/exam_list/create_exam/<int:exam_id>/', create_exam, name='create_exam'),
     path('repository/delete_exam/', exam_delete, name='exam_delete'),
     path('repository/edit_exam/<int:exam_id>/', exam_edit, name='exam_edit'),
     path('repository/edit_exam/examquestion_delete/', examquestion_delete, name='examquestion_delete'),
@@ -49,13 +51,12 @@ urlpatterns = [
     path('class/', class_teacher, name='class_teacher'),
     path('class/create/', create_class, name='create_class'),
     path('class/delete/', delete_class, name='delete_class'),
-    path('class/class_details/<int:class_id>', class_details, name='class_details'),
+    path('class/class_details/<int:class_id>/', class_details, name='class_details'),
     path('class/class_details/delete_student/', delete_student, name='delete_student'),
     path('class/class_details/reset_password/', reset_password, name='reset_password'),
     # 个人中心
     path('profile/', profile_teacher, name='profile_teacher'),
-    #有关查重的操作
-    path('repete/report/', repete_report, name='repete_report'),
+
     path('static/<path:path>', serve),
 
 ]

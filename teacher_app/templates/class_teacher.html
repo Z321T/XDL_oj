@@ -290,17 +290,21 @@
                                                 {% for class in classes %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1" id="class{{ class.id }}"> {{ class.name }}
-                                                    </td>
-                                                    <td>{{ class.students.count }}</td>
-                                                    <td>
-                                                        <button class="button-class delete-class btn-default"
+                                                        <td class="sorting_1" id="class{{ class.id }}"> {{ class.name }}</td>
+                                                        <td>{{ class.students.count }}</td>
+                                                        <td>
+                                                            <button class="button-class delete-class btn-default"
                                                                 data-class-id="{{ class.id }}">删除
-                                                        </button>
-                                                        <button class="button-class class-details btn-default"
+                                                            </button>
+                                                            <button class="button-class class-details btn-default"
                                                                 data-class-id="{{ class.id }}">详情
-                                                        </button>
-                                                    </td>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                {% empty %}
+                                                        <tr>
+                                                            <td colspan="4" style="text-align: center;">暂无班级</td>
+                                                        </tr>
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
