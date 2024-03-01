@@ -97,7 +97,6 @@
             position: relative; /* 设置相对定位 */
             left: 250px;
             width: 60%; /* 固定宽度 */
-
             height: 800px; /* 固定高度 */
             border: 2px solid purple; /* 边框，以便内容窗口可见 */
             border-radius: 10px;
@@ -147,58 +146,6 @@
             border: 1px solid #ddd; /* 设置单元格边框 */
             text-align: left; /* 文本左对齐 */
             padding: 8px; /* 单元格内边距 */
-        }
-
-
-        /* 新增的标题样式 */
-        .table-title {
-            width: 80px; /* 标题宽度充满容器 */
-            margin-bottom: 5px; /* 在标题和表格之间添加一些空间 */
-            font-size: 20px; /* 设置标题的字体大小 */
-            font-weight: bold; /* 设置标题的字体加粗 */
-        }
-
-
-        .control-button-right {
-            margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
-            padding: 10px 20px; /* 按钮内边距 */
-            background-color: #007bff; /* 背景颜色 */
-            color: #ffffff; /* 文本颜色 */
-            border: none; /* 移除边框 */
-            border-radius: 5px; /* 圆角边框 */
-            cursor: pointer; /* 鼠标悬停时的指针样式 */
-            right: 2px;
-            position: absolute;
-            display: none; /* 默认不显示 */
-
-        }
-
-        #newClassButton {
-            margin-top: 20px; /* 在按钮和表格之间添加一些空间 */
-            padding: 10px 20px; /* 按钮内边距 */
-            background-color: #007bff; /* 背景颜色 */
-            color: #ffffff; /* 文本颜色 */
-            border: none; /* 移除边框 */
-            border-radius: 5px; /* 圆角边框 */
-            cursor: pointer; /* 鼠标悬停时的指针样式 */
-            right: 2px;
-            position: absolute;
-        }
-
-        #newClassButton:hover {
-            background-color: #0056b3; /* 鼠标悬停时的背景颜色变化 */
-        }
-
-        .button-class {
-            border-radius: 10px;
-            border: 1px solid purple;
-            background-color: white;
-            color: #0d111b;
-            padding: 5px 10px;
-        }
-
-        .button-class:hover {
-            background-color: mediumpurple;
         }
 
         /* 弹窗背景 */
@@ -429,7 +376,7 @@
                                                         <button class="button-class delete-student btn-default"
                                                                 data-student-id="{{ student.id }}">删除
                                                         </button>
-                                                        <button class="button-class reset-password btn-default
+                                                        <button class="button-class reset-password btn-default"
                                                                 data-student-id="{{ student.id }}">初始化密码
                                                         </button>
                                                     </td>

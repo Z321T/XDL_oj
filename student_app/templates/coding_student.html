@@ -19,7 +19,8 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'student_app/css/coding.css' %}">
-
+    <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
         from {
@@ -90,10 +91,6 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex justify-content-center">
             <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-                <a class="navbar-brand brand-logo" href="#"><img src="{% static 'student_app/photo/logo.svg' %}"
-                                                                 alt="logo"></a>
-                <a class="navbar-brand brand-logo-mini" href="#"><img
-                        src="{% static 'student_app/photo/logo-mini.svg' %}" alt="logo"></a>
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="mdi mdi-sort-variant"></span>
                 </button>
@@ -111,41 +108,36 @@
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" onclick="redirectToHome()">
                         <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">题目列表</span>
+                        <span class="menu-title">学生主页</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToPractice()"
+                       aria-expanded="false" aria-controls="ui-basic">
+                        <i class="mdi mdi-view-headline menu-icon"></i>
+                        <span class="menu-title">我的练习</span>
+                        <i class="menu-arrow"></i>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">——————</span>
-                    </a>
-                </li>
-                {% for question in question_set.questions.all %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);"
-                           onclick="redirectToSpecificQuestion({{ question.id }})">
-                            <i class="mdi mdi-file-document menu-icon"></i>
-                            <span class="menu-title">{{ question.title }}</span>
-                        </a>
-                    </li>
-                {% empty %}
-                    <li class="nav-item">
-                        <span class="nav-link">暂无题目</span>
-                    </li>
-                {% endfor %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">——————</span>
+                    <a class="nav-link" href="#" onclick="redirectToTest()">
+                        <i class="mdi mdi-candy-outline menu-icon"></i>
+                        <span class="menu-title">我的考试</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToList({{ question_set.id }})">
-                        <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">返回</span>
+                    <a class="nav-link" href="#" onclick="redirectToAnalyse()">
+                        <i class="mdi mdi-chart-pie menu-icon"></i>
+                        <span class="menu-title">学情分析</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="redirectToProfile()">
+                        <i class="mdi mdi-account menu-icon"></i>
+                        <span class="menu-title">个人中心</span>
                     </a>
                 </li>
             </ul>
@@ -183,15 +175,16 @@
                         <!-- 调试信息 -->
                         <p>运行信息</p>
                     </div>
+                     <!-- 表单 -->
+                    <form id="codeForm" action="{% url 'student_app:run-cpp' %}" method="post">
+                        {% csrf_token %}
+                        <textarea id="codeTextArea" style="display: none;"></textarea> <!-- 隐藏 textarea -->
+                        <input type="hidden" name="code" id="hiddenCodeInput">
+                        <!-- 使用之前按钮的样式和位置，但移除了 onclick 属性 -->
+                        <button class="btn-default" id="runCode" type="submit">提交</button>
+                    </form>
                 </div>
-                <!-- 表单 -->
-                <form id="codeForm" action="{% url 'student_app:run-cpp' %}" method="post">
-                    {% csrf_token %}
-                    <textarea id="codeTextArea" style="display: none;"></textarea> <!-- 隐藏 textarea -->
-                    <input type="hidden" name="code" id="hiddenCodeInput">
-                    <!-- 使用之前按钮的样式和位置，但移除了 onclick 属性 -->
-                    <button class="debugger-button" id="runCode" type="submit">提交</button>
-                </form>
+
             </div>
         </div>
     </div>
@@ -234,34 +227,70 @@
     });
 </script>
 <script>
-    $(document).ready(function () {
-        $('#codeForm').on('submit', function (event) {
-            event.preventDefault(); // 阻止表单的默认提交行为
-            var code = editor.getValue(); // 获取代码编辑器中的内容
-            var types = "{{ types }}";
-            var questionId = {{ question.id }};
-            $.ajax({
-                url: "{% url 'student_app:run-cpp' %}",
-                type: 'POST',
-                data: {
-                    'code': code,
-                    'types': types,
-                    'questionId': questionId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'  // 直接使用 Django 模板标签插入 CSRF 令牌
-                },
-                success: function (response) {
-                    // 显示 debugger 窗口并更新内容
-                    var debuggerElement = $('#debugger');
-                    debuggerElement.show(); // 显示 debugger
-                    debuggerElement.html(`<p>输出: ${response.output}</p><p>错误: ${response.error}</p>`);
-                },
-                error: function (response) {
-                    // 弹出错误消息，并将错误信息输出到控制台
-                    console.error('Error:', response);
-                }
-            });
+$(document).ready(function () {
+    // 拖动把手的mousedown事件处理函数
+    function handleMouseDown(e) {
+        e.preventDefault();
+        var startY = e.clientY;
+        var startHeight = $('#debugger').height();
+        $(document).mousemove(function(e) {
+            var newHeight = startHeight + (startY - e.clientY);
+            $('#debugger').css("height", newHeight + "px");
+        });
+        $(document).mouseup(function() {
+            $(document).off("mousemove");
+        });
+    }
+
+    // 为把手绑定事件处理函数的函数
+    function bindResizer() {
+        $('.resize-handle').off('mousedown').on('mousedown', handleMouseDown);
+    }
+
+    // 在页面加载时添加把手，并绑定事件
+    var resizerHTML = '<div class="resize-handle" style="height: 10px; background: purple; cursor: row-resize;"></div>';
+    $('#debugger').append(resizerHTML); // 添加把手
+    bindResizer(); // 绑定把手的mousedown事件
+
+    // 表单提交事件
+    $('#codeForm').on('submit', function (event) {
+        event.preventDefault(); // 阻止表单的默认提交行为
+        var code = editor.getValue(); // 获取代码编辑器中的内容，假定您已经定义了编辑器实例变量
+        var types = "{{ types }}";
+        var questionId = {{ question.id }};
+        // AJAX请求
+        $.ajax({
+            url: "{% url 'student_app:run-cpp' %}",  // 确保Django模板标签解析正确
+            type: 'POST',
+            data: {
+                'code': code,
+                'types': types,
+                'questionId': questionId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  // Django CSRF令牌
+            },
+            success: function (response) {
+                // 确保把手元素保持
+                var debuggerElement = $('#debugger');
+                var existingResizer = debuggerElement.find('.resize-handle').detach();
+
+                debuggerElement.html(`<p>输出: ${response.output}</p><p>错误: ${response.error}</p>`);
+                debuggerElement.prepend(existingResizer); // 重新添加把手
+
+                // 如果需要，重新绑定把手的事件
+                bindResizer();
+
+                debuggerElement.show(); },// 显示 debugger
+            error: function (error) {
+                 console.error('Error:', response);
+                // 可以更新 debugger 展示错误信息
+                $('#debugger').html(`<p>出现错误，请查看控制台。</p>`).show();
+            }
         });
     });
+      // 页面加载时绑定把手
+    bindResizer();
+});
 </script>
+
 </body>
 </html>
