@@ -107,14 +107,14 @@
         .input-group textarea {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
+            margin-top: 3px;
             border: 1px solid #ccc;
             border-radius: 10px;
             box-sizing: border-box;
         }
 
         .input-group textarea {
-            height: 500px;
+            height: 470px;
 
         }
 
@@ -266,41 +266,45 @@
                 </ul>
             </nav>
             <!-- partial -->
-            <div class="container">
-                <!-- 班级列表部分 -->
-                <div class="class-list">
-                    <h3>班级列表</h3>
-                    <ul>
-                        {% for class in classes %}
-                            <li data-class-id="{{ class.id }}">{{ class.name }}</li>
-                        {% empty %}
-                            <li>No classes found</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+            <div class="main-panel">
+                  <div class="content-wrapper">
+                        <div class="container">
+                            <!-- 班级列表部分 -->
+                            <div class="class-list">
+                                <h3>班级列表</h3>
+                                <ul>
+                                    {% for class in classes %}
+                                        <li data-class-id="{{ class.id }}">{{ class.name }}</li>
+                                    {% empty %}
+                                        <li>No classes found</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
 
-                <!-- 通知发布窗口 -->
-                <div class="notification-panel">
-                    <h2>发布通知</h2>
-                    <form id="notificationForm" method="post" action="{% url 'teacher_app:create_notice' %}">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <label for="recipient">收件人:</label>
-                            <div id="recipient" class="recipient-container"></div>
-                            <input type="hidden" id="recipientIds" name="recipients">
-                        </div>
-                        <div class="input-group">
-                            <label for="title">通知标题:</label>
-                            <input id="title" name="title" placeholder="请输入通知标题">
-                        </div>
-                        <div class="input-group">
-                            <label for="message">消息内容:</label>
-                            <textarea id="message" name="message" placeholder="请输入您的消息"></textarea>
-                        </div>
-                        <button type="submit" class="btn-default">发送</button>
-                    </form>
-                </div>
+                            <!-- 通知发布窗口 -->
+                            <div class="notification-panel">
+                                <h2>发布通知</h2>
+                                <form id="notificationForm" method="post" action="{% url 'teacher_app:create_notice' %}">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <label for="recipient">收件人:</label>
+                                        <div id="recipient" class="recipient-container"></div>
+                                        <input type="hidden" id="recipientIds" name="recipients">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="title">通知标题:</label>
+                                        <input id="title" name="title" placeholder="请输入通知标题">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="message">消息内容:</label>
+                                        <textarea id="message" name="message" placeholder="请输入您的消息"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-default">发送</button>
+                                </form>
+                            </div>
 
+                        </div>
+                  </div>
             </div>
         </div>
     </div>
