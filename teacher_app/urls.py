@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher
+from .views import home_teacher, profile_teacher, notice_teacher, repository_teacher, class_teacher,repete_report
 from .views import create_class, delete_class, class_details, delete_student, reset_password
 from .views import (exercise_list_default, exercise_list,
                     create_exercise, exercise_delete, exercise_edit, exercisequestion_delete)
@@ -54,7 +54,8 @@ urlpatterns = [
     path('class/class_details/reset_password/', reset_password, name='reset_password'),
     # 个人中心
     path('profile/', profile_teacher, name='profile_teacher'),
-
+    #有关查重的操作
+    path('repete/report/', repete_report, name='repete_report'),
     path('static/<path:path>', serve),
 
 ]

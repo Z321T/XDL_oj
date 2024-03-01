@@ -628,3 +628,6 @@ def reset_password(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
+# 查重报告
+def repete_report(request):
+   return render(request, 'create_class.html')
