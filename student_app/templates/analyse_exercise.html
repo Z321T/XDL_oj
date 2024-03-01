@@ -224,7 +224,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -232,7 +231,7 @@
 
                             <div class="tab-content py-0 px-0">
 
-                                <!--班级完成情况-->
+                                <!--得分情况-->
                                 <div class="row">
                                    <div class="col-md-7 grid-margin stretch-card">
                                         <div class="card">
@@ -244,7 +243,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <!--练习考试切换-->
                                     <div class="col-md-5 grid-margin stretch-card">
                                         <div class="card">
                                             <div class="card-body">
@@ -294,7 +293,11 @@
                 <div class="card">
                     <div class="card-body">
                         <p class="card-title">题目得分</p>
-                              <div id="barChart" style="width: 1200px;height:400px;"></div>
+                           <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                               <div class="card-container">
+                                  <div id="barChart" style="width: 1200px;height:400px;"></div>
+                               </div>
+                           </div>
                         <!-- main-panel ends -->
                     </div>
                     <!-- page-body-wrapper ends -->
@@ -349,19 +352,35 @@
 <script src="{% static 'student_app/js/homework.js' %}"></script>
 <script src="{% static 'student_app/js/current-homework.js' %}"></script>
 <script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
+<!--//初始化折线图-->
 <script>
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('lineChart'));
-        // 指定图表的配置项和数据的初始状态
-          var option = {
+    // 基于准备好的dom，初始化echarts实例
+    var lineChart = echarts.init(document.getElementById('lineChart'));
+
+    // 指定图表的配置项和数据
+    var lineOption = {
         title: {
-            text: '综合得分趋势'
+            text: '综合得分趋势',
+            x: 'center'
         },
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
         },
         legend: {
+            orient: 'horizontal',
+            left: 'left',
             data: ['得分']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
         },
         grid: {
             left: '3%',
@@ -369,47 +388,72 @@
             bottom: '3%',
             containLabel: true
         },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
         xAxis: {
             type: 'category',
-            data: [] // X轴的数据通常由后端提供
+            boundaryGap: false,
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] // 示例数据
         },
         yAxis: {
             type: 'value'
         },
-        series: [{
-            name: '得分',
-            type: 'line',
-            data: [] // 系列中的数据也由后端提供
-        }]
-        };
+        series: [
+            {
+                name: '得分',
+                type: 'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                data: [120, 132, 101, 134, 90, 230, 210] // 示例数据
+            }
+        ]
+    };
 
-        // 用于更新图表的函数
-        function updateChart(data) {
-            // 假设后端返回的数据格式是 { categories: [], scores: [] }
-            option.xAxis.data = data.categories;
-            option.series[0].data = data.scores;
-            myChart.setOption(option);
-        }
+    // 使用刚指定的配置项和数据显示图表。
+    lineChart.setOption(lineOption);
+</script>
+<!--//初始化柱状图-->
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var barChart = echarts.init(document.getElementById('barChart'));
 
-        // 发送请求并在数据返回时更新图表
-        fetch('/path/to/your/api/endpoint')
-            .then(function(response) {
-                return response.json(); // 解析JSON格式的响应体
-            })
-            .then(function(data) {
-                updateChart(data); // 更新图表
-            })
-            .catch(function(error) {
-                console.error('Fetching Error: ', error);
-            });
+    // 指定图表的配置项和数据
+    var option = {
+        title : {
+            text: '题目得分情况',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        legend: {
+            data:['得分']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: ['题目1', '题目2', '题目3', '题目4', '题目5', '题目6', '题目7'] // 示例题目名称
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '得分',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20, 30] // 示例得分数据
+            }
+        ]
+    };
 
-        // 首先设置一个基本的选项来初始化图表
-        myChart.setOption(option);
+    // 使用刚指定的配置项和数据显示图表。
+    barChart.setOption(option);
 </script>
 <script>
     $(function () {
@@ -440,76 +484,108 @@
         });
     })
 
-    // 更新柱状图的函数
-    function updateChart(data) {
-        var myChart = echarts.init(document.getElementById('cash-deposits-chart'));
-        var classNames = data.map(function (item) {
-            return item.class_name;
-        });
-        var completionRates = data.map(function (item) {
-            return item.completion_rate;
-        });
-        var option = {
-            tooltip: {},
-            legend: {
-                data: ['完成情况']
-            },
-            xAxis: {
-                data: classNames
-            },
-            yAxis: {},
-            series: [{
-                name: '完成情况',
-                type: 'bar',
-                data: completionRates
-            }]
-        };
-        myChart.setOption(option);
-    }
-</script>
-<script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
-<script type="text/javascript">
-    var barChart = echarts.init(document.getElementById('barChart'));
-
-    // 初始化图表选项，没有数据
+    // 更新折线图的函数
+function updateLineChart(data) {
+    var myChart = echarts.init(document.getElementById('lineChart'));
     var option = {
-        tooltip: {},
+        title: {
+            text: '综合得分趋势'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
         legend: {
-            data:['题目']
+            data: ['得分']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
         },
         xAxis: {
-            data: [] // X轴的数据将从后端获取
+            type: 'category',
+            data: data.map(function (item) {
+                return item.name; // 假设每个数据点的名称存储在item.name字段
+            })
         },
-        yAxis: {},
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: '得分',
+            type: 'line',
+            data: data.map(function (item) {
+                return item.score; // 假设每个数据点的得分存储在item.score字段
+            })
+        }]
+    };
+    myChart.setOption(option);
+}
+
+// 假设的数据更新过程，通常会在一个事件处理器或者特定逻辑的回调函数中调用
+$('#updateLineChartBtn').on('click', function() {
+    // 发起AJAX请求来获取数据
+    $.ajax({
+        url: 'your-line-chart-data-endpoint', // API端点
+        type: 'GET', // 请求方式
+        success: function(response) {
+            // 假设返回的数据为：[{name: '标签1', score: 10}, {name: '标签2', score: 20}, ... ]
+            updateLineChart(response); // 更新折线图
+        },
+        error: function(error) {
+            console.error('Error fetching line chart data:', error);
+        }
+    });
+});
+
+// 更新柱状图的函数
+function updateBarChart(data) {
+    var barChart = echarts.init(document.getElementById('barChart'));
+    var option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['题目']
+        },
+        xAxis: {
+            type: 'category',
+            data: data.map(function (item) {
+                return item.question_title; // 假设每个题目的名称存储在item.question_title字段
+            })
+        },
+        yAxis: {
+            type: 'value'
+        },
         series: [{
             name: '题目',
             type: 'bar',
-            data: [] // 系列的数据也将从后端获取
+            data: data.map(function (item) {
+                return item.score; // 假设每个题目的得分存储在item.score字段
+            })
         }]
     };
-
-    // 现在更新图表数据的函数
-    function updateChartData(chart, option, data) {
-        // 更新option对象
-        option.xAxis.data = data.xAxisData;
-        option.series[0].data = data.seriesData;
-
-        // 使用新的数据设置图表选项
-        chart.setOption(option);
-    }
-
-    // 发送AJAX请求获取数据
-    fetch('/path-to-your-data-api')
-        .then(response => response.json())
-        .then(data => {
-            // 用从后端获取的数据更新图表
-            updateChartData(barChart, option, data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-
-    // 设置初始选项
     barChart.setOption(option);
+}
+
+// 绑定一个按钮点击事件来更新柱状图
+$('#updateBarChartBtn').on('click', function() {
+    // 使用AJAX请求获取数据
+    $.ajax({
+        url: 'your-bar-chart-data-endpoint', // 替换为你柱状图数据的API端点
+        type: 'GET', // 请求方法类型
+        success: function(response) {
+            // 假设返回的数据结构是 response = { data: [{question_title: '题目1', score: 5}, ...] }
+            updateBarChart(response.data); // 使用返回的数据更新图表
+        },
+        error: function(error) {
+            console.error('Error fetching bar chart data:', error);
+        }
+    });
+});
+
 </script>
+<!--通知显示-->
 <script>
     $(document).ready(function () {
         $('.notification-item').on('click', function () {
