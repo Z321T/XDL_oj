@@ -108,7 +108,6 @@ def repeat_report_details(request, programmingexercise_id):
     return render(request, 'repeat_report_details.html', context)
 
 
-
 # 作业情况
 def coursework_exercise(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
