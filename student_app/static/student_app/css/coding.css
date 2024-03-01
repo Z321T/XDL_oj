@@ -16,34 +16,28 @@
     }
 
 
-    /* 调试器样式 */
-.debugger{
-  position:absolute;
-  bottom: 0;
-  width: 100%;
-  height: 33.33%; /* 调试器的高度 */
-  background-color:white; /* 调试器的背景颜色 */
-  border-top: 2px solid purple; /* 上边框 */
-  display: none; /* 默认隐藏 */
-  z-index: 999; /* 确保调试器在最顶层 */
+/* 调试器样式 */
+#debugger {
+    resize: vertical; /* 允许垂直调整大小 */
+    overflow: auto; /* 当内容过多时显示滚动条 */
+    max-height: 50%; /* 限制调试器的最大高度，可根据需要修改 */
+    min-height: 30px; /* 最小高度以确保把手可见 */
+    position: relative; /* 设置为relative以防止高度调整影响其他元素布局 */
 }
-.debugger-button {
-  z-index: 999!important;
-  position: relative; /* 如果按钮在表单中，可能需要relative定位 */
 
-    bottom:3px;
-  width: 50px; /* 设置按钮宽度 */
-  height: 30px; /* 设置按钮高度 */
-  border-radius: 25%; /* 圆角矩形 */
-  background-color: mediumpurple; /* 按钮背景颜色 */
-  border: 1px solid #ccc; /* 去除边框 */
-  outline: none; /* 去除默认轮廓 */
-  cursor: pointer; /* 光标样式为手型 */
-   transition: background-color 0.3s ease; /* 添加过渡效果 */
+/* 创建一个拖动把手 */
+.resize-handle {
+    height: 10px; /* 把手的高度 */
+    background:blue; /* 把手的背景颜色，确保可见性 */
+    cursor: row-resize; /* 显示一个指示可拖动的光标 */
+    position: absolute; /* 绝对定位 */
+    bottom: 0; /* 底部对齐 */
+    left: 0; /* 左侧对齐 */
+    right: 0; /* 右侧对齐 */
+    z-index: 9999; /* 确保把手层级在顶层 */
 }
-.debugger-button:hover {
-  background-color: #6a0dad; /* 深紫色 */
-}
+
+
    /* 切换按钮样式 */
 .toggle-buttons {
   display: flex;
