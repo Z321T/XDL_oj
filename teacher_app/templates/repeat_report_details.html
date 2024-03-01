@@ -367,7 +367,7 @@
                                                             </tr>
                                                         {% empty %}
                                                             <tr>
-                                                                <td colspan="4" style="text-align: center;">选择班级</td>
+                                                                <td colspan="4" style="text-align: center;">暂无学生提交报告</td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
@@ -434,13 +434,12 @@
             var classId = $(this).data('class-id');
             var programmingExerciseId = $(this).data('programmingexercise-id');
             // 构建基础URL（已由Django模板处理好）
+            var baseUrl = "{% url 'teacher_app:repeat_report_details' '123' %}".replace('123', programmingExerciseId);
             // 重定向到新的URL
-            var detailUrl = "/teacher/home/repeat_report/details/" + programmingExerciseId + '/?classId=' + encodeURIComponent(classId);
-            window.location.href =  detailUrl;
+            window.location.href = baseUrl + '?classId=' + encodeURIComponent(classId);
         });
     });
     </script>
-
     <script>
     $(document).ready(function () {
         $('.adminnotification-item').on('click', function () {

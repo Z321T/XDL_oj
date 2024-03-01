@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home_teacher, repeat_report
+from .views import home_teacher, repeat_report, repeat_report_details
 from .views import profile_teacher, repository_teacher
 from .views import class_teacher, create_class, delete_class, class_details, delete_student, reset_password
 from .views import (exercise_list_default, exercise_list,
@@ -20,6 +20,7 @@ urlpatterns = [
     # 教师使用界面
     path('home/', home_teacher, name='home_teacher'),
     path('home/repeat_report/<int:programmingexercise_id>/', repeat_report, name='repeat_report'),
+    path('home/repeat_report/details/<int:programmingexercise_id>/', repeat_report_details, name='repeat_report_details'),
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),
