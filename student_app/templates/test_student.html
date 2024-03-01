@@ -85,7 +85,7 @@
         }
 
          function redirectToAnalyse() {
-            window.location.href = "/student/analyse/";
+            window.location.href = "/student/analyse_exercise/";
         }
     </script>
 </head>
@@ -337,7 +337,7 @@
     $(document).ready(function () {
         $('.doing-exam').on('click', function () {
             var examId = $(this).data('exam-id');
-            window.location.href = "{% url 'student_app:text_list' '123' %}".replace('123', examId);
+            window.location.href = "{% url 'student_app:test_list' '123' %}".replace('123', examId);
         });
     });
 </script>

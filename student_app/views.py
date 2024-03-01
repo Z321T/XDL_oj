@@ -101,27 +101,59 @@ def test_student(request):
 
 
 # 我的考试：考试详情
-def text_list(request, exam_id):
+def test_list(request, exam_id):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     student = Student.objects.get(userid=request.session.get('user_id'))
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
-        return render(request, 'text_list.html',
+        return render(request, 'test_list.html',
                       {'dropdown_menu1': dropdown_menu1, 'exam': exam, 'notifications': notifications})
 
 
 # 学情分析
-def analyse_student(request):
+def analyse_exercise(request):
     student = Student.objects.get(userid=request.session.get('user_id'))
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    exercises = Exercise.objects.filter(classes=student.class_assigned).order_by('-published_at')
 
     context = {
         'dropdown_menu1': dropdown_menu1,
         'notifications': notifications,
+        'coursework': exercises,
     }
-    return render(request, 'analyse_student.html', context)
+    return render(request, 'analyse_exercise.html', context)
+
+
+def analyse_exam(request):
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    exams = Exam.objects.filter(classes=student.class_assigned).order_by('-published_at')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+        'coursework': exams,
+    }
+    return render(request, 'analyse_exam.html', context)
+
+
+def analyse_data(request):
+    if request.method == 'POST':
+        data_type = request.POST.get('type')
+        item_id = request.POST.get('id')
+        response_data = []
+
+        if data_type == 'exercise':
+            exercise = get_object_or_404(Exercise, id=item_id)
+            related_classes = exercise.classes.all()
+        elif data_type == 'exam':
+            exam = get_object_or_404(Exam, id=item_id)
+            related_classes = exam.classes.all()
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)
 
 
 # 学生个人中心
