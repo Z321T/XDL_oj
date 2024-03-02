@@ -76,6 +76,50 @@ def notification_content(request):
         return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
 
 
+# 程序设计题库
+def repository_administrator(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'programming_exercises': programming_exercises,
+    }
+    return render(request, 'repository_administrator.html', context)
+
+
+# 程序设计题库：添加程序设计题
+def programmingexercise_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('content')
+        deadline = request.POST.get('deadline')
+        posted_by = request.session.get('user_id')
+
+        if title and description and deadline and posted_by:
+            ProgrammingExercise.objects.create(
+                title=title,
+                description=description,
+                deadline=deadline,
+                posted_by=Administrator.objects.get(userid=posted_by)
+            )
+            return redirect('administrator_app:repository_administrator')
+    return render(request, 'programmingexercise_create.html')
+
+
+# 程序设计题库：删除程序设计题
+def programmingexercise_delete(request):
+    if request.method == 'POST':
+        exercise_id = request.POST.get('exercise_id')
+        if exercise_id:
+            exercise_to_delete = ProgrammingExercise.objects.filter(id=exercise_id)
+            exercise_to_delete.delete()
+            return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': '练习未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
+
+
 # 管理员个人中心
 def profile_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
@@ -96,65 +140,10 @@ def profile_administrator(request):
                   {'form': form, 'dropdown_menu1': dropdown_menu1})
 
 
-# 我的题库
-def repository_administrator(request):
+# 题库查重管理
+def problems_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
-
-    context = {
-        'dropdown_menu1': dropdown_menu1,
-        'programming_exercises': programming_exercises,
-    }
-    return render(request, 'repository_administrator.html', context)
-
-
-def programmingexercise_create(request):
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('content')
-        deadline = request.POST.get('deadline')
-        posted_by = request.session.get('user_id')
-
-        if title and description and deadline and posted_by:
-            ProgrammingExercise.objects.create(
-                title=title,
-                description=description,
-                deadline=deadline,
-                posted_by=Administrator.objects.get(userid=posted_by)
-            )
-            return redirect('administrator_app:repository_administrator')
-    return render(request, 'programmingexercise_create.html')
-
-
-# 题库管理：删除程序设计题
-def programmingexercise_delete(request):
-    if request.method == 'POST':
-        exercise_id = request.POST.get('exercise_id')
-        if exercise_id:
-            exercise_to_delete = ProgrammingExercise.objects.filter(id=exercise_id)
-            exercise_to_delete.delete()
-            return JsonResponse({'status': 'success'})
-        return JsonResponse({'status': 'error', 'message': '练习未找到'}, status=400)
-    else:
-        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
-
-
-# 考试情况（不考虑保留）
-def test_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'test_administrator.html', {'dropdown_menu1': dropdown_menu1})
-
-
-# 班级管理（不考虑保留）
-def class_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'class_administrator.html', {'dropdown_menu1': dropdown_menu1})
-
-
-# 查重管理
-def plagiarism_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'plagiarism_administrator.html', {'dropdown_menu1': dropdown_menu1})
+    return render(request, 'problems_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
 # 教师管理
@@ -201,9 +190,19 @@ def delete_teacher(request):
         return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
 
 
-# 题库管理
-def problems_administrator(request):
+# 考试情况（不考虑保留）
+def test_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'problems_administrator.html', {'dropdown_menu1': dropdown_menu1})
+    return render(request, 'test_administrator.html', {'dropdown_menu1': dropdown_menu1})
 
 
+# 班级管理（不考虑保留）
+def class_administrator(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    return render(request, 'class_administrator.html', {'dropdown_menu1': dropdown_menu1})
+
+
+# 查重管理（不考虑保留）
+def plagiarism_administrator(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    return render(request, 'plagiarism_administrator.html', {'dropdown_menu1': dropdown_menu1})
