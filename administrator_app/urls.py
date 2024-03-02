@@ -2,12 +2,9 @@ from django.urls import path
 from django.contrib.staticfiles.views import serve
 
 from .views import home_administrator
-from .views import class_administrator
 from .views import notice_administrator, create_notice, delete_notice, notification_content
 from .views import profile_administrator, profile_administrator_edit
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
-from .views import test_administrator
-from .views import plagiarism_administrator
 from .views import information_administrator, add_teacher, delete_teacher
 from .views import problems_administrator
 
@@ -36,10 +33,6 @@ urlpatterns = [
     path('information/add_teacher/', add_teacher, name='add_teacher'),
     path('information/delete_teacher/', delete_teacher, name='delete_teacher'),
 
-    # 不考虑保留的url
-    path('class/', class_administrator, name='class_administrator'),
-    path('test/', test_administrator, name='test_administrator'),
-    path('plagiarism/', plagiarism_administrator, name='plagiarism_administrator'),
 
     path('static/<path:path>', serve),
 

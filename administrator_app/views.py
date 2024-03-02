@@ -201,21 +201,3 @@ def delete_teacher(request):
             return JsonResponse({'status': 'error', 'message': '教师未找到'}, status=404)
     else:
         return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
-
-
-# 考试情况（不考虑保留）
-def test_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'test_administrator.html', {'dropdown_menu1': dropdown_menu1})
-
-
-# 班级管理（不考虑保留）
-def class_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'class_administrator.html', {'dropdown_menu1': dropdown_menu1})
-
-
-# 查重管理（不考虑保留）
-def plagiarism_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'plagiarism_administrator.html', {'dropdown_menu1': dropdown_menu1})
