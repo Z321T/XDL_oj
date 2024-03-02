@@ -92,21 +92,20 @@
 
     </script>
     <style>
-        input[type="text"],
-        input[type="password"],
-        input[type="file"],
-        input[type="text"]:hover,
-        input[type="password"]:hover,
-        input[type="file"]:hover {
-            /* 其他样式保持不变 */
+              input[type="text"]:not(.form-control),
+        input[type="password"]:not(.form-control),
+        input[type="file"]:not(.form-control),
+        input[type="text"]:hover:not(.form-control),
+        input[type="password"]:hover:not(.form-control),
+        input[type="file"]:hover:not(.form-control) {
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
-        input[type="text"]:hover,
-        input[type="password"]:hover,
-        input[type="file"]:hover {
-            border-color: #66afe9; /* 悬停时的边框颜色 */
-            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* 悬停时的立体阴影效果 */
+        input[type="text"]:not(.form-control):hover,
+        input[type="password"]:not(.form-control):hover,
+        input[type="file"]:not(.form-control):hover {
+            border-color: #66afe9;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
         }
 
         /* 添加到你的CSS文件中 */
