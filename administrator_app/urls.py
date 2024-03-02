@@ -4,7 +4,7 @@ from django.contrib.staticfiles.views import serve
 from .views import home_administrator
 from .views import class_administrator
 from .views import notice_administrator, create_notice, delete_notice, notification_content
-from .views import profile_administrator
+from .views import profile_administrator, profile_administrator_edit
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import test_administrator
 from .views import plagiarism_administrator
@@ -28,6 +28,7 @@ urlpatterns = [
     path('repository/programmingexercise_create/', programmingexercise_create, name='programmingexercise_create'),
     # 个人中心
     path('profile/', profile_administrator, name='profile_administrator'),
+    path('profile/edit/', profile_administrator_edit, name='profile_administrator_edit'),
     # 题库查重管理
     path('problems/', problems_administrator, name='problems_administrator'),
     # 教师管理

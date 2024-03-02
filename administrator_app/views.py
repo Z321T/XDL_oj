@@ -125,19 +125,32 @@ def profile_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     administrator = Administrator.objects.get(userid=request.session.get('user_id'))
 
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'administrator': administrator,
+    }
+    return render(request, 'profile_administrator.html', context)
+
+
+# 管理员个人中心：修改个人信息
+def profile_administrator_edit(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    administrator = Administrator.objects.get(userid=request.session.get('user_id'))
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'administrator': administrator,
+    }
+
     if request.method == 'POST':
-        form = AdministratorForm(request.POST, instance=administrator)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profile updated successfully')
-            return redirect('profile_administrator')
-        else:
-            messages.error(request, 'Profile update failed')
-            return redirect('profile_administrator')
-    else:
-        form = AdministratorForm(instance=administrator)
-    return render(request, 'profile_administrator.html',
-                  {'form': form, 'dropdown_menu1': dropdown_menu1})
+        phone_num = request.POST.get('phone_num')
+        email = request.POST.get('email')
+        administrator.phone_num = phone_num
+        administrator.email = email
+        administrator.save()
+        return redirect('administrator_app:profile_administrator')
+
+    return render(request, 'profile_administrator_edit.html', context)
 
 
 # 题库查重管理

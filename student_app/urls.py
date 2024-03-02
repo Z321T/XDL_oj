@@ -6,6 +6,7 @@ from .views import home_student, practice_student, test_student, profile_student
 from .views import test_list, practice_list, notification_content
 from .views import analyse_exercise, analyse_exam, analyse_data
 from .views import coding_exercise, coding_exam, run_cpp_code
+from .views import profile_student_edit
 
 
 app_name = 'student_app'
@@ -17,6 +18,7 @@ urlpatterns = [
     path('home/report_student/<int:programmingexercise_id>/', report_student, name='report_student'),
     # 学生个人中心
     path('profile/', profile_student, name='profile_student'),
+    path('profile/edit/', profile_student_edit, name='profile_student_edit'),
     # 通知相关
     path('notification_content/', notification_content, name='notification_content'),
     # 练习相关

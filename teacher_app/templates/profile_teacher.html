@@ -243,13 +243,6 @@
                         <span class="menu-title">作业情况</span>
                         <i class="menu-arrow"></i>
                     </a>
-
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToNotice()">
-                        <i class="mdi mdi-bulletin-board menu-icon"></i>
-                        <span class="menu-title">通知</span>
-                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()"
@@ -258,16 +251,12 @@
                         <span class="menu-title">我的题库</span>
                         <i class="menu-arrow"></i>
                     </a>
-
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()"
-                       aria-expanded="false" aria-controls="auth">
-                        <i class="mdi mdi-account menu-icon"></i>
-                        <span class="menu-title">个人中心</span>
-                        <i class="menu-arrow"></i>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="redirectToNotice()">
+                        <i class="mdi mdi-bulletin-board menu-icon"></i>
+                        <span class="menu-title">通知</span>
                     </a>
-
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToClass()"
@@ -276,7 +265,14 @@
                         <span class="menu-title">班级管理</span>
                         <i class="menu-arrow"></i>
                     </a>
-
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProfile()"
+                       aria-expanded="false" aria-controls="auth">
+                        <i class="mdi mdi-account menu-icon"></i>
+                        <span class="menu-title">个人中心</span>
+                        <i class="menu-arrow"></i>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -296,10 +292,27 @@
                     <div class="profile-image">
                         <img src="{% static 'teacher_app/photo/user-avatar.png' %}" alt="头像">
                     </div>
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn-default">提交</button>
+                    <form id="teacher-form">
+                        <div class="form-row">
+                            <label for="name">姓名：</label>
+                            <input type="text" name="name" id="name" value="{{ teacher.name }}" readonly/>
+                        </div>
+                        <div class="form-row">
+                            <label for="userid">教工号：</label>
+                            <input type="text" name="userid" id="userid" value="{{ teacher.userid }}" readonly/>
+                        </div>
+                        <div class="form-row">
+                            <label for=phone_num">手机号：</label>
+                            <input type="text" name="phone_num" id="phone_num"
+                                   value="{{ teacher.phone_num }}" readonly/>
+                        </div>
+                        <div class="form-row">
+                            <label for="email">邮箱：</label>
+                            <input type="email" name="email" id="email" value="{{ teacher.email }}" readonly/>
+                        </div>
+                        <div class="form-row">
+                            <button type="button" id="edit-info" class="btn-default" onclick="window.location.href='{% url 'teacher_app:profile_teacher_edit' %}';">修改信息</button>
+                        </div>
                     </form>
                 </div>
                 <!-- partial -->

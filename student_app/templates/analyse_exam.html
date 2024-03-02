@@ -68,22 +68,23 @@
     </style>
     <script>
         function redirectToHome() {
-            window.location.href = "/student/home/"
+            window.location.href = "{% url 'student_app:home_student' %}"
         }
 
         function redirectToPractice() {
-            window.location.href = "/student/practice/";
+            window.location.href = "{% url 'student_app:practice_student' %}";
         }
 
         function redirectToTest() {
-            window.location.href = "/student/test/";
+            window.location.href = "{% url 'student_app:test_student' %}";
         }
 
         function redirectToProfile() {
-            window.location.href = "/student/profile/"
+            window.location.href = "{% url 'student_app:profile_student' %}"
         }
+
          function redirectToAnalyse() {
-            window.location.href = "/student/analyse_exercise/";
+            window.location.href = "{% url 'student_app:analyse_exercise' %}";
         }
     </script>
     <style>

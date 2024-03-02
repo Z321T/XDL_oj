@@ -3,11 +3,9 @@ import time
 import requests
 import subprocess
 
-
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 
@@ -17,7 +15,6 @@ from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQues
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
 from CodeBERT_app.views import analyze_code, analyze_programming_code
-from .forms import StudentForm
 
 
 # 学生主页
@@ -227,20 +224,35 @@ def profile_student(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     student = Student.objects.get(userid=request.session.get('user_id'))
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+        'student': student,
+    }
+
+    return render(request, 'profile_student.html', context)
+
+
+# 学生个人中心-编辑
+def profile_student_edit(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    student = Student.objects.get(userid=request.session.get('user_id'))
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+        'student': student,
+    }
+
     if request.method == 'POST':
-        form = StudentForm(request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profile updated successfully')
-            return redirect('profile_student')
-        else:
-            # 如果表单无效，将错误信息返回到模板
-            return render(request, 'profile_student.html',
-                          {'form': form, 'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
-    else:
-        form = StudentForm(instance=student)
-    return render(request, 'profile_student.html',
-                  {'form': form, 'dropdown_menu1': dropdown_menu1, 'notifications': notifications})
+        email = request.POST.get('email')
+        student.email = email
+        student.save()
+        return redirect('student_app:profile_student')
+
+    return render(request, 'profile_student_edit.html', context)
 
 
 # 通知内容

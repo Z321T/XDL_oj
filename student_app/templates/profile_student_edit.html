@@ -70,23 +70,23 @@
     </style>
     <script>
         function redirectToHome() {
-            window.location.href = "{% url 'student_app:home_student' %}"
+            window.location.href = "/student/home/"
         }
 
         function redirectToPractice() {
-            window.location.href = "{% url 'student_app:practice_student' %}";
+            window.location.href = "/student/practice/";
         }
 
         function redirectToTest() {
-            window.location.href = "{% url 'student_app:test_student' %}";
+            window.location.href = "/student/test/";
         }
 
         function redirectToProfile() {
-            window.location.href = "{% url 'student_app:profile_student' %}"
+            window.location.href = "/student/profile/"
         }
 
-         function redirectToAnalyse() {
-            window.location.href = "{% url 'student_app:analyse_exercise' %}";
+        function redirectToAnalyse() {
+            window.location.href = "/student/analyse_exercise/";
         }
     </script>
     <style>
@@ -282,7 +282,8 @@
                     <div class="profile-image">
                         <img src="{% static 'student_app/photo/user-avatar.png' %}" alt="头像">
                     </div>
-                    <form id="student-form">
+                    <form method="post">
+                        {% csrf_token %}
                         <div class="form-row">
                             <label for="name">姓名：</label>
                             <input type="text" name="name" id="name" value="{{ student.name }}" readonly/>
@@ -298,10 +299,10 @@
                         </div>
                         <div class="form-row">
                             <label for="email">邮箱：</label>
-                            <input type="email" name="email" id="email" value="{{ student.email }}" readonly/>
+                            <input type="email" name="email" id="email" value="{{ student.email }}">
                         </div>
                         <div class="form-row">
-                            <button type="button" id="edit-info" class="btn-default" onclick="window.location.href='{% url 'student_app:profile_student_edit' %}';">修改信息</button>
+                            <button type="submit" id="edit-info" class="btn-default">提交</button>
                         </div>
                     </form>
                 </div>

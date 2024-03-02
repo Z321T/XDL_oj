@@ -8,7 +8,6 @@ from django.http import JsonResponse, HttpResponseNotFound
 from CodeBERT_app.models import ProgrammingCodeFeature
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
-from teacher_app.forms import TeacherForm
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
 from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
                                 Score, ExerciseQuestionCompletion, ExamQuestionCompletion)
@@ -352,19 +351,35 @@ def profile_teacher(request):
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'teacher': teacher,
+        'adminnotifications': adminnotifications
+    }
+    return render(request, 'profile_teacher.html', context)
+
+
+# 教师个人中心-编辑
+def profile_teacher_edit(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'teacher': teacher,
+        'adminnotifications': adminnotifications
+    }
+
     if request.method == 'POST':
-        form = TeacherForm(request.POST, instance=teacher)
-        if form.is_valid():
-            form.save()
-            return redirect('teacher_app:profile_teacher')
-        else:
-            # 如果表单无效，将错误信息返回到模板
-            return render(request, 'profile_teacher.html',
-                          {'form': form, 'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
-    else:
-        form = TeacherForm(instance=teacher)
-    return render(request, 'profile_teacher.html',
-                  {'form': form, 'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
+        phone_num = request.POST.get('phone_num')
+        email = request.POST.get('email')
+        teacher.phone_num = phone_num
+        teacher.email = email
+        teacher.save()
+        return redirect('teacher_app:profile_teacher')
+
+    return render(request, 'profile_teacher_edit.html', context)
 
 
 # 题库管理
