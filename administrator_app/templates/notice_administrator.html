@@ -20,22 +20,9 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
     <style>
-        .container {
-            display: flex;
-            height: 100vh;
-        }
 
-        .class-list {
-            width: 20%; /* 占据总宽度的1/3 */
-            background-color: #f4f4f4; /* 可以根据您的设计需求更改颜色 */
-            padding: 20px;
-            overflow-y: auto; /* 如果班级列表很长，需要滚动条 */
-            box-sizing: border-box;
-            border: 2px solid purple;
-            border-radius: 10px;
-        }
 
         .class-list h3 {
             margin-top: 0;
@@ -51,14 +38,7 @@
             border-bottom: 1px solid #ddd; /* 为列表项添加边界 */
         }
 
-        .notification-panel {
-            position: relative;
-            width: 80%; /* 占据总宽度的2/3 */
-            padding: 20px;
-            box-sizing: border-box;
-            border: 2px solid purple;
-            border-radius: 10px;
-        }
+
 
         .input-group {
             margin-bottom: 10px;
@@ -299,7 +279,7 @@
                         <div class="card-body">
                             <p class="card-title">通知列表</p>
                             <div class="table-responsive"
-                                 style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                 style="max-height: 428px; overflow-y: auto; overflow-x: hidden;">
                                 <!-- 添加了 style 属性 -->
                                 <div id="recent-purchases-listing_wrapper"
                                      class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
@@ -334,15 +314,14 @@
                                                 {% for notification in adminnotifications %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox"
-                                                                                     id="notification{{ notification.id }}">{{ notification.title }}
+                                                        <td class="sorting_1" id="notification{{ notification.id }}">{{ notification.title }}
                                                         </td>
                                                         <td>{{ notification.date_posted }}</td>
                                                         <td>
-                                                            <button class="button-class delete-notification"
+                                                            <button class="button-class delete-notification btn-default"
                                                                     data-notification-id="{{ notification.id }}">删除
                                                             </button>
-                                                            <button class="button-class content-notification"
+                                                            <button class="button-class content-notification btn-default"
                                                                     data-notification-id="{{ notification.id }}">详情
                                                             </button>
                                                         </td>
@@ -362,7 +341,7 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'administrator_app:create_notice' %}'"
-                                            style="float: right;">发布通知
+                                         class="btn-default"   style="float: right;">发布通知
                                     </button>
                                 </div>
                             </div>

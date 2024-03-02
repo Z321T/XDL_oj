@@ -19,7 +19,9 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-<link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
+     <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
+    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
+
 
 
     <style type="text/css">/* Chart.js */
@@ -292,13 +294,13 @@
                         </div>
                     </div>
                 </div>
-              </div>
-            <div class="row">
+
+
                 <div class="col-md-12 stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">教师列表</p>
-                            <div class="table-responsive" style="max-height: 580px; overflow-y: auto; overflow-x: hidden;">
+                            <div class="table-responsive" style="max-height: 428px; overflow-y: auto; overflow-x: hidden;">
                                 <!-- 添加了 style 属性 -->
                                 <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                                     <div class="row">
@@ -340,7 +342,7 @@
                                                         {% endfor %}
                                                     </td>
                                                     <td>
-                                                        <button class="button-class delete-teacher"
+                                                        <button class="button-class delete-teacher btn-default"
                                                                 data-teacher-id="{{ teacher.id }}">删除
                                                         </button>
                                                     </td>
@@ -356,13 +358,14 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'administrator_app:add_teacher' %}'"
-                                            style="float: right;">添加教师
+                                         class="btn-default"   style="float: right;">添加教师
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 

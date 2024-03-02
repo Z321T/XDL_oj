@@ -19,6 +19,8 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
+
     <style>
         .input-group label {
             margin-bottom: 8px; /* 与输入框的间距 */
@@ -221,16 +223,14 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
+         <div class="content-wrapper">
 
-
-
-            <div class="row">
                 <div class="col-md-12 stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">程序设计题目列表</p>
                             <div class="table-responsive"
-                                 style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                 style="max-height: 568px; overflow-y: auto; overflow-x: hidden;">
                                 <!-- 添加了 style 属性 -->
                                 <div id="recent-purchases-listing_wrapper"
                                      class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
@@ -271,13 +271,12 @@
                                                 {% for exercise in programming_exercises %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1"><input type="checkbox"
-                                                                                     id="exercise{{ exercise.id }}"> {{ exercise.title }}
+                                                        <td class="sorting_1" id="exercise{{ exercise.id }}"> {{ exercise.title }}
                                                         </td>
                                                         <td>{{ exercise.date_posted }}</td>
                                                         <td>{{ exercise.deadline }}</td>
                                                         <td>
-                                                            <button class="button-class delete-exercise"
+                                                            <button class="button-class delete-exercise btn-default"
                                                                     data-exercise-id="{{ exercise.id }}">删除
                                                             </button>
                                                         </td>
@@ -297,14 +296,14 @@
                                         <div class="col-sm-12 col-md-5"></div>
                                         <div class="col-sm-12 col-md-7">
                                             <button onclick="window.location.href='{% url 'administrator_app:programmingexercise_create' %}'"
-                                                    style="float: right;">发布题目
+                                                class="btn-default"    style="float: right;">发布题目
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+         </div>
                 </div>
             </div>
         </div>
