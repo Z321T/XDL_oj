@@ -67,11 +67,3 @@ def compute_cosine_similarity(feature_json1, feature_json2):
     similarity_score = similarity_tensor.item()
 
     return similarity_score
-
-    # # 假设你有两个代码的特征值
-    # feature_as_json1 = analyze_programming_code(student1, code1, question_id1)
-    # feature_as_json2 = analyze_programming_code(student2, code2, question_id2)
-    #
-    # # 计算相似度
-    # similarity_score = calculate_cosine_similarity(feature_as_json1, feature_as_json2)
-    # print(f"Similarity score: {similarity_score}")
