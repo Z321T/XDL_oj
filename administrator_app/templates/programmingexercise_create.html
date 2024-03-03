@@ -37,31 +37,17 @@
         /* Increase size on hover */
     </style>
     <style>
-        .container {
-    display: flex;
-    height: 100vh;
-    justify-content: center; /* 水平居中 */
-    align-items: center;     /* 垂直居中 */
-    flex-direction: column;  /* 如果需要的话，您可以设置为列排列 */
-}
-
-        .class-list h3 {
-            margin-top: 0;
-        }
-
-        .class-list ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .class-list li {
-            padding: 10px;
-            border-bottom: 1px solid #ddd; /* 为列表项添加边界 */
+       .container {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
 
         .notification-panel {
             position: relative;
             width: 80%; /* 占据总宽度的2/3 */
+            margin-top: -80px;
             padding: 20px;
             box-sizing: border-box;
             background-color: #f9f9f9; /* 浅灰色背景 */
@@ -70,28 +56,29 @@
         }
 
 
-        .input-group {
+              /* 应用于不属于.nav-search中.input-group的样式 */
+        .input-group:not(.nav-search .input-group) {
             margin-bottom: 10px;
         }
 
-        .input-group label {
+        .input-group:not(.nav-search .input-group) label {
             display: block;
             margin-bottom: 5px;
         }
 
-        .input-group input,
-        .input-group textarea {
+        .input-group:not(.nav-search .input-group) input,
+        .input-group:not(.nav-search .input-group) textarea {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
+            margin-top: 3px;
             border: 1px solid #ccc;
             border-radius: 10px;
             box-sizing: border-box;
+
         }
 
-        .input-group textarea {
-            height: 450px;
-
+        .input-group:not(.nav-search .input-group) textarea {
+            height: 400px;
         }
 
     </style>

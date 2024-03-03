@@ -46,7 +46,15 @@
         bottom: 0;
         overflow: hidden;
         pointer-events: none;
-        visibility: hidden;
+
+        #eventList li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* 添加分割线 */
+        }
+
+        #eventList li:last-child {
+            border-bottom: none; /* 最后一个列表项不需要分割线 */
+        }        visibility: hidden;
         z-index: -1
     }
 
