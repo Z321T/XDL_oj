@@ -54,8 +54,8 @@ def repeat_report(request, programmingexercise_id):
     return render(request, 'repeat_report.html', context)
 
 
-# 教师主页：查看报告-获取数据
-def repeat_report_details(request, programmingexercise_id):
+# 教师主页：查看报告-获取代码数据
+def repeat_report_code_details(request, programmingexercise_id):
     class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
     programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
@@ -71,19 +71,74 @@ def repeat_report_details(request, programmingexercise_id):
 
         if student_feature:
             max_similarity = 0
+            sim_student = None
             other_features = ProgrammingCodeFeature.objects.filter(
                 programming_question=programmingexercise).exclude(student=student)
             for other_feature_record in other_features:
                 similarity = compute_cosine_similarity(student_feature.feature, other_feature_record.feature)
                 if similarity > max_similarity:
                     max_similarity = similarity
+                    sim_student = other_feature_record.student
             # 在列表中为当前学生存储最大相似度值和学生对象
             student_similarities.append((student, max_similarity))
             # 更新或创建当前学生的余弦相似度记录
             ProgrammingCodeFeature.objects.update_or_create(
                 student=student,
                 programming_question=programmingexercise,
-                defaults={'cosine_similarity': max_similarity}
+                defaults={'cosine_similarity': max_similarity, 'similar_student': sim_student}
+            )
+        else:
+            # 如果没有学生特征，我们将相似度设置为None
+            student_similarities.append((student, None))
+
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    classes = Class.objects.filter(teacher=teacher)
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'adminnotifications': adminnotifications,
+        'classes': classes,
+        'programmingexercise_id': programmingexercise_id,
+        'students': students,
+        'student_similarities': student_similarities,
+    }
+    return render(request, 'repeat_report_details.html', context)
+
+
+# 教师主页：查看报告-获取文本数据
+def repeat_report_details(request, programmingexercise_id):
+    class_id = request.GET.get('class_id')
+    students = Student.objects.filter(class_assigned=class_id)
+    programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
+    student_similarities = []
+
+    for student in students:
+        # 尝试获取当前学生对于特定练习题的编程特征，否则为None
+        try:
+            student_feature = ProgrammingReportFeature.objects.get(student=student,
+                                                                   programming_question=programmingexercise)
+        except ProgrammingReportFeature.DoesNotExist:
+            student_feature = None
+
+        if student_feature:
+            max_similarity = 0
+            sim_student = None
+            other_features = ProgrammingReportFeature.objects.filter(
+                programming_question=programmingexercise).exclude(student=student)
+            for other_feature_record in other_features:
+                similarity = compute_cosine_similarity(student_feature.feature, other_feature_record.feature)
+                if similarity > max_similarity:
+                    max_similarity = similarity
+                    sim_student = other_feature_record.student
+            # 在列表中为当前学生存储最大相似度值和学生对象
+            student_similarities.append((student, max_similarity))
+            # 更新或创建当前学生的余弦相似度记录
+            ProgrammingReportFeature.objects.update_or_create(
+                student=student,
+                programming_question=programmingexercise,
+                defaults={'cosine_similarity': max_similarity, 'similar_student': sim_student}
             )
         else:
             # 如果没有学生特征，我们将相似度设置为None
