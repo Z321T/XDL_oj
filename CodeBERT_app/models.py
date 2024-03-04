@@ -28,7 +28,7 @@ class ProgrammingCodeFeature(models.Model):
     feature = models.TextField(verbose_name="特征值")
     cosine_similarity = models.FloatField(verbose_name="余弦相似度", null=True, blank=True)
     similar_student = models.ForeignKey(Student, on_delete=models.SET_NULL, verbose_name="相似的学生用户",
-                                        related_name='similar_students', null=True, blank=True)
+                                        related_name='programming_code_features', null=True, blank=True)
 
     def __str__(self):
         return (f"{self.student.name if self.student else '无关联学生'} - "
@@ -43,7 +43,7 @@ class ProgrammingReportFeature(models.Model):
     feature = models.TextField(verbose_name="特征值")
     cosine_similarity = models.FloatField(verbose_name="余弦相似度", null=True, blank=True)
     similar_student = models.ForeignKey(Student, on_delete=models.SET_NULL, verbose_name="相似的学生用户",
-                                        related_name='similar_students', null=True, blank=True)
+                                        related_name='programming_report_features', null=True, blank=True)
 
     def __str__(self):
         return (f"{self.student.name if self.student else '无关联学生'} - "
