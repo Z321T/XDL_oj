@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 
-from CodeBERT_app.models import ProgrammingCodeFeature
+from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
 from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
@@ -77,10 +77,8 @@ def repeat_report_details(request, programmingexercise_id):
                 similarity = compute_cosine_similarity(student_feature.feature, other_feature_record.feature)
                 if similarity > max_similarity:
                     max_similarity = similarity
-
             # 在列表中为当前学生存储最大相似度值和学生对象
             student_similarities.append((student, max_similarity))
-
             # 更新或创建当前学生的余弦相似度记录
             ProgrammingCodeFeature.objects.update_or_create(
                 student=student,

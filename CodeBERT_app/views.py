@@ -3,7 +3,7 @@ import json
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
 
-from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature
+from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature
 from administrator_app.models import ProgrammingExercise
 from teacher_app.models import ExerciseQuestion, ExamQuestion
 
@@ -54,7 +54,26 @@ def analyze_programming_code(student, code, question_id):
     ProgrammingCodeFeature.objects.create(student=student, programming_question=question, feature=feature_as_json)
 
 
-# 计算程序设计报告的相似度
+# 分析程序设计题报告
+def analyze_programming_report(student, code, question_id):
+    # 分词
+    tokenized_report = tokenizer.tokenize(code)
+    features = []
+    for i in range(0, len(tokenized_report), 512):
+        inputs = tokenizer(tokenized_report[i:i+512], return_tensors="pt", padding=True, truncation=True, max_length=512)
+        # 获取特征值
+        with torch.no_grad():
+            feature = model(**inputs).last_hidden_state.mean(dim=1)
+            features.append(feature)
+    # 连接所有特征值
+    concatenated_features = torch.cat(features, dim=0)
+    feature_as_json = json.dumps(concatenated_features.tolist())
+
+    question = ProgrammingExercise.objects.get(id=question_id)
+    ProgrammingReportFeature.objects.create(student=student, programming_question=question, feature=feature_as_json)
+
+
+# 计算程序设计报告&代码的相似度
 def compute_cosine_similarity(feature_json1, feature_json2):
     feature1 = torch.tensor(json.loads(feature_json1)).float()
     feature2 = torch.tensor(json.loads(feature_json2)).float()
