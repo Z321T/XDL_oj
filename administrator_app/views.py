@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise
-from administrator_app.forms import AdministratorForm
 from teacher_app.models import Teacher
 
 
