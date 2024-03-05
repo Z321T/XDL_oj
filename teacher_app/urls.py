@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import home_teacher, repeat_report, repeat_report_details, repeat_report_code_details
+from django.contrib.staticfiles.views import serve
+
+from .views import home_teacher, repeat_report, repeat_report_details, repeat_code_details
 from .views import profile_teacher, profile_teacher_edit
 from .views import class_teacher, create_class, delete_class, class_details, delete_student, reset_password
 from .views import (repository_teacher, exercise_list_default, exercise_list,
@@ -10,8 +12,6 @@ from .views import notice_teacher, create_notice, delete_notice, notification_co
 from .views import (coursework_exercise, coursework_exam, coursework_data,
                     coursework_exercise_details, coursework_exam_details, coursework_details_data)
 
-from django.contrib.staticfiles.views import serve
-
 
 app_name = 'teacher_app'
 
@@ -20,9 +20,8 @@ urlpatterns = [
     # 教师使用界面
     path('home/', home_teacher, name='home_teacher'),
     path('home/repeat_report/<int:programmingexercise_id>/', repeat_report, name='repeat_report'),
-    path('home/repeat_report/details/<int:programmingexercise_id>/', repeat_report_details, name='repeat_report_details'),
-    # path('home/repeat_report/details/code/<int:programmingexercise_id>/<int:programmingexercise_id>/',
-    #      repeat_report_code_details, name='repeat_report_code_details'),
+    path('home/repeat_report/report_details/<int:programmingexercise_id>/', repeat_report_details, name='repeat_report_details'),
+    path('home/repeat_report/code_details/<int:programmingexercise_id>/', repeat_code_details, name='repeat_code_details'),
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),
