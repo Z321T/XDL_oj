@@ -213,7 +213,7 @@
 
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                        <img src="./home_student(origin)_files/face5.jpg" alt="profile">
+                        <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
                         <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -330,8 +330,7 @@
                                                 {% for teacher in teachers %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1"><input type="checkbox"
-                                                                                 id="teacher{{ teacher.id }}"> {{ teacher.name }}
+                                                    <td class="sorting_1" id="teacher{{ teacher.id }}"> {{ teacher.name }}
                                                     </td>
                                                     <td>
                                                         {% for class in teacher.classes_assigned.all %}
