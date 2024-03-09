@@ -14,7 +14,7 @@ from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import analyze_code, analyze_programming_code
+from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report
 
 
 # 学生主页
@@ -58,6 +58,7 @@ def report_student(request, programmingexercise_id):
 
     if request.method == 'POST':
         word_file = request.FILES.get('wordFile')
+        code_file = request.FILES.get('txtFile')
         document = Document(word_file)
         full_text = []
         for paragraph in document.paragraphs:
@@ -67,7 +68,11 @@ def report_student(request, programmingexercise_id):
                         inline.getparent().remove(inline)
             full_text.append(paragraph.text)
         # 获得纯文本代码，去除了图片
-        code = '\n'.join(full_text)
+        report = '\n'.join(full_text)
+        # 读取TXT文件内容
+        code = code_file.read().decode('utf-8')
+        # 分析报告特征
+        analyze_programming_report(student, report, programmingexercise_id)
         # 分析代码特征
         analyze_programming_code(student, code, programmingexercise_id)
         return redirect('student_app:home_student')

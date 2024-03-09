@@ -55,9 +55,9 @@ def analyze_programming_code(student, code, question_id):
 
 
 # 分析程序设计题报告
-def analyze_programming_report(student, code, question_id):
+def analyze_programming_report(student, report, question_id):
     # 分词
-    tokenized_report = tokenizer.tokenize(code)
+    tokenized_report = tokenizer.tokenize(report)
     features = []
     for i in range(0, len(tokenized_report), 512):
         inputs = tokenizer(tokenized_report[i:i+512], return_tensors="pt", padding=True, truncation=True, max_length=512)
