@@ -20,6 +20,7 @@ app_name = 'teacher_app'
 urlpatterns = [
     # 教师使用界面
     path('home/', home_teacher, name='home_teacher'),
+    path('home/standard_report/', standard_report, name='standard_report'),
     path('home/repeat_report/<int:programmingexercise_id>/', repeat_report, name='repeat_report'),
     path('home/repeat_report/report_details/<int:programmingexercise_id>/', repeat_report_details, name='repeat_report_details'),
     path('home/repeat_report/code_details/<int:programmingexercise_id>/', repeat_code_details, name='repeat_code_details'),
@@ -60,9 +61,6 @@ urlpatterns = [
     # 个人中心
     path('profile/', profile_teacher, name='profile_teacher'),
     path('profile/edit/', profile_teacher_edit, name='profile_teacher_edit'),
-
-    # 报告规范性
-    path('report/standard', standard_report, name='standard_report'),
 
     path('static/<path:path>', serve),
 
