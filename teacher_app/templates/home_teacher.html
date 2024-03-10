@@ -65,6 +65,15 @@
         top: 0
     }
     </style>
+    <style>
+        .title-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+       
+    </style>
     <script>
         function redirectToHome() {
             window.location.href = "{% url 'teacher_app:home_teacher' %}"
@@ -244,7 +253,10 @@
                   <div class="col-md-12 stretch-card">
                         <div class="card">
                             <div class="card-body">
+                              <div class="title-container">
                                 <p class="card-title">程序设计题目列表</p>
+                                <button class="btn-default">报告规范性设置</button>
+                              </div>
                                 <div class="table-responsive"
                                      style="max-height: 514px; overflow-y: auto; overflow-x: hidden;">
                                     <!-- 添加了 style 属性 -->
