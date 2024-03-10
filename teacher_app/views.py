@@ -160,6 +160,11 @@ def repeat_code_details(request, programmingexercise_id):
     return render(request, 'repeat_code_details.html', context)
 
 
+# 规范性评分
+def standard_report(request):
+    return render(request, 'standard_report.html')
+
+
 # 作业情况
 def coursework_exercise(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
