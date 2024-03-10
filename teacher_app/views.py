@@ -759,3 +759,5 @@ def reset_password(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
+
+

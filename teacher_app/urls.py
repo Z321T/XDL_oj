@@ -11,6 +11,7 @@ from .views import (exam_list_default, exam_list,
 from .views import notice_teacher, create_notice, delete_notice, notification_content
 from .views import (coursework_exercise, coursework_exam, coursework_data,
                     coursework_exercise_details, coursework_exam_details, coursework_details_data)
+from .views import standard_report
 
 
 app_name = 'teacher_app'
@@ -59,6 +60,9 @@ urlpatterns = [
     # 个人中心
     path('profile/', profile_teacher, name='profile_teacher'),
     path('profile/edit/', profile_teacher_edit, name='profile_teacher_edit'),
+
+    # 报告规范性
+    path('report/standard', standard_report, name='standard_report'),
 
     path('static/<path:path>', serve),
 
