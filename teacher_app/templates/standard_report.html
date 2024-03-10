@@ -91,7 +91,15 @@
         }
 
     </script>
+    <style>
+            .title-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
 
+        </style>
 
     <!-- 引入Echarts -->
     <script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
@@ -221,30 +229,17 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div class="d-flex align-items-end flex-wrap">
-                                <div class="mr-md-3 mr-xl-5">
-                                    <h2>Welcome to CUMT-OJ</h2>
-                                    <p class="mb-md-0">你的代码教学助手</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row d-flex" id="proBanner">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card bg-gradient-primary border-0">
-                            <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                   <div class="col-md-12 stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <p class="card-title">程序设计题目列表</p>
+                                <div class="title-container"
+                                    <p class="card-title">报告规范性设置</p>
+                                <div>
+                                    <label for="sumScore">总分：</label>
+                                    <input type="text" id="sumScore" onkeyup="myFunction()" placeholder="100" title="Type in a number">
+                                </div>
+                                </div>
                                 <div class="table-responsive"
                                      style="max-height: 514px; overflow-y: auto; overflow-x: hidden;">
                                     <!-- 添加了 style 属性 -->
@@ -255,58 +250,47 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table  class="table dataTable no-footer" role="grid">
-                                                    <thead>
-                                                    <tr role="row">
-                                                        <th class="sorting_asc" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-sort="ascending"
-                                                        aria-label="Name: activate to sort column descending"
-                                                        style="width: 167.95px;">题目
-                                                        </th>
-                                                        <th class="sorting" tabindex="0" aria-controls="exam-listing"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">发布时间
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">发布教师
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">截止时间
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">操作
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {% for exercise in programing_exercises %}
-                                                        <tr role="row"
-                                                            class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                            <td class="sorting_1">{{ exercise.title }}</td>
-                                                            <td>{{ exercise.date_posted }}</td>
-                                                            <td>{{ exercise.posted_by.name }}</td>
-                                                            <td>{{ exercise.deadline }}</td>
-                                                            <td>
-                                                                <button class="button-class doing-exercise btn-default"
-                                                                    data-exercise-id="{{ exercise.id }}">程序设计报告详情
-                                                                </button>
-                                                            </td>
+                                                <form action="/your-server-endpoint" method="post">
+                                                    <table  class="table dataTable no-footer" role="grid">
+                                                        <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0"
+                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                            aria-sort="ascending"
+                                                            aria-label="Name: activate to sort column descending"
+                                                            style="width: 167.95px;">评分标准
+                                                            </th>
+
+                                                            <th class="sorting" tabindex="0"
+                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                            aria-label="Price: activate to sort column ascending"
+                                                            style="width: 72.575px;">减分
+                                                            </th>
                                                         </tr>
-                                                    {% empty %}
+                                                        </thead>
+                                                        <tbody>
+                                                         <tr>
+                                                             <td>不含目录</td>
+                                                         </tr>
                                                         <tr>
-                                                            <td colspan="4" style="text-align: center;">暂无题目</td>
+                                                            <td>首行未缩进0.5英寸</td>
                                                         </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                </table>
+                                                        <tr>
+                                                            <td>段落字体大小非12号</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>图像未居中对齐</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>不含页码</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>标题样式非逐级递进</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <input type="submit" value="提交">
+                                                </form>
                                             </div>
                                         </div>
 
