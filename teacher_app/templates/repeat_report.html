@@ -269,6 +269,11 @@
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">班级人数
                                                     </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="exam-listing"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 155.6px;">得分情况
+                                                    </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
@@ -282,14 +287,15 @@
                                                             class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                             <td class="sorting_1" id="class{{ class.id }}"> {{ class.name }}</td>
                                                             <td>{{ class.students.count }}</td>
+                                                            <td>#</td>
                                                             <td>
                                                                 <button class="button-class class-report-details btn-default"
                                                                     data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">查看报告相似度
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">报告相似度
                                                                 </button>
                                                                 <button class="button-class class-code-details btn-default"
                                                                     data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">查看代码相似度
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">代码相似度
                                                                 </button>
                                                             </td>
                                                         </tr>

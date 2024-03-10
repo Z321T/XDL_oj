@@ -255,7 +255,9 @@
                             <div class="card-body">
                               <div class="title-container">
                                 <p class="card-title">程序设计题目列表</p>
-                                <button class="btn-default">报告规范性设置</button>
+                                <a href="{% url 'teacher_app:standard_report' %}">
+                                    <button class="btn btn-default">报告规范性设置</button>
+                                </a>
                               </div>
                                 <div class="table-responsive"
                                      style="max-height: 514px; overflow-y: auto; overflow-x: hidden;">
