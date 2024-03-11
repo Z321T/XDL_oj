@@ -160,7 +160,7 @@ def repeat_code_details(request, programmingexercise_id):
     return render(request, 'repeat_code_details.html', context)
 
 
-# 规范性评分
+# 教师主页-规范性评分
 def standard_report(request):
     return render(request, 'standard_report.html')
 
@@ -340,104 +340,6 @@ def coursework_details_data(request):
                 'examquestion_data': examquestion_data
             }
             return JsonResponse({'data': context})
-
-
-# 通知界面
-def notice_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    classes = teacher.classes_assigned.all()
-    notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
-
-    context = {
-        'dropdown_menu1': dropdown_menu1,
-        'notifications': notifications,
-        'adminnotifications': adminnotifications
-    }
-    return render(request, 'notice_teacher.html', context)
-
-
-# 发布通知
-def create_notice(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    classes = Class.objects.filter(teacher=teacher)
-
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        content = request.POST.get('message')
-        recipient_ids = request.POST.get('recipients').split(',')
-        recipients = Class.objects.filter(id__in=recipient_ids)
-
-        if title and content and recipients:
-            notification = Notification(title=title, content=content)
-            notification.save()
-            notification.recipients.set(recipients)
-        return redirect('teacher_app:notice_teacher')
-    return render(request, 'create_notice.html',
-                  {'dropdown_menu1': dropdown_menu1, 'classes': classes})
-
-
-# 删除通知
-def delete_notice(request):
-    if request.method == 'POST':
-        notification_id = request.POST.get('notification_id')
-        if notification_id:
-            notification_to_delete = Notification.objects.filter(id=notification_id).first()
-            if notification_to_delete:
-                notification_to_delete.delete()
-                return JsonResponse({'status': 'success'})
-        return JsonResponse({'status': 'error', 'message': '通知未找到'}, status=400)
-    else:
-        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
-
-
-# 通知详情
-def notification_content(request):
-    if request.method == 'POST':
-        notification_id = request.POST.get('notification_id')
-        notification = Notification.objects.get(id=notification_id)
-        return JsonResponse({'title': notification.title, 'content': notification.content})
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
-
-
-# 教师个人中心
-def profile_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-
-    context = {
-        'dropdown_menu1': dropdown_menu1,
-        'teacher': teacher,
-        'adminnotifications': adminnotifications
-    }
-    return render(request, 'profile_teacher.html', context)
-
-
-# 教师个人中心-编辑
-def profile_teacher_edit(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
-    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-
-    context = {
-        'dropdown_menu1': dropdown_menu1,
-        'teacher': teacher,
-        'adminnotifications': adminnotifications
-    }
-
-    if request.method == 'POST':
-        phone_num = request.POST.get('phone_num')
-        email = request.POST.get('email')
-        teacher.phone_num = phone_num
-        teacher.email = email
-        teacher.save()
-        return redirect('teacher_app:profile_teacher')
-
-    return render(request, 'profile_teacher_edit.html', context)
 
 
 # 题库管理
@@ -654,6 +556,67 @@ def examquestion_delete(request):
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
+# 通知界面
+def notice_teacher(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    classes = teacher.classes_assigned.all()
+    notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'notifications': notifications,
+        'adminnotifications': adminnotifications
+    }
+    return render(request, 'notice_teacher.html', context)
+
+
+# 发布通知
+def create_notice(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = Class.objects.filter(teacher=teacher)
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('message')
+        recipient_ids = request.POST.get('recipients').split(',')
+        recipients = Class.objects.filter(id__in=recipient_ids)
+
+        if title and content and recipients:
+            notification = Notification(title=title, content=content)
+            notification.save()
+            notification.recipients.set(recipients)
+        return redirect('teacher_app:notice_teacher')
+    return render(request, 'create_notice.html',
+                  {'dropdown_menu1': dropdown_menu1, 'classes': classes})
+
+
+# 删除通知
+def delete_notice(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        if notification_id:
+            notification_to_delete = Notification.objects.filter(id=notification_id).first()
+            if notification_to_delete:
+                notification_to_delete.delete()
+                return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': '通知未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
+
+
+# 通知详情
+def notification_content(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('notification_id')
+        notification = Notification.objects.get(id=notification_id)
+        return JsonResponse({'title': notification.title, 'content': notification.content})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
 # 班级管理
 def class_teacher(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
@@ -765,4 +728,38 @@ def reset_password(request):
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 
+# 教师个人中心
+def profile_teacher(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'teacher': teacher,
+        'adminnotifications': adminnotifications
+    }
+    return render(request, 'profile_teacher.html', context)
+
+
+# 教师个人中心-编辑
+def profile_teacher_edit(request):
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'teacher': teacher,
+        'adminnotifications': adminnotifications
+    }
+
+    if request.method == 'POST':
+        phone_num = request.POST.get('phone_num')
+        email = request.POST.get('email')
+        teacher.phone_num = phone_num
+        teacher.email = email
+        teacher.save()
+        return redirect('teacher_app:profile_teacher')
+
+    return render(request, 'profile_teacher_edit.html', context)
