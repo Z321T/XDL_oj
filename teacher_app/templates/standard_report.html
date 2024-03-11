@@ -19,7 +19,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
         from {
@@ -237,7 +237,7 @@
                                     <p class="card-title">报告规范性设置</p>
                                 <div>
                                     <label for="sumScore">总分：</label>
-                                    <input type="text" id="sumScore" onkeyup="myFunction()" placeholder="100" title="Type in a number">
+                                    <input type="number" id="sumScore"  placeholder="100" min="0">
                                 </div>
                                 </div>
                                 <div class="table-responsive"
@@ -271,25 +271,32 @@
                                                         <tbody>
                                                          <tr>
                                                              <td>不含目录</td>
+                                                             <td><input type="number" name="Contents" placeholder="-15～0" min="-15" max="0"></td>
+      </td>
                                                          </tr>
                                                         <tr>
                                                             <td>首行未缩进0.5英寸</td>
+                                                            <td><input type="number" name="Contents" placeholder="-15～0" min="-15" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>段落字体大小非12号</td>
+                                                            <td><input type="number" name="fontsSize" placeholder="-15～0" min="-15" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>图像未居中对齐</td>
+                                                            <td><input type="number" name="image" placeholder="-15～0" min="-15" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>不含页码</td>
+                                                            <td><input type="number" name="pageNum" placeholder="-15～0" min="-15" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>标题样式非逐级递进</td>
+                                                            <td><input type="number" name="titleStyle" placeholder="-15～0" min="-15" max="0"></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
-                                                    <input type="submit" value="提交">
+                                                    <input type="submit" class="btn-default" value="提交">
                                                 </form>
                                             </div>
                                         </div>

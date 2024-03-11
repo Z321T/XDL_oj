@@ -11,7 +11,7 @@ from .views import (exam_list_default, exam_list,
 from .views import notice_teacher, create_notice, delete_notice, notification_content
 from .views import (coursework_exercise, coursework_exam, coursework_data,
                     coursework_exercise_details, coursework_exam_details, coursework_details_data)
-from .views import standard_report
+from .views import standard_report, scores_details
 
 
 app_name = 'teacher_app'
@@ -24,6 +24,7 @@ urlpatterns = [
     path('home/repeat_report/<int:programmingexercise_id>/', repeat_report, name='repeat_report'),
     path('home/repeat_report/report_details/<int:programmingexercise_id>/', repeat_report_details, name='repeat_report_details'),
     path('home/repeat_report/code_details/<int:programmingexercise_id>/', repeat_code_details, name='repeat_code_details'),
+    path('home/repeat_report/scores_details/', scores_details, name='scores_details'),
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),

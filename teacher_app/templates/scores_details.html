@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>教师主页-报告</title>
+    <title>教师主页-报告相似度</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'teacher_app/css/vendor.bundle.base.css' %}">
     <!-- endinject -->
@@ -269,15 +269,10 @@
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">班级人数
                                                     </th>
-                                                    <th class="sorting" tabindex="0" aria-controls="exam-listing"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">得分情况
-                                                    </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">相似度分析
+                                                        style="width: 155.6px;">操作
                                                     </th>
                                                     </tr>
                                                     </thead>
@@ -288,20 +283,13 @@
                                                             <td class="sorting_1" id="class{{ class.id }}"> {{ class.name }}</td>
                                                             <td>{{ class.students.count }}</td>
                                                             <td>
-{#                                                                需要修改#}
                                                                 <button class="button-class class-report-details btn-default"
                                                                     data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">分项得分
-                                                                </button>
-                                                            </td>
-                                                            <td>
-                                                                <button class="button-class class-report-details btn-default"
-                                                                    data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">报告相似度
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">查看报告相似度
                                                                 </button>
                                                                 <button class="button-class class-code-details btn-default"
                                                                     data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">代码相似度
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">查看代码相似度
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -387,7 +375,7 @@
                                                             </tr>
                                                         {% empty %}
                                                             <tr>
-                                                                <td colspan="6" style="text-align: center;">选择班级</td>
+                                                                <td colspan="6" style="text-align: center;">暂无学生提交报告</td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
@@ -459,7 +447,6 @@
             detailUrl += '?classId=' + encodeURIComponent(classId);
             window.location.href = detailUrl;
         });
-
         // 对查看代码详情的按钮添加事件监听器
         $('.class-code-details').on('click', function () {
             var classId = $(this).data('class-id');

@@ -164,6 +164,10 @@ def repeat_code_details(request, programmingexercise_id):
 def standard_report(request):
     return render(request, 'standard_report.html')
 
+# 教师主页-得分详情
+def scores_details(request):
+    return render(request, 'scores_details.html')
+
 
 # 作业情况
 def coursework_exercise(request):
