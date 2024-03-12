@@ -84,4 +84,15 @@ class ExamQuestion(models.Model):
         return f"{self.exam.title} - {self.content}"
 
 
+class ReportScore(models.Model):
+    teacher = models.ForeignKey(Teacher, verbose_name="教师", on_delete=models.CASCADE, related_name='report_scores')
+    totalscore = models.IntegerField(verbose_name="总分")
+    contents = models.IntegerField(verbose_name="内容得分")
+    firstrow = models.IntegerField(verbose_name="首行得分")
+    fontsize = models.IntegerField(verbose_name="字体大小得分")
+    image = models.IntegerField(verbose_name="图片得分")
+    pagenum = models.IntegerField(verbose_name="页数得分")
+    titlestyle = models.IntegerField(verbose_name="标题风格得分")
 
+    def __str__(self):
+        return f"{self.teacher.name} - 报告评分"

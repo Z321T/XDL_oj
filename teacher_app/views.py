@@ -8,7 +8,8 @@ from django.http import JsonResponse, HttpResponseNotFound
 from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
-from teacher_app.models import Teacher, Class, Notification, Exercise, ExerciseQuestion, Exam, ExamQuestion
+from teacher_app.models import (Teacher, Class, Notification,
+                                Exercise, ExerciseQuestion, Exam, ExamQuestion, ReportScore)
 from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
                                 Score, ExerciseQuestionCompletion, ExamQuestionCompletion)
 
@@ -163,6 +164,7 @@ def repeat_code_details(request, programmingexercise_id):
 # 教师主页-规范性评分
 def standard_report(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
     context = {
@@ -178,6 +180,19 @@ def standard_report(request):
         pagenum = request.POST.get('pageNum')
         titlestyle = request.POST.get('titleStyle')
 
+        report_score, created = ReportScore.objects.update_or_create(
+            teacher=teacher,
+            defaults={
+                'totalscore': totalscore,
+                'contents': contents,
+                'firstrow': firstrow,
+                'fontsize': fontsize,
+                'image': image,
+                'pagenum': pagenum,
+                'titlestyle': titlestyle
+            }
+        )
+        return redirect('teacher_app:home_teacher')
     return render(request, 'standard_report.html', context)
 
 

@@ -14,7 +14,7 @@ from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report
+from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report, score_report
 
 
 # 学生主页
@@ -71,6 +71,8 @@ def report_student(request, programmingexercise_id):
         report = '\n'.join(full_text)
         # 读取TXT文件内容
         code = code_file.read().decode('utf-8')
+        # 报告规范性评分
+        score_report(report)
         # 分析报告特征
         analyze_programming_report(student, report, programmingexercise_id)
         # 分析代码特征
