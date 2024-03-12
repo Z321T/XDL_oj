@@ -162,7 +162,24 @@ def repeat_code_details(request, programmingexercise_id):
 
 # 教师主页-规范性评分
 def standard_report(request):
-    return render(request, 'standard_report.html')
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'adminnotifications': adminnotifications,
+    }
+    if request.method == 'POST':
+        totalscore = request.POST.get('totalScore')
+        contents = request.POST.get('contents')
+        firstrow = request.POST.get('firstRow')
+        fontsize = request.POST.get('fontSize')
+        image = request.POST.get('image')
+        pagenum = request.POST.get('pageNum')
+        titlestyle = request.POST.get('titleStyle')
+
+    return render(request, 'standard_report.html', context)
+
 
 # 教师主页-得分详情
 def scores_details(request):
