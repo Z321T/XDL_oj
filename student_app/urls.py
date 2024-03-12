@@ -16,11 +16,6 @@ urlpatterns = [
     # 学生主页
     path('home/', home_student, name='home_student'),
     path('home/report_student/<int:programmingexercise_id>/', report_student, name='report_student'),
-    # 学生个人中心
-    path('profile/', profile_student, name='profile_student'),
-    path('profile/edit/', profile_student_edit, name='profile_student_edit'),
-    # 通知相关
-    path('notification_content/', notification_content, name='notification_content'),
     # 练习相关
     path('practice/', practice_student, name='practice_student'),
     path('practice/practice_list/<int:exercise_id>/', practice_list, name='practice_list'),
@@ -33,6 +28,11 @@ urlpatterns = [
     path('analyse_exercise/', analyse_exercise, name='analyse_exercise'),
     path('analyse_exam/', analyse_exam, name='analyse_exam'),
     path('analyse_data/', analyse_data, name='analyse_data'),
+    # 学生个人中心
+    path('profile/', profile_student, name='profile_student'),
+    path('profile/edit/', profile_student_edit, name='profile_student_edit'),
+    # 通知相关
+    path('notification_content/', notification_content, name='notification_content'),
     # 编码运行相关
     path('run-cpp/', run_cpp_code, name='run-cpp'),
 
