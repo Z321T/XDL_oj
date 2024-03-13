@@ -178,7 +178,6 @@ def standard_report(request):
         fontsize = request.POST.get('fontSize')
         image = request.POST.get('image')
         pagenum = request.POST.get('pageNum')
-        titlestyle = request.POST.get('titleStyle')
 
         ReportScore.objects.update_or_create(
             teacher=teacher,
@@ -189,7 +188,6 @@ def standard_report(request):
                 'fontsize': fontsize,
                 'image': image,
                 'pagenum': pagenum,
-                'titlestyle': titlestyle
             }
         )
         return redirect('teacher_app:home_teacher')
