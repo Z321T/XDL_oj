@@ -1,12 +1,13 @@
 import torch
 import json
 from docx import Document
+from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
 
-from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature
+from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature, ReportStandardScore
 from administrator_app.models import ProgrammingExercise
-from teacher_app.models import ExerciseQuestion, ExamQuestion, ReportScore
+from teacher_app.models import ExerciseQuestion, ExamQuestion, ReportScore, Teacher
 
 # 加载 CodeBERT 模型和分词器
 tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
@@ -90,59 +91,77 @@ def compute_cosine_similarity(feature_json1, feature_json2):
 
 
 # 报告规范性评分
-def score_report(file):
+def score_report(student, file, programmingexercise_id):
+    class_assigned = student.class_assigned
+    teacher = get_object_or_404(Teacher, classes_assigned=class_assigned)
+    report_scores = teacher.report_scores.all()
+    for score in report_scores:
+        total_score = score.totalscore
+        content_score = score.contents
+        firstrow_score = score.firstrow
+        fontsize_score = score.fontsize
+        image_score = score.image
+        pagenum_score = score.pagenum
 
-    doc = Document(file)  # 1. 检查文档是否含有目录
-    has_table_of_contents = False
+    doc = Document(file)
+    # 1. 检查文档是否含有目录
     for para in doc.paragraphs:
         if "目录" in para.text:
-            has_table_of_contents = True
             break
-    score_table_of_contents = 10 if has_table_of_contents else 0  # 2. 检查每个段落的首行缩进
-    score_indentation = 10
+        else:
+            total_score += content_score
+
+    # 2. 检查每个段落的首行缩进
+    first_line = False
     for para in doc.paragraphs:
         if not para.paragraph_format.first_line_indent or para.paragraph_format.first_line_indent.pt != 36:
-            score_indentation -= 0.5
-    score_indentation = max(0, score_indentation)  # 3. 检查段落中的文字字体大小是否为12
-    score_font_size = 10
+            first_line = True
+            break
+    if first_line:
+        total_score += firstrow_score
+
+    # 3. 检查段落中的文字字体大小是否为12
+    font_size = False
     for para in doc.paragraphs:
+        if font_size:
+            break
         for run in para.runs:
             if run.font.size and abs(run.font.size.pt - 12) > 1:
-                score_font_size -= 1
-    score_font_size = max(0, score_font_size)  # 4. 检查文档中的图像是否居中对齐
-    score_image_alignment = 10
+                font_size = True
+                break
+    if font_size:
+        total_score += fontsize_score
+
+    # 4. 检查文档中的图像是否居中对齐
+    image_alignment = False
     for shape in doc.inline_shapes:
         if shape.type == 3:
             if shape.text_frame.paragraph.alignment != 1:
-                score_image_alignment -= 1
-    score_image_alignment = max(0, score_image_alignment)  # 5. 计算有页码的页面占比
+                image_alignment = True
+                break
+    if image_alignment:
+        total_score += image_score
 
+    # 5. 计算有页码的页面占比
     def score_page_numbers(doc):
         total_pages = len(doc.sections)
-        pages_with_page_numbers = 0
         for section in doc.sections:
+            page_number_found = False
             for para in section.footer.paragraphs:
                 if any(char.isdigit() for char in para.text):
-                    pages_with_page_numbers += 1
+                    page_number_found = True
                     break
+            if not page_number_found:
+                return True
         if total_pages == 0:
-            return 0
-        return min(10, (pages_with_page_numbers / total_pages) * 10)
+            return True
+        return False
+    if score_page_numbers(doc):
+        total_score += pagenum_score
 
-    score_page_numbers = score_page_numbers(doc)  # 6. 检查段落的样式
-    score_paragraph_style = 10
-    for para in doc.paragraphs:
-        if para.style.name.startswith('Heading'):
-            level = int(para.style.name.split()[1])
-            if para.style.name == f'Heading {level}':
-                score_paragraph_style -= 5
-    score_paragraph_style = max(0, score_paragraph_style)  # 计算平均分数
-    total_score = (
-            score_table_of_contents +
-            score_indentation +
-            score_font_size +
-            score_image_alignment +
-            score_page_numbers +
-            score_paragraph_style
-    )
-    average_score = total_score / 6
+    # 保存分数
+    ReportStandardScore.objects.create(student=student, programming_question_id=programmingexercise_id, standard_score=total_score)
+
+
+
+

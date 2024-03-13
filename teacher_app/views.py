@@ -180,7 +180,7 @@ def standard_report(request):
         pagenum = request.POST.get('pageNum')
         titlestyle = request.POST.get('titleStyle')
 
-        report_score, created = ReportScore.objects.update_or_create(
+        ReportScore.objects.update_or_create(
             teacher=teacher,
             defaults={
                 'totalscore': totalscore,

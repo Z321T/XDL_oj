@@ -50,3 +50,9 @@ class ProgrammingReportFeature(models.Model):
                 f"{self.programming_question} - {self.feature}")
 
 
+class ReportStandardScore(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='report_standards')
+    programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="练习题",
+                                             related_name='report_standards')
+    standard_score = models.IntegerField(verbose_name="规范性得分")

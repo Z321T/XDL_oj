@@ -72,7 +72,7 @@ def report_student(request, programmingexercise_id):
         # 读取TXT文件内容
         code = code_file.read().decode('utf-8')
         # 报告规范性评分
-        score_report(report)
+        score_report(student, report, programmingexercise_id)
         # 分析报告特征
         analyze_programming_report(student, report, programmingexercise_id)
         # 分析代码特征

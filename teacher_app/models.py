@@ -92,7 +92,6 @@ class ReportScore(models.Model):
     fontsize = models.IntegerField(verbose_name="字体大小得分")
     image = models.IntegerField(verbose_name="图片得分")
     pagenum = models.IntegerField(verbose_name="页数得分")
-    titlestyle = models.IntegerField(verbose_name="标题风格得分")
 
     def __str__(self):
         return f"{self.teacher.name} - 报告评分"
