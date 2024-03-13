@@ -4,9 +4,12 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count
 
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise
 from teacher_app.models import Teacher
+from student_app.models import Student
+from CodeBERT_app.models import  ReportStandardScore
 
 
 # Create your views here.
@@ -23,7 +26,37 @@ def home_administrator(request):
         return redirect('/login/')
 
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'home_administrator.html', {'dropdown_menu1': dropdown_menu1})
+    programings = ProgrammingExercise.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'coursework': programings,
+    }
+    return render(request, 'home_administrator.html', context)
+
+
+def programmingexercise_details_data(request):
+    if request.method == 'POST':
+        question_id = request.POST.get('id')
+        try:
+            question = ProgrammingExercise.objects.get(id=question_id)
+            total_students = Student.objects.count()
+            total_submissions = ReportStandardScore.objects.filter(programming_question=question).count()
+            ratio = total_submissions / total_students if total_students else 0
+            ratio_data = [{
+                'completion_rate': ratio,
+            }]
+
+            context = {
+                'ratio_data': ratio_data,
+            }
+            return JsonResponse({'data': context})
+
+        except ProgrammingExercise.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': '未找到对应的练习题'}, status=404)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
 
 
 # 程序设计题库
@@ -73,7 +106,13 @@ def programmingexercise_delete(request):
 # 题库查重管理
 def problems_administrator(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    return render(request, 'problems_administrator.html', {'dropdown_menu1': dropdown_menu1})
+    programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
+
+    context = {
+        'dropdown_menu1': dropdown_menu1,
+        'programming_exercises': programming_exercises,
+    }
+    return render(request, 'problems_administrator.html', context)
 
 
 # 通知界面

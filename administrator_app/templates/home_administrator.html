@@ -90,6 +90,18 @@
             window.location.href = "{% url 'administrator_app:information_administrator' %}"
         }
     </script>
+    <style>
+        table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .card-item.card-title:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+
+        }
+
+    </style>
      <!-- 引入Echarts -->
     <script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
 </head>
@@ -256,7 +268,7 @@
                                                         {% for question in coursework %}
                                                             <tr data-id="{{ question.id }}">
                                                                 <td>{{ question.title }}</td>
-                                                                <td>{{ question.published_at }}</td>
+                                                                <td>{{ question.date_posted }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
@@ -348,6 +360,26 @@
         finishChart.setOption(option);
     </script>
     <script>
+    $(function () {
+        $('table tbody').on('click', 'tr', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{% url 'administrator_app:programmingexercise_details_data' %}",
+                type: 'POST',
+                data: {
+                    'id': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    var data = response.data;
+                    updatePieChart(data.ratio_data);
+                },
+                error: function (response) {
+                    alert(response.responseJSON.message);
+                }
+            });
+        });
+    })
      // 更新饼图的函数
     function updatePieChart(data) {
         var myChart = echarts.init(document.getElementById('finishChart'));
@@ -372,7 +404,7 @@
                     center: ['50%', '60%'],
                     data: [
                         {value: data[0].completion_rate, name:'已完成'},
-                        {value: 100 - data[0].completion_rate, name:'未完成'}
+                        {value: 100 - data[0].completion_rate * 100, name:'未完成'}
                     ],
                     itemStyle: {
                         emphasis: {

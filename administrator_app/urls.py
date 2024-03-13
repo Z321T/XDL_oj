@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.staticfiles.views import serve
 
-from .views import home_administrator
+from .views import home_administrator, programmingexercise_details_data
 from .views import notice_administrator, create_notice, delete_notice, notification_content
 from .views import profile_administrator, profile_administrator_edit
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
@@ -14,6 +14,7 @@ app_name = 'administrator_app'
 urlpatterns = [
     # 管理员使用界面
     path('home/', home_administrator, name='home_administrator'),
+    path('home/programmingexercise_details_data/', programmingexercise_details_data, name='programmingexercise_details_data'),
     # 有关程序设计题库的操作
     path('repository/', repository_administrator, name='repository_administrator'),
     path('repository/programmingexercise_delete/', programmingexercise_delete, name='programmingexercise_delete'),
