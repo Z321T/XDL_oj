@@ -166,18 +166,29 @@ def standard_report(request):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    try:
+        stand_score = ReportScore.objects.filter(teacher=teacher).first()
+    except ObjectDoesNotExist:
+        stand_score = None
 
-    context = {
-        'dropdown_menu1': dropdown_menu1,
-        'adminnotifications': adminnotifications,
-    }
+    if stand_score:
+        context = {
+            'dropdown_menu1': dropdown_menu1,
+            'adminnotifications': adminnotifications,
+            'stand_score': stand_score,
+        }
+    else:
+        context = {
+            'dropdown_menu1': dropdown_menu1,
+            'adminnotifications': adminnotifications,
+        }
     if request.method == 'POST':
-        totalscore = request.POST.get('totalScore')
+        totalscore = request.POST.get('totalscore')
         contents = request.POST.get('contents')
-        firstrow = request.POST.get('firstRow')
-        fontsize = request.POST.get('fontSize')
+        firstrow = request.POST.get('firstrow')
+        fontsize = request.POST.get('fontsize')
         image = request.POST.get('image')
-        pagenum = request.POST.get('pageNum')
+        pagenum = request.POST.get('pagenum')
 
         ReportScore.objects.update_or_create(
             teacher=teacher,
@@ -190,7 +201,7 @@ def standard_report(request):
                 'pagenum': pagenum,
             }
         )
-        return redirect('teacher_app:home_teacher')
+        return redirect('teacher_app:standard_report')
     return render(request, 'standard_report.html', context)
 
 

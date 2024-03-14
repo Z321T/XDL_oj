@@ -237,7 +237,7 @@
                                     <p class="card-title">报告规范性设置</p>
                                 <div>
                                     <label for="sumScore">总分：</label>
-                                    <input type="number" id="sumScore" name="totalScore" form="reportForm" placeholder="100" min="0">
+                                    <input type="number" id="sumScore" name="totalscore" form="reportForm" value="{{ stand_score.totalscore }}" placeholder="100" min="0">
                                 </div>
                                 </div>
                                 <div class="table-responsive"
@@ -272,23 +272,23 @@
                                                         <tbody>
                                                         <tr>
                                                              <td>不含目录</td>
-                                                             <td><input type="number" name="contents" form="reportForm" placeholder="-20～0" min="-20" max="0"></td>
+                                                             <td><input type="number" name="contents" form="reportForm" value="{{ stand_score.contents }}" placeholder="-20～0" min="-20" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>首行未缩进0.5英寸</td>
-                                                            <td><input type="number" name="firstrow" form="reportForm" placeholder="-20～0" min="-20" max="0"></td>
+                                                            <td><input type="number" name="firstrow" form="reportForm" value="{{ stand_score.firstrow }}" placeholder="-20～0" min="-20" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>段落字体大小非12号</td>
-                                                            <td><input type="number" name="fontsSize" form="reportForm" placeholder="-20～0" min="-20" max="0"></td>
+                                                            <td><input type="number" name="fontsize" form="reportForm" value="{{ stand_score.fontsize }}" placeholder="-20～0" min="-20" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>图像未居中对齐</td>
-                                                            <td><input type="number" name="image" form="reportForm" placeholder="-20～0" min="-20" max="0"></td>
+                                                            <td><input type="number" name="image" form="reportForm" value="{{ stand_score.image }}" placeholder="-20～0" min="-20" max="0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>不含页码</td>
-                                                            <td><input type="number" name="pageNum" form="reportForm" placeholder="-20～0" min="-20" max="0"></td>
+                                                            <td><input type="number" name="pagenum" form="reportForm" value="{{ stand_score.pagenum }}" placeholder="-20～0" min="-20" max="0"></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
