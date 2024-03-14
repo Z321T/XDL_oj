@@ -90,7 +90,7 @@ def repeat_report_details(request, programmingexercise_id):
             )
         else:
             # 如果没有学生特征，我们将相似度设置为None
-            student_similarities.append((student, None))
+            student_similarities.append((student, None, None))
 
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
@@ -143,7 +143,7 @@ def repeat_code_details(request, programmingexercise_id):
             )
         else:
             # 如果没有学生特征，我们将相似度设置为None
-            student_similarities.append((student, None))
+            student_similarities.append((student, None, None))
 
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
