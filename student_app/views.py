@@ -3,13 +3,14 @@ import time
 import requests
 import subprocess
 
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 from docx import Document
 from administrator_app.models import ProgrammingExercise
@@ -17,9 +18,6 @@ from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQues
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
 from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report, score_report
-
-
-
 
 
 # 学生主页
@@ -63,34 +61,25 @@ def report_student(request, programmingexercise_id):
 
     if request.method == 'POST':
         word_file = request.FILES.get('wordFile')
-        # 调试
-        print(word_file)  # 看看是否有文件上传，并且文件名是否正确
-        # 如果上传成功，则转换为文件流
-        if word_file:
-            word_file.seek(0)  # 移动到文件的起始位置
-            file_stream = BytesIO(word_file.read())  # 读取文件并创建文件流
-            word_file.seek(0)  # 重置文件读取位置
-            document = Document(file_stream)  # 使用文件流创建Document对象
 
-        code_file = request.FILES.get('txtFile')
-        document = Document(word_file)
-        full_text = []
-        for paragraph in document.paragraphs:
-            for run in paragraph.runs:
-                for child in run._element.getchildren():
-                    if child.tag.endswith('drawing'):
-                        # 从父元素中移除对应的子元素
-                        child.getparent().remove(child)
-                        # 将处理过后的文本添加进全文数组
-            full_text.append(paragraph.text)
-        # 获得纯文本代码，去除了图片
-        report = '\n'.join(full_text)
+        if word_file:
+            # 使用BytesIO创建一个类似文件的对象
+            word_file_bytes = BytesIO(word_file.read())
+            document = Document(word_file_bytes)
+            # document = Document(word_file)
+            full_text = []
+            for paragraph in document.paragraphs:
+                full_text.append(paragraph.text)
+            # 获得纯文本代码，去除了图片
+            report = '\n'.join(full_text)
+            # 报告规范性评分
+            score_report(student, document, programmingexercise_id)
+            # 分析报告特征
+            analyze_programming_report(student, report, programmingexercise_id)
+
         # 读取TXT文件内容
+        code_file = request.FILES.get('txtFile')
         code = code_file.read().decode('utf-8')
-        # 报告规范性评分
-        score_report(student, report, programmingexercise_id)
-        # 分析报告特征
-        analyze_programming_report(student, report, programmingexercise_id)
         # 分析代码特征
         analyze_programming_code(student, code, programmingexercise_id)
         return redirect('student_app:home_student')
