@@ -9,7 +9,7 @@ from django.db.models import Count
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise
 from teacher_app.models import Teacher
 from student_app.models import Student
-from CodeBERT_app.models import  ReportStandardScore
+from CodeBERT_app.models import ReportStandardScore
 
 
 # Create your views here.
@@ -254,3 +254,7 @@ def profile_administrator_edit(request):
 
     return render(request, 'profile_administrator_edit.html', context)
 
+
+# about report_administrator.html
+def report_administrator(request):
+    return render(request, 'report_administrator.html')
