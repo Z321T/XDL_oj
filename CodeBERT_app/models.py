@@ -56,3 +56,10 @@ class ReportStandardScore(models.Model):
     programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="练习题",
                                              related_name='report_standards')
     standard_score = models.IntegerField(verbose_name="规范性得分")
+
+
+# 代码规范性分析
+# 假设这是你想要触发Cppcheck的模型
+class CodeStandardScore(models.Model):
+    ...
+

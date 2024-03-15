@@ -1,11 +1,16 @@
 import torch
 import json
+import subprocess
 from docx import Document
 from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
+#cppcheck
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-from CodeBERT_app.models import CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature, ReportStandardScore
+from CodeBERT_app.models import (CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature,
+                                 ReportStandardScore, CodeStandardScore)
 from administrator_app.models import ProgrammingExercise
 from teacher_app.models import ExerciseQuestion, ExamQuestion, ReportScore, Teacher
 
@@ -163,5 +168,24 @@ def score_report(student, file, programmingexercise_id):
     ReportStandardScore.objects.create(student=student, programming_question_id=programmingexercise_id, standard_score=total_score)
 
 
+@receiver(post_save, sender=CodeStandardScore)
+def run_cppcheck(sender, **kwargs):
+    subprocess.call(['cppcheck', '<your options here>'])
 
 
+# 代码规范性打分
+def code_score(cppcheck_output):
+    error_scores = {
+        'error': 10,
+        'warning': 5,
+        'performance': 3,
+        'style': 1,
+    }
+
+    total_score = 0
+    for line in cppcheck_output.splitlines():
+        for error_type, score in error_scores.items():
+            if error_type in line:
+                total_score += score
+
+    return total_score
