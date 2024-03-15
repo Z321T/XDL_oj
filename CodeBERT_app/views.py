@@ -169,8 +169,12 @@ def score_report(student, file, programmingexercise_id):
 
 
 @receiver(post_save, sender=CodeStandardScore)
-def run_cppcheck(sender, **kwargs):
-    subprocess.call(['cppcheck', '<your options here>'])
+def run_cppcheck(sender, instance, **kwargs):
+    cppcheck_output = subprocess.check_output(['cppcheck', 'your_file.cpp'])
+    score = code_score(cppcheck_output)
+    # You can now use score, for example, save it to the instance
+    instance.score = score
+    instance.save()
 
 
 # 代码规范性打分
