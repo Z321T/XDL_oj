@@ -221,18 +221,7 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div class="d-flex align-items-end flex-wrap">
-                                <div class="mr-md-3 mr-xl-5">
-                                    <h2>Welcome to CUMT-OJ</h2>
-                                    <p class="mb-md-0">你的代码教学助手</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="row d-flex" id="proBanner">
                     <div class="col-md-12 grid-margin">
                         <div class="card bg-gradient-primary border-0">
@@ -339,55 +328,29 @@
                                                     <table  class="table dataTable no-footer" role="grid">
                                                         <thead>
                                                         <tr role="row">
-                                                            <th class="sorting_asc" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-sort="ascending"
-                                                            aria-label="Name: activate to sort column descending"
-                                                            style="width: 167.95px;">姓名
-                                                            </th>
-                                                            <th class="sorting" tabindex="0" aria-controls="exam-listing"
-                                                            rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">学号
-                                                            </th>
                                                             <th class="sorting" tabindex="0"
                                                             aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                             aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">相似学生
-                                                            </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">学号
-                                                            </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">班级
-                                                            </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">相似度
+                                                            style="width: 155.6px;">
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
                                                         {% for student,similarity, sim_student in student_similarities %}
-                                                            <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                                <td class="sorting_1">{{ student.name }}</td>
-                                                                <td>{{ student.userid }}</td>
-                                                                {% if similarity != None and sim_student %}
-                                                                    <td>{{ sim_student.name }}</td>
-                                                                    <td>{{ sim_student.userid }}</td>
-                                                                    <td>{{ similarity|floatformat:2 }}</td>
-                                                                {% else %}
-                                                                    <td colspan="3" style="text-align: center;">未评定</td>
-                                                                {% endif %}
-                                                            </tr>
+{#                                                            <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">#}
+{#                                                                <td class="sorting_1">{{ student.name }}</td>#}
+{#                                                                <td>{{ student.userid }}</td>#}
+{#                                                                {% if similarity != None and sim_student %}#}
+{#                                                                    <td>{{ sim_student.name }}</td>#}
+{#                                                                    <td>{{ sim_student.userid }}</td>#}
+{#                                                                    <td>{{ similarity|floatformat:2 }}</td>#}
+{#                                                                {% else %}#}
+{#                                                                    <td colspan="3" style="text-align: center;">未评定</td>#}
+{#                                                                {% endif %}#}
+{#                                                            </tr>#}
                                                         {% empty %}
                                                             <tr>
-                                                                <td colspan="6" style="text-align: center;">选择班级</td>
+                                                                <td colspan="6" style="text-align: center;">选择查看项目</td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
@@ -506,7 +469,6 @@
         });
     });
 </script>
-
 
 </body>
 </html>

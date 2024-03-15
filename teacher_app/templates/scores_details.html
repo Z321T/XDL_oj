@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>教师主页-报告相似度</title>
+    <title>教师主页-分项得分</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'teacher_app/css/vendor.bundle.base.css' %}">
     <!-- endinject -->
@@ -221,18 +221,7 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-md-12 grid-margin">
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div class="d-flex align-items-end flex-wrap">
-                                <div class="mr-md-3 mr-xl-5">
-                                    <h2>Welcome to CUMT-OJ</h2>
-                                    <p class="mb-md-0">你的代码教学助手</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="row d-flex" id="proBanner">
                     <div class="col-md-12 grid-margin">
                         <div class="card bg-gradient-primary border-0">
@@ -277,7 +266,7 @@
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">操作
+                                                        style="width: 155.6px;">相似度分析
                                                     </th>
                                                     </tr>
                                                     </thead>
@@ -296,11 +285,11 @@
                                                             <td>
                                                                 <button class="button-class class-report-details btn-default"
                                                                     data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">查看报告相似度
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">报告相似度
                                                                 </button>
                                                                 <button class="button-class class-code-details btn-default"
                                                                     data-class-id="{{ class.id }}"
-                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">查看代码相似度
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">代码相似度
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -349,7 +338,6 @@
                                                             aria-label="Office: activate to sort column ascending"
                                                             style="width: 155.6px;">学号
                                                             </th>
-
                                                             <th class="sorting" tabindex="0"
                                                             aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                             aria-label="Office: activate to sort column ascending"
@@ -363,15 +351,28 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {% for student, txtscore in student_scores %}
+                                                            {% for student, code_score, report_score in student_scores %}
                                                                 <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                                     <td class="sorting_1">{{ student.name }}</td>
                                                                     <td>{{ student.userid }}</td>
-                                                                    <td>{{ txtscore }}</td>
+                                                                    <td>
+                                                                        {% if code_score %}
+                                                                            {{ code_score.standard_score }}
+                                                                        {% else %}
+                                                                            未评分
+                                                                        {% endif %}
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if report_score %}
+                                                                            {{ report_score.standard_score }}
+                                                                        {% else %}
+                                                                            未评分
+                                                                        {% endif %}
+                                                                    </td>
                                                                 </tr>
                                                             {% empty %}
                                                                 <tr>
-                                                                <td colspan="6" style="text-align: center;">暂无学生提交报告</td>
+                                                                <td colspan="6" style="text-align: center;">暂无学生提交</td>
                                                                </tr>
                                                             {% endfor %}
                                                         </tbody>

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 
-from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore
+from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
 from teacher_app.models import (Teacher, Class, Notification,
@@ -39,7 +39,7 @@ def home_teacher(request):
     return render(request, 'home_teacher.html', context)
 
 
-# 教师主页：查看报告
+# 教师主页-查看报告
 def repeat_report(request, programmingexercise_id):
     dropdown_menu1 = {'user_id': request.session.get('user_id')}
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
@@ -55,7 +55,7 @@ def repeat_report(request, programmingexercise_id):
     return render(request, 'repeat_report.html', context)
 
 
-# 教师主页：查看报告-获取文本数据
+# 教师主页-查看报告-获取文本数据
 def repeat_report_details(request, programmingexercise_id):
     class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
@@ -108,7 +108,7 @@ def repeat_report_details(request, programmingexercise_id):
     return render(request, 'repeat_report_details.html', context)
 
 
-# 教师主页：查看报告-获取代码数据
+# 教师主页-查看报告-获取代码数据
 def repeat_code_details(request, programmingexercise_id):
     class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
@@ -205,9 +205,14 @@ def standard_report(request):
     return render(request, 'standard_report.html', context)
 
 
-# 教师主页-得分详情
+# 教师主页-查看报告-得分详情
 def scores_details(request, programmingexercise_id):
     # 获取特定编程题目，班级所有学生的代码规范性得分
+    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    classes = Class.objects.filter(teacher=teacher)
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+
     class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
     programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
@@ -215,13 +220,17 @@ def scores_details(request, programmingexercise_id):
 
     for student in students:
         try:
-            score_instance = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise_id)
-            student_scores.append((student, score_instance.standard_score))
+            code_score = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise)
+            report_score = ReportStandardScore.objects.get(student=student, programming_question=programmingexercise)
+            student_scores.append((student, code_score, report_score))
         except CodeStandardScore.DoesNotExist:
-            student_scores.append((student, None))
+            student_scores.append((student, None, None))
     context = {
-      'student_scores': student_scores,
-      # ...其他context内容
+        'student_scores': student_scores,
+        'dropdown_menu1': dropdown_menu1,
+        'classes': classes,
+        'adminnotifications': adminnotifications,
+        'programmingexercise_id': programmingexercise_id,
     }
     return render(request, 'scores_details.html', context)
 
