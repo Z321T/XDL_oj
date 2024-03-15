@@ -96,7 +96,7 @@ def compute_cosine_similarity(feature_json1, feature_json2):
 
 
 # 报告规范性评分
-def score_report(student, file, programmingexercise_id):
+def score_report(student, document, programmingexercise_id):
     class_assigned = student.class_assigned
     teacher = get_object_or_404(Teacher, classes_assigned=class_assigned)
     report_scores = teacher.report_scores.all()
@@ -108,9 +108,8 @@ def score_report(student, file, programmingexercise_id):
         image_score = score.image
         pagenum_score = score.pagenum
 
-    doc = Document(file)
     # 1. 检查文档是否含有目录
-    for para in doc.paragraphs:
+    for para in document.paragraphs:
         if "目录" in para.text:
             break
         else:
@@ -118,7 +117,7 @@ def score_report(student, file, programmingexercise_id):
 
     # 2. 检查每个段落的首行缩进
     first_line = False
-    for para in doc.paragraphs:
+    for para in document.paragraphs:
         if not para.paragraph_format.first_line_indent or para.paragraph_format.first_line_indent.pt != 36:
             first_line = True
             break
@@ -127,7 +126,7 @@ def score_report(student, file, programmingexercise_id):
 
     # 3. 检查段落中的文字字体大小是否为12
     font_size = False
-    for para in doc.paragraphs:
+    for para in document.paragraphs:
         if font_size:
             break
         for run in para.runs:
@@ -139,7 +138,7 @@ def score_report(student, file, programmingexercise_id):
 
     # 4. 检查文档中的图像是否居中对齐
     image_alignment = False
-    for shape in doc.inline_shapes:
+    for shape in document.inline_shapes:
         if shape.type == 3:
             if shape.text_frame.paragraph.alignment != 1:
                 image_alignment = True
@@ -161,7 +160,7 @@ def score_report(student, file, programmingexercise_id):
         if total_pages == 0:
             return True
         return False
-    if score_page_numbers(doc):
+    if score_page_numbers(document):
         total_score += pagenum_score
 
     # 保存分数
