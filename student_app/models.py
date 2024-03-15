@@ -11,9 +11,10 @@ class Student(models.Model):
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
     class_assigned = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name="班级",
                                        null=True, blank=True, related_name='students')
-    #存储学生提交的报告和代码
-    word_file = models.FileField(upload_to='wordFiles/', null=True, blank=True)
-    code_file = models.FileField(upload_to='codeFiles/', null=True, blank=True)
+
+    # 存储学生提交的报告和代码
+    # word_file = models.FileField(upload_to='wordFiles/', null=True, blank=True)
+    # code_file = models.FileField(upload_to='codeFiles/', null=True, blank=True)
 
 
 class Score(models.Model):

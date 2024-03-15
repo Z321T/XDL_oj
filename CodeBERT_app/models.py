@@ -55,18 +55,15 @@ class ReportStandardScore(models.Model):
                                 related_name='report_standards')
     programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="练习题",
                                              related_name='report_standards')
-    standard_score = models.IntegerField(verbose_name="规范性得分")
+    standard_score = models.IntegerField(verbose_name="报告规范性得分")
 
 
-# 代码规范性分析
-# 假设这是你想要触发Cppcheck的模型
 class CodeStandardScore(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
                                 related_name='code_standards')
     programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="编程题",
                                              related_name='code_standards')
-    standard_score = models.IntegerField(default=0,
-                                         verbose_name="规范性得分")  # this field will store the cppcheck score
+    standard_score = models.IntegerField(default=0, verbose_name="代码规范性得分")
 
 
 

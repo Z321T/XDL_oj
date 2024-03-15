@@ -1,26 +1,23 @@
 import os
 import time
+import docx
 import requests
 import subprocess
-import io
-import docx
+import tempfile
 
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
-
 from io import BytesIO
-from docx import Document
 
-from CodeBERT_app.models import CodeStandardScore
 from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report, score_report, \
-    run_cppcheck
+from CodeBERT_app.views import (analyze_code, analyze_programming_code, analyze_programming_report,
+                                score_report, run_cppcheck)
 
 
 # 学生主页
@@ -64,7 +61,6 @@ def report_student(request, programmingexercise_id):
 
     if request.method == 'POST':
         word_file = request.FILES['wordFile']
-        # document = docx.Document(io.BytesIO(word_file))
 
         if word_file:
             # 读取文件内容并使用BytesIO创建一个类似文件的对象
@@ -84,18 +80,24 @@ def report_student(request, programmingexercise_id):
         # 读取TXT文件内容
         code_file = request.FILES.get('txtFile')
         if code_file:
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+            temp_file.write(code_file.read())
+            temp_file.close()
             # 分析代码特征
-            code = code_file.read().decode('utf-8')
+            # code = code_file.read().decode('utf-8')
+            code = open(temp_file.name).read()
             analyze_programming_code(student, code, programmingexercise_id)
-            instance = CodeStandardScore(student=student, programming_question=programming_exercise)
-            instance.save()
-            run_cppcheck(sender=CodeStandardScore, instance=instance, code_file=code_file)
-        # 存储
-        student.word_file = word_file
-        student.code_file = code_file
-        student.save()
+            # instance = CodeStandardScore.objects.create(student=student, programming_question=programming_exercise)
+            # run_cppcheck(sender=CodeStandardScore, instance=instance, code_file=code_file)
+            run_cppcheck(student, temp_file.name, programmingexercise_id)
+            # 删除临时文件
+            os.unlink(temp_file.name)
 
-        # analyze_programming_code(student, code, programmingexercise_id)
+        # 存储
+        # student.word_file = word_file
+        # student.code_file = code_file
+        # student.save()
+
         return redirect('student_app:home_student')
 
 

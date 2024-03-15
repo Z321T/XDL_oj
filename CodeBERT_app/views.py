@@ -1,13 +1,13 @@
 import torch
 import json
 import subprocess
-from docx import Document
+from sklearn.decomposition import PCA
 from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
-#cppcheck
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# #cppcheck
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
 
 from CodeBERT_app.models import (CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature,
                                  ReportStandardScore, CodeStandardScore)
@@ -44,7 +44,7 @@ def analyze_code(student, code, types, question_id=None):
 
 # 分析程序设计题代码
 def analyze_programming_code(student, code, question_id):
-    # 分词
+    # 代码分词
     tokenized_code = tokenizer.tokenize(code)
     features = []
     for i in range(0, len(tokenized_code), 512):
@@ -55,15 +55,24 @@ def analyze_programming_code(student, code, question_id):
             features.append(feature)
     # 连接所有特征值
     concatenated_features = torch.cat(features, dim=0)
-    feature_as_json = json.dumps(concatenated_features.tolist())
+    # 使用 PCA 进行维度减少，n_components可以根据需要改变
+    pca = PCA(n_components=128)
+    # 注意：PCA需要在CPU上的NumPy数组上运行
+    reduced_features = pca.fit_transform(concatenated_features.cpu().numpy())
+    # 将降维后的特征转换为JSON格式
+    feature_as_json = json.dumps(reduced_features.tolist())
 
     question = ProgrammingExercise.objects.get(id=question_id)
-    ProgrammingCodeFeature.objects.create(student=student, programming_question=question, feature=feature_as_json)
+    ProgrammingCodeFeature.objects.update_or_create(
+        student=student,
+        programming_question=question,
+        defaults={'feature': feature_as_json}
+    )
 
 
 # 分析程序设计题报告
 def analyze_programming_report(student, report, question_id):
-    # 分词
+    # 报告分词
     tokenized_report = tokenizer.tokenize(report)
     features = []
     for i in range(0, len(tokenized_report), 512):
@@ -74,10 +83,19 @@ def analyze_programming_report(student, report, question_id):
             features.append(feature)
     # 连接所有特征值
     concatenated_features = torch.cat(features, dim=0)
-    feature_as_json = json.dumps(concatenated_features.tolist())
+    # 使用 PCA 进行维度减少，n_components可以根据需要改变
+    pca = PCA(n_components=128)
+    # 注意：PCA需要在CPU上的NumPy数组上运行
+    reduced_features = pca.fit_transform(concatenated_features.cpu().numpy())
+    # 将降维后的特征转换为JSON格式
+    feature_as_json = json.dumps(reduced_features.tolist())
 
     question = ProgrammingExercise.objects.get(id=question_id)
-    ProgrammingReportFeature.objects.create(student=student, programming_question=question, feature=feature_as_json)
+    ProgrammingReportFeature.objects.update_or_create(
+        student=student,
+        programming_question=question,
+        defaults={'feature': feature_as_json}
+    )
 
 
 # 计算程序设计报告&代码的相似度
@@ -99,14 +117,14 @@ def compute_cosine_similarity(feature_json1, feature_json2):
 def score_report(student, document, programmingexercise_id):
     class_assigned = student.class_assigned
     teacher = get_object_or_404(Teacher, classes_assigned=class_assigned)
-    report_scores = teacher.report_scores.all()
-    for score in report_scores:
-        total_score = score.totalscore
-        content_score = score.contents
-        firstrow_score = score.firstrow
-        fontsize_score = score.fontsize
-        image_score = score.image
-        pagenum_score = score.pagenum
+    report_score = ReportScore.objects.get(teacher=teacher)
+
+    total_score = report_score.totalscore
+    content_score = report_score.contents
+    firstrow_score = report_score.firstrow
+    fontsize_score = report_score.fontsize
+    image_score = report_score.image
+    pagenum_score = report_score.pagenum
 
     # 1. 检查文档是否含有目录
     for para in document.paragraphs:
@@ -164,15 +182,26 @@ def score_report(student, document, programmingexercise_id):
         total_score += pagenum_score
 
     # 保存分数
-    ReportStandardScore.objects.create(student=student, programming_question_id=programmingexercise_id, standard_score=total_score)
+    ReportStandardScore.objects.update_or_create(
+        student=student,
+        programming_question_id=programmingexercise_id,
+        defaults={'standard_score': total_score}
+    )
 
 
-@receiver(post_save, sender=CodeStandardScore)
-def run_cppcheck(sender, instance, code_file, **kwargs):
+# cppcheck的使用
+# @receiver(post_save, sender=CodeStandardScore)
+# def run_cppcheck(sender, instance, code_file, **kwargs):
+def run_cppcheck(student, code_file, programmingexercise_id):
     cppcheck_output = subprocess.check_output(['cppcheck', code_file])
     score = code_score(cppcheck_output)
-    instance.score = score
-    instance.save()
+    CodeStandardScore.objects.update_or_create(
+        student=student,
+        programming_question_id=programmingexercise_id,
+        defaults={'standard_score': score}
+    )
+    # instance.score = score
+    # instance.save()
 
 
 # 代码规范性打分
