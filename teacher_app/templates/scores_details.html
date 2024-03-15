@@ -269,6 +269,11 @@
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">班级人数
                                                     </th>
+                                                        <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 155.6px;">得分情况
+                                                    </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
@@ -282,6 +287,12 @@
                                                             class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                             <td class="sorting_1" id="class{{ class.id }}"> {{ class.name }}</td>
                                                             <td>{{ class.students.count }}</td>
+                                                            <td>
+                                                                <button class="button-class class-scores-details btn-default"
+                                                                    data-class-id="{{ class.id }}"
+                                                                    data-programmingexercise-id="{{ programmingexercise_id }}">分项得分
+                                                                </button>
+                                                            </td>
                                                             <td>
                                                                 <button class="button-class class-report-details btn-default"
                                                                     data-class-id="{{ class.id }}"
@@ -326,7 +337,7 @@
                                                 <div class="col-sm-12">
                                                     <table  class="table dataTable no-footer" role="grid">
                                                         <thead>
-                                                        <tr role="row">
+                                                        <tr >
                                                             <th class="sorting_asc" tabindex="0"
                                                             aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                             aria-sort="ascending"
@@ -360,8 +371,8 @@
                                                                 </tr>
                                                             {% empty %}
                                                                 <tr>
-                                                                    <td colspan="6" style="text-align: center;">暂无学生提交报告</td>
-                                                                </tr>
+                                                                <td colspan="6" style="text-align: center;">暂无学生提交报告</td>
+                                                               </tr>
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
@@ -438,6 +449,15 @@
             var programmingExerciseId = $(this).data('programmingexercise-id');
             var codeDetailsUrlTemplate = "{% url 'teacher_app:repeat_code_details' programmingexercise_id=0 %}";
             var detailUrl = codeDetailsUrlTemplate.replace('0', programmingExerciseId);
+            detailUrl += '?classId=' + encodeURIComponent(classId);
+            window.location.href = detailUrl;
+        });
+         // 对"分项得分"按钮添加事件监听器
+        $('.class-scores-details').on('click', function () {
+            var classId = $(this).data('class-id');
+            var programmingExerciseId = $(this).data('programmingexercise-id');
+            var scoreDetailsUrlTemplate = "{% url 'teacher_app:scores_details' programmingexercise_id=0%}";
+            var detailUrl = scoreDetailsUrlTemplate.replace('0', programmingExerciseId);
             detailUrl += '?classId=' + encodeURIComponent(classId);
             window.location.href = detailUrl;
         });
