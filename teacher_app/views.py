@@ -206,10 +206,13 @@ def standard_report(request):
 
 
 # 教师主页-得分详情
-def scores_details(request, programmingexercise_id, class_id):
+def scores_details(request, programmingexercise_id):
     # 获取特定编程题目，班级所有学生的代码规范性得分
+    class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
+    programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
     student_scores = []
+
     for student in students:
         try:
             score_instance = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise_id)
