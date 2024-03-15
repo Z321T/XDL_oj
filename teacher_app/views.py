@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 
-from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature
+from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
 from teacher_app.models import (Teacher, Class, Notification,
@@ -206,8 +206,21 @@ def standard_report(request):
 
 
 # 教师主页-得分详情
-def scores_details(request):
-    return render(request, 'scores_details.html')
+def scores_details(request, programmingexercise_id, class_id):
+    # 获取特定编程题目，班级所有学生的代码规范性得分
+    students = Student.objects.filter(class_assigned=class_id)
+    student_scores = []
+    for student in students:
+        try:
+            score_instance = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise_id)
+            student_scores.append((student, score_instance.standard_score))
+        except CodeStandardScore.DoesNotExist:
+            student_scores.append((student, None))
+    context = {
+      'student_scores': student_scores,
+      # ...其他context内容
+    }
+    return render(request, 'scores_details.html', context)
 
 
 # 作业情况

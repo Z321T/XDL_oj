@@ -338,46 +338,31 @@
                                                             aria-label="Office: activate to sort column ascending"
                                                             style="width: 155.6px;">学号
                                                             </th>
+
                                                             <th class="sorting" tabindex="0"
                                                             aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                             aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">相似学生
+                                                            style="width: 155.6px;">代码规范性得分
                                                             </th>
                                                             <th class="sorting" tabindex="0"
                                                             aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                             aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">学号
-                                                            </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">班级
-                                                            </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">相似度
+                                                            style="width: 155.6px;">报告规范性得分
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for student,similarity, sim_student in student_similarities %}
-                                                            <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                                <td class="sorting_1">{{ student.name }}</td>
-                                                                <td>{{ student.userid }}</td>
-                                                                {% if similarity != None and sim_student %}
-                                                                    <td>{{ sim_student.name }}</td>
-                                                                    <td>{{ sim_student.userid }}</td>
-                                                                    <td>{{ similarity|floatformat:2 }}</td>
-                                                                {% else %}
-                                                                    <td colspan="3" style="text-align: center;">未评定</td>
-                                                                {% endif %}
-                                                            </tr>
-                                                        {% empty %}
-                                                            <tr>
-                                                                <td colspan="6" style="text-align: center;">暂无学生提交报告</td>
-                                                            </tr>
-                                                        {% endfor %}
+                                                            {% for student, txtscore in student_scores %}
+                                                                <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
+                                                                    <td class="sorting_1">{{ student.name }}</td>
+                                                                    <td>{{ student.userid }}</td>
+                                                                    <td>{{ txtscore }}</td>
+                                                                </tr>
+                                                            {% empty %}
+                                                                <tr>
+                                                                    <td colspan="6" style="text-align: center;">暂无学生提交报告</td>
+                                                                </tr>
+                                                            {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>

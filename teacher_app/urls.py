@@ -24,7 +24,7 @@ urlpatterns = [
     path('home/repeat_report/<int:programmingexercise_id>/', repeat_report, name='repeat_report'),
     path('home/repeat_report/report_details/<int:programmingexercise_id>/', repeat_report_details, name='repeat_report_details'),
     path('home/repeat_report/code_details/<int:programmingexercise_id>/', repeat_code_details, name='repeat_code_details'),
-    path('home/repeat_report/scores_details/', scores_details, name='scores_details'),
+    path('home/repeat_report/scores_details/<int:programmingexercise_id>/', scores_details, name='scores_details'),
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),

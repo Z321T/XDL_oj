@@ -7,6 +7,9 @@ from .views import test_list, practice_list, notification_content
 from .views import analyse_exercise, analyse_exam, analyse_data
 from .views import coding_exercise, coding_exam, run_cpp_code
 from .views import profile_student_edit
+# 开发环境配置
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 app_name = 'student_app'
@@ -37,6 +40,6 @@ urlpatterns = [
     path('run-cpp/', run_cpp_code, name='run-cpp'),
 
     path('static/<path:path>', serve),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

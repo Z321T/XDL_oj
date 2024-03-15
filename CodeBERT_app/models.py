@@ -65,10 +65,8 @@ class CodeStandardScore(models.Model):
                                 related_name='code_standards')
     programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="编程题",
                                              related_name='code_standards')
-    standard_score = models.IntegerField(default=0, verbose_name="规范性得分")  # this field will store the cppcheck score
+    standard_score = models.IntegerField(default=0,
+                                         verbose_name="规范性得分")  # this field will store the cppcheck score
 
-# 提交代码存储
-class CodeSubmission(models.Model):
-    code_file = models.FileField(upload_to='submissions/')
 
 

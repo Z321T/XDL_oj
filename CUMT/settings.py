@@ -168,3 +168,8 @@ STATICFILES_FINDERS = [
 #     'django.contrib.auth.hashers.Argon2PasswordHasher',
 # ]
 
+# media files location
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+

@@ -13,11 +13,14 @@ from django.http import JsonResponse, HttpResponse
 
 from io import BytesIO
 from docx import Document
+
+from CodeBERT_app.models import CodeStandardScore
 from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report, score_report
+from CodeBERT_app.views import analyze_code, analyze_programming_code, analyze_programming_report, score_report, \
+    run_cppcheck
 
 
 # 学生主页
@@ -80,9 +83,19 @@ def report_student(request, programmingexercise_id):
 
         # 读取TXT文件内容
         code_file = request.FILES.get('txtFile')
-        code = code_file.read().decode('utf-8')
-        # 分析代码特征
-        analyze_programming_code(student, code, programmingexercise_id)
+        if code_file:
+            # 分析代码特征
+            code = code_file.read().decode('utf-8')
+            analyze_programming_code(student, code, programmingexercise_id)
+            instance = CodeStandardScore(student=student, programming_question=programming_exercise)
+            instance.save()
+            run_cppcheck(sender=CodeStandardScore, instance=instance, code_file=code_file)
+        # 存储
+        student.word_file = word_file
+        student.code_file = code_file
+        student.save()
+
+        # analyze_programming_code(student, code, programmingexercise_id)
         return redirect('student_app:home_student')
 
 
