@@ -2,9 +2,9 @@ import os
 import time
 import requests
 import subprocess
+import io
+import docx
 
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
@@ -60,13 +60,14 @@ def report_student(request, programmingexercise_id):
         return render(request, 'report_student.html', context)
 
     if request.method == 'POST':
-        word_file = request.FILES.get('wordFile')
+        word_file = request.FILES['wordFile']
+        # document = docx.Document(io.BytesIO(word_file))
 
         if word_file:
-            # 使用BytesIO创建一个类似文件的对象
+            # 读取文件内容并使用BytesIO创建一个类似文件的对象
             word_file_bytes = BytesIO(word_file.read())
-            document = Document(word_file_bytes)
-            # document = Document(word_file)
+            # 使用BytesIO对象创建docx文档对象
+            document = docx.Document(word_file_bytes)
             full_text = []
             for paragraph in document.paragraphs:
                 full_text.append(paragraph.text)
