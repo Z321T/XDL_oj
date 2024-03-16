@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from administrator_app.models import Administrator
 from student_app.models import Student

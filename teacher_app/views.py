@@ -791,7 +791,9 @@ def reset_password(request):
     if request.method == 'POST':
         student = Student.objects.get(id=request.POST.get('student_id'))
         try:
-            student.password = 'cumt1909'  # 设置为默认密码
+            initial_password = 'cumt1909'  # 设置为默认密码
+            hashed_password = make_password(initial_password)
+            student.password = hashed_password
             student.save()
             return JsonResponse({'status': 'success', 'message': '初始化成功，密码改为cumt1909'}, status=200)
         except Student.DoesNotExist:
