@@ -1,9 +1,9 @@
 import json
 
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from administrator_app.models import Administrator
 from student_app.models import Student
@@ -54,3 +54,10 @@ def log_in(request):
             return JsonResponse({'status': 'error', 'message': error_message})
 
     return render(request, "log_in.html")
+
+
+def log_out(request):
+    # 使用Django的logout函数清除用户session
+    logout(request)
+    # 返回注销成功的消息
+    return redirect('login:log_in')
