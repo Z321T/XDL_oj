@@ -13,20 +13,24 @@ from student_app.models import Student
 from CodeBERT_app.models import ReportStandardScore
 
 
-# Create your views here.
+# 检测用户是否登录
+def check_login(user_id):
+    if user_id is None:
+        return True
+    try:
+        Administrator.objects.get(userid=user_id)
+    except ObjectDoesNotExist:
+        return True
+
+
 # 管理员主页
 def home_administrator(request):
     # 获取用户id，若没有登录则返回登录页面
     user_id = request.session.get('user_id')
-    if user_id is None:
-        return redirect('/login/')
-    try:
-        administrator = Administrator.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'The administrator information is incorrect. Please log in again.')
+    if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    dropdown_menu1 = {'user_id': user_id}
     programings = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
@@ -37,6 +41,10 @@ def home_administrator(request):
 
 
 def programmingexercise_details_data(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         question_id = request.POST.get('id')
         try:
@@ -62,7 +70,11 @@ def programmingexercise_details_data(request):
 
 # 程序设计题库
 def repository_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    dropdown_menu1 = {'user_id': user_id}
     programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
@@ -74,6 +86,10 @@ def repository_administrator(request):
 
 # 程序设计题库：添加程序设计题
 def programmingexercise_create(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('content')
@@ -93,6 +109,10 @@ def programmingexercise_create(request):
 
 # 程序设计题库：删除程序设计题
 def programmingexercise_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         exercise_id = request.POST.get('exercise_id')
         if exercise_id:
@@ -106,7 +126,11 @@ def programmingexercise_delete(request):
 
 # 题库查重管理
 def problems_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    dropdown_menu1 = {'user_id': user_id}
     programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
@@ -118,7 +142,11 @@ def problems_administrator(request):
 
 # 通知界面
 def notice_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    dropdown_menu1 = {'user_id': user_id}
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted').distinct()
     return render(request, 'notice_administrator.html',
                   {'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
@@ -126,7 +154,11 @@ def notice_administrator(request):
 
 # 通知界面：发布通知
 def create_notice(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    dropdown_menu1 = {'user_id': user_id}
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('message')
@@ -143,6 +175,10 @@ def create_notice(request):
 
 # 通知界面：删除通知
 def delete_notice(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         notification_id = request.POST.get('notification_id')
         try:
@@ -157,6 +193,10 @@ def delete_notice(request):
 
 # 通知界面：通知内容
 def notification_content(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         notification_id = request.POST.get('notification_id')
         notification = AdminNotification.objects.get(id=notification_id)
@@ -167,7 +207,10 @@ def notification_content(request):
 
 # 教师管理
 def information_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+    dropdown_menu1 = {'user_id': user_id}
     teachers = Teacher.objects.all()
     return render(request, 'information_administrator.html',
                   {'dropdown_menu1': dropdown_menu1, 'teachers': teachers})
@@ -175,6 +218,10 @@ def information_administrator(request):
 
 # 教师管理：添加教师
 def add_teacher(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         initial_password = request.POST.get('initialPassword')
         file = request.FILES.get('excelFile')
@@ -194,6 +241,10 @@ def add_teacher(request):
 
 # 教师管理：删除教师
 def delete_teacher(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         teacher_id = request.POST.get('teacher_id')
         try:
@@ -212,6 +263,10 @@ def delete_teacher(request):
 
 # 教师管理：重置密码
 def reset_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         teacher = Teacher.objects.get(id=request.POST.get('teacher_id'))
         try:
@@ -228,7 +283,11 @@ def reset_password(request):
 
 # 管理员个人中心
 def profile_administrator(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    dropdown_menu1 = {'user_id': user_id}
     administrator = Administrator.objects.get(userid=request.session.get('user_id'))
 
     context = {
@@ -240,7 +299,11 @@ def profile_administrator(request):
 
 # 管理员个人中心：修改个人信息
 def profile_administrator_edit(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    dropdown_menu1 = {'user_id': user_id}
     administrator = Administrator.objects.get(userid=request.session.get('user_id'))
 
     context = {
