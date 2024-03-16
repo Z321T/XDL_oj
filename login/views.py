@@ -1,9 +1,9 @@
 import json
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
+from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
 
 from administrator_app.models import Administrator
 from student_app.models import Student
@@ -23,7 +23,7 @@ def log_in(request):
 
         if Student.objects.filter(userid=username).exists():
             user = Student.objects.get(userid=username)
-            if password == user.password:
+            if check_password(password, user.password):
                 user_type = 'student'
             else:
                 user = None

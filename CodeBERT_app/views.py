@@ -56,7 +56,7 @@ def analyze_programming_code(student, code, question_id):
     # 连接所有特征值
     concatenated_features = torch.cat(features, dim=0)
     # 使用 PCA 进行维度减少，n_components可以根据需要改变
-    pca = PCA(n_components=128)
+    pca = PCA(n_components=2)
     # 注意：PCA需要在CPU上的NumPy数组上运行
     reduced_features = pca.fit_transform(concatenated_features.cpu().numpy())
     # 将降维后的特征转换为JSON格式
@@ -84,7 +84,7 @@ def analyze_programming_report(student, report, question_id):
     # 连接所有特征值
     concatenated_features = torch.cat(features, dim=0)
     # 使用 PCA 进行维度减少，n_components可以根据需要改变
-    pca = PCA(n_components=128)
+    pca = PCA(n_components=2)
     # 注意：PCA需要在CPU上的NumPy数组上运行
     reduced_features = pca.fit_transform(concatenated_features.cpu().numpy())
     # 将降维后的特征转换为JSON格式

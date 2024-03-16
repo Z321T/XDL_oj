@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
+from django.contrib.auth.hashers import make_password
 
 from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
@@ -722,10 +723,11 @@ def create_class(request):
 
             data = pd.read_excel(file)
             for index, row in data.iterrows():
+                hashed_password = make_password(initial_password)
                 Student.objects.create(
                     name=row['姓名'],
                     userid=row['学号'],
-                    password=initial_password,
+                    password=hashed_password,
                     class_assigned=new_class
                 )
             return redirect('teacher_app:class_teacher')
