@@ -3,9 +3,7 @@ import pandas as pd
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Count
 
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise
 from teacher_app.models import Teacher
