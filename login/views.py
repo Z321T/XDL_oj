@@ -29,13 +29,13 @@ def log_in(request):
                 user = None
         elif Teacher.objects.filter(userid=username).exists():
             user = Teacher.objects.get(userid=username)
-            if password == user.password:
+            if check_password(password, user.password):
                 user_type = 'teacher'
             else:
                 user = None
         elif Administrator.objects.filter(userid=username).exists():
             user = Administrator.objects.get(userid=username)
-            if password == user.password:
+            if check_password(password, user.password):
                 user_type = 'administrator'
             else:
                 user = None

@@ -1,5 +1,6 @@
 import pandas as pd
 
+from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -181,10 +182,11 @@ def add_teacher(request):
         if initial_password and file:
             data = pd.read_excel(file)
             for index, row in data.iterrows():
+                hashed_password = make_password(initial_password)
                 Teacher.objects.create(
                     name=row['姓名'],
                     userid=row['教工号'],
-                    password=initial_password,
+                    password=hashed_password,
                 )
             return redirect('administrator_app:information_administrator')
     return render(request, 'add_teacher.html')
@@ -213,7 +215,9 @@ def reset_password(request):
     if request.method == 'POST':
         teacher = Teacher.objects.get(id=request.POST.get('teacher_id'))
         try:
-            teacher.password = 'cumt1909'  # 设置为默认密码
+            initial_password = 'cumt1909'  # 设置为默认密码
+            hashed_password = make_password(initial_password)
+            teacher.password = hashed_password
             teacher.save()
             return JsonResponse({'status': 'success', 'message': '初始化成功，密码改为cumt1909'}, status=200)
         except Teacher.DoesNotExist:
