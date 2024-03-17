@@ -1,5 +1,7 @@
 from django.db import models
 
+from teacher_app.models import Class
+
 
 # Create your models here.
 class Administrator(models.Model):
@@ -26,3 +28,29 @@ class ProgrammingExercise(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class AdminExam(models.Model):
+    title = models.CharField(verbose_name="考试标题", max_length=255)
+    content = models.TextField(verbose_name="考试描述")
+    published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
+    deadline = models.DateTimeField(verbose_name="截止时间")
+
+    teacher = models.ForeignKey(Administrator, verbose_name="发布教师", on_delete=models.SET_NULL, null=True)
+    classes = models.ManyToManyField(Class, verbose_name="参与考试的班级", blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class AdminExamQuestion(models.Model):
+    exam = models.ForeignKey(AdminExam, verbose_name="考试", on_delete=models.CASCADE,
+                             related_name='questions', null=True)
+    title = models.CharField(max_length=200, verbose_name="题目标题", null=True, blank=True)
+    content = models.TextField(verbose_name="题目内容")
+    memory_limit = models.IntegerField(verbose_name="内存限制", default=0)
+    time_limit = models.IntegerField(verbose_name="时间限制", default=0)
+    answer = models.TextField(verbose_name="答案", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.exam.title} - {self.content}"

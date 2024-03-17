@@ -125,6 +125,11 @@ def problems_administrator(request):
     return render(request, 'problems_administrator.html', context)
 
 
+# 考试
+def exam_administrator(request):
+    return render(request, 'exam_administrator.html')
+
+
 # 通知界面
 def notice_administrator(request):
     user_id = request.session.get('user_id')

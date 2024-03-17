@@ -83,7 +83,6 @@ def report_student(request, programmingexercise_id):
             temp_file.write(code_file.read())
             temp_file.close()
             # 分析代码特征
-            # code = code_file.read().decode('utf-8')
             code = open(temp_file.name, encoding='utf-8').read()
             analyze_programming_code(student, code, programmingexercise_id)
             # instance = CodeStandardScore.objects.create(student=student, programming_question=programming_exercise)
