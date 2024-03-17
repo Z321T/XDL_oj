@@ -5,9 +5,10 @@ from sklearn.decomposition import PCA
 from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
-# #cppcheck
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
+
+#cpplint
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from CodeBERT_app.models import (CodeFeature, ProgrammingCodeFeature, ProgrammingReportFeature,
                                  ReportStandardScore, CodeStandardScore)
@@ -190,33 +191,61 @@ def score_report(student, document, programmingexercise_id):
 
 
 # cppcheck的使用
-# @receiver(post_save, sender=CodeStandardScore)
-# def run_cppcheck(sender, instance, code_file, **kwargs):
-def run_cppcheck(student, code_file, programmingexercise_id):
-    cppcheck_output = subprocess.check_output(['cppcheck', code_file])
-    score = code_score(cppcheck_output)
-    CodeStandardScore.objects.update_or_create(
-        student=student,
-        programming_question_id=programmingexercise_id,
-        defaults={'standard_score': score}
-    )
-    # instance.score = score
-    # instance.save()
+#  @receiver(post_save, sender=CodeStandardScore)
+# # def run_cppcheck(sender, instance, code_file, **kwargs):
+# def run_cppcheck(student, code_file, programmingexercise_id):
+#     cppcheck_output = subprocess.check_output(['cppcheck', code_file])
+#     score = code_score(cppcheck_output)
+#     CodeStandardScore.objects.update_or_create(
+#         student=student,
+#         programming_question_id=programmingexercise_id,
+#         defaults={'standard_score': score}
+#     )
+#     # instance.score = score
+#     # instance.save()
+#
+#
+# # 代码规范性打分
+# def code_score(cppcheck_output):
+#     error_scores = {
+#         'error': 10,
+#         'warning': 5,
+#         'performance': 3,
+#         'style': 1,
+#     }
+#
+#     total_score = 0
+#     for line in cppcheck_output.splitlines():
+#         for error_type, score in error_scores.items():
+#             if error_type in line:
+#                 total_score += score
+#
+#     return total_score
+
+#cpplint
+
+@receiver(post_save, sender=CodeStandardScore)
+def run_cpplint(sender, instance, **kwargs):
+    student = instance.student
+    code_file = instance.file_path  # 假设 file_path 是 CodeStandardScore 模型中代表代码文件路径的字段
+    programmingexercise_id = instance.programming_question_id  # 假设 programming_question_id 是一个字段
+
+    cpplint_output = subprocess.check_output(['cpplint', code_file], stderr=subprocess.STDOUT)
+    score = code_style_score(cpplint_output)
+
+    # 更新 instance 的 style_score 而不是创建新的实例
+    instance.style_score = score
+    instance.save()
+
+def code_style_score(cpplint_output):
+    total_errors = 0
+    for line in cpplint_output.decode('utf-8').split('\n'):
+        if 'Total errors found' in line:
+            total_errors = int(line.split()[-1])
+            break
+    score = max(100 - total_errors, 0)
+    return score
+
+# 注意：确保你已经为你的CodeStandardScore模型创建了file_path 和 programming_question_id 字段。
 
 
-# 代码规范性打分
-def code_score(cppcheck_output):
-    error_scores = {
-        'error': 10,
-        'warning': 5,
-        'performance': 3,
-        'style': 1,
-    }
-
-    total_score = 0
-    for line in cppcheck_output.splitlines():
-        for error_type, score in error_scores.items():
-            if error_type in line:
-                total_score += score
-
-    return total_score

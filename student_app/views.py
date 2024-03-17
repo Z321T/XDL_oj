@@ -16,8 +16,8 @@ from administrator_app.models import ProgrammingExercise
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import (analyze_code, analyze_programming_code, analyze_programming_report,
-                                score_report, run_cppcheck)
+from CodeBERT_app.views import (analyze_code, analyze_programming_report,
+                                score_report, run_cpplint, analyze_programming_code)
 from login.views import check_login
 
 
@@ -83,15 +83,13 @@ def report_student(request, programmingexercise_id):
             temp_file.write(code_file.read())
             temp_file.close()
             # 分析代码特征
-            # code = code_file.read().decode('utf-8')
             code = open(temp_file.name, encoding='utf-8').read()
             analyze_programming_code(student, code, programmingexercise_id)
-            # instance = CodeStandardScore.objects.create(student=student, programming_question=programming_exercise)
-            # run_cppcheck(sender=CodeStandardScore, instance=instance, code_file=code_file)
-            run_cppcheck(student, temp_file.name, programmingexercise_id)
+
+            # 使用 run_cpplint 替代 run_cppcheck
+            run_cpplint(student, temp_file.name, programmingexercise_id)
             # 删除临时文件
             os.unlink(temp_file.name)
-
         # 存储
         # student.word_file = word_file
         # student.code_file = code_file
