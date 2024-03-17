@@ -3,22 +3,12 @@ import pandas as pd
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
 
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise
 from teacher_app.models import Teacher
 from student_app.models import Student
 from CodeBERT_app.models import ReportStandardScore
-
-
-# 检测用户是否登录
-def check_login(user_id):
-    if user_id is None:
-        return True
-    try:
-        Administrator.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
-        return True
+from login.views import check_login
 
 
 # 管理员主页
@@ -28,11 +18,10 @@ def home_administrator(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     programings = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'coursework': programings,
     }
     return render(request, 'home_administrator.html', context)
@@ -72,11 +61,10 @@ def repository_administrator(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'programming_exercises': programming_exercises,
     }
     return render(request, 'repository_administrator.html', context)
@@ -128,11 +116,10 @@ def problems_administrator(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     programming_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'programming_exercises': programming_exercises,
     }
     return render(request, 'problems_administrator.html', context)
@@ -144,10 +131,9 @@ def notice_administrator(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted').distinct()
     return render(request, 'notice_administrator.html',
-                  {'dropdown_menu1': dropdown_menu1, 'adminnotifications': adminnotifications})
+                  {'user_id': user_id, 'adminnotifications': adminnotifications})
 
 
 # 通知界面：发布通知
@@ -156,7 +142,6 @@ def create_notice(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('message')
@@ -168,7 +153,7 @@ def create_notice(request):
             adminnotification.save()
             return redirect('administrator_app:notice_administrator')
     return render(request, 'create_notice_admin.html',
-                  {'dropdown_menu1': dropdown_menu1})
+                  {'user_id': user_id})
 
 
 # 通知界面：删除通知
@@ -208,10 +193,10 @@ def information_administrator(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
-    dropdown_menu1 = {'user_id': user_id}
+
     teachers = Teacher.objects.all()
     return render(request, 'information_administrator.html',
-                  {'dropdown_menu1': dropdown_menu1, 'teachers': teachers})
+                  {'user_id': user_id, 'teachers': teachers})
 
 
 # 教师管理：添加教师
@@ -285,11 +270,10 @@ def profile_administrator(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     administrator = Administrator.objects.get(userid=request.session.get('user_id'))
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'administrator': administrator,
     }
     return render(request, 'profile_administrator.html', context)
@@ -301,11 +285,10 @@ def profile_administrator_edit(request):
     if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': user_id}
     administrator = Administrator.objects.get(userid=request.session.get('user_id'))
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'administrator': administrator,
     }
 

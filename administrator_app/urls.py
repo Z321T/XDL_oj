@@ -21,8 +21,7 @@ urlpatterns = [
     path('repository/programmingexercise_create/', programmingexercise_create, name='programmingexercise_create'),
     # 题库查重管理
     path('problems/', problems_administrator, name='problems_administrator'),
-     path('problems/report_administrator/', report_administrator, name='report_administrator'),
-
+    path('problems/report_administrator/', report_administrator, name='report_administrator'),
     # 有关通知的操作
     path('notice/', notice_administrator, name='notice_administrator'),
     path('notice/create/', create_notice, name='create_notice'),

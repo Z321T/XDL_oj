@@ -161,14 +161,14 @@
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                         <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
-                        <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
+                        <span class="nav-profile-name">{{ user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="{% url 'teacher_app:profile_teacher' %}">
                             <i class="mdi mdi-settings text-primary"></i>
                             设置
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="{% url 'login:log_out' %}">
                             <i class="mdi mdi-logout text-primary"></i>
                             退出登录
                         </a>

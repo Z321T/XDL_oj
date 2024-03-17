@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -61,3 +62,16 @@ def log_out(request):
     logout(request)
     # 返回注销成功的消息
     return redirect('login:log_in')
+
+
+# 检测用户是否登录
+def check_login(user_id):
+    if user_id is None:
+        return True
+    for model in (Administrator, Teacher, Student):
+        try:
+            model.objects.get(userid=user_id)
+            return False  # A user is found
+        except ObjectDoesNotExist:
+            continue  # Try the next user model
+    return True  # No user was found

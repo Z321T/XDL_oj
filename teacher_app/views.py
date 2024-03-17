@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import make_password
 from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise
+from login.views import check_login
 from teacher_app.models import (Teacher, Class, Notification,
                                 Exercise, ExerciseQuestion, Exam, ExamQuestion, ReportScore)
 from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
@@ -18,21 +19,16 @@ from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
 # Create your views here.
 # 教师主页
 def home_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
     # 获取用户id，若没有登录则返回登录页面
     user_id = request.session.get('user_id')
-    if user_id is None:
-        return redirect('/login/')
-    try:
-        teacher = Teacher.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
+    if check_login(user_id):
         return redirect('/login/')
 
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     programing_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'adminnotifications': adminnotifications,
         'programing_exercises': programing_exercises
     }
@@ -42,13 +38,16 @@ def home_teacher(request):
 
 # 教师主页-查看报告
 def repeat_report(request, programmingexercise_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     classes = Class.objects.filter(teacher=teacher)
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'adminnotifications': adminnotifications,
         'classes': classes,
         'programmingexercise_id': programmingexercise_id
@@ -58,6 +57,10 @@ def repeat_report(request, programmingexercise_id):
 
 # 教师主页-查看报告-获取文本数据
 def repeat_report_details(request, programmingexercise_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
     programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
@@ -93,13 +96,12 @@ def repeat_report_details(request, programmingexercise_id):
             # 如果没有学生特征，我们将相似度设置为None
             student_similarities.append((student, None, None))
 
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     classes = Class.objects.filter(teacher=teacher)
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'adminnotifications': adminnotifications,
         'classes': classes,
         'programmingexercise_id': programmingexercise_id,
@@ -111,6 +113,10 @@ def repeat_report_details(request, programmingexercise_id):
 
 # 教师主页-查看报告-获取代码数据
 def repeat_code_details(request, programmingexercise_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     class_id = request.GET.get('class_id')
     students = Student.objects.filter(class_assigned=class_id)
     programmingexercise = ProgrammingExercise.objects.get(id=programmingexercise_id)
@@ -146,13 +152,12 @@ def repeat_code_details(request, programmingexercise_id):
             # 如果没有学生特征，我们将相似度设置为None
             student_similarities.append((student, None, None))
 
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     classes = Class.objects.filter(teacher=teacher)
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'adminnotifications': adminnotifications,
         'classes': classes,
         'programmingexercise_id': programmingexercise_id,
@@ -164,8 +169,11 @@ def repeat_code_details(request, programmingexercise_id):
 
 # 教师主页-规范性评分
 def standard_report(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     try:
         stand_score = ReportScore.objects.filter(teacher=teacher).first()
@@ -174,13 +182,13 @@ def standard_report(request):
 
     if stand_score:
         context = {
-            'dropdown_menu1': dropdown_menu1,
+            'user_id': user_id,
             'adminnotifications': adminnotifications,
             'stand_score': stand_score,
         }
     else:
         context = {
-            'dropdown_menu1': dropdown_menu1,
+            'user_id': user_id,
             'adminnotifications': adminnotifications,
         }
     if request.method == 'POST':
@@ -208,9 +216,11 @@ def standard_report(request):
 
 # 教师主页-查看报告-得分详情
 def scores_details(request, programmingexercise_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
     # 获取特定编程题目，班级所有学生的代码规范性得分
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    teacher = Teacher.objects.get(userid=user_id)
     classes = Class.objects.filter(teacher=teacher)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
@@ -228,7 +238,7 @@ def scores_details(request, programmingexercise_id):
             student_scores.append((student, None, None))
     context = {
         'student_scores': student_scores,
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'classes': classes,
         'adminnotifications': adminnotifications,
         'programmingexercise_id': programmingexercise_id,
@@ -238,14 +248,17 @@ def scores_details(request, programmingexercise_id):
 
 # 作业情况
 def coursework_exercise(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    teacher = Teacher.objects.get(userid=user_id)
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
     classes = teacher.classes_assigned.all()
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'coursework': exercises,
         'classes': classes,
         'adminnotifications': adminnotifications
@@ -255,14 +268,17 @@ def coursework_exercise(request):
 
 
 def coursework_exam(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
     classes = teacher.classes_assigned.all()
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'coursework': exams,
         'classes': classes,
         'adminnotifications': adminnotifications
@@ -273,6 +289,10 @@ def coursework_exam(request):
 
 # 作业情况：获取数据
 def coursework_data(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         data_type = request.POST.get('type')
         item_id = request.POST.get('id')
@@ -316,7 +336,10 @@ def coursework_data(request):
 
 # 作业情况：练习详情
 def coursework_exercise_details(request, class_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
@@ -324,7 +347,7 @@ def coursework_exercise_details(request, class_id):
             exercises = Exercise.objects.filter(classes=class_item).order_by('-published_at')
 
             context = {
-                'dropdown_menu1': dropdown_menu1,
+                'user_id': user_id,
                 'coursework': exercises,
                 'class_id': class_id,
                 'adminnotifications': adminnotifications
@@ -336,7 +359,10 @@ def coursework_exercise_details(request, class_id):
 
 # 作业情况：考试详情
 def coursework_exam_details(request, class_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
@@ -344,7 +370,7 @@ def coursework_exam_details(request, class_id):
             exams = Exam.objects.filter(classes=class_item).order_by('-published_at')
 
             context = {
-                'dropdown_menu1': dropdown_menu1,
+                'user_id': user_id,
                 'coursework': exams,
                 'class_id': class_id,
                 'adminnotifications': adminnotifications
@@ -356,6 +382,10 @@ def coursework_exam_details(request, class_id):
 
 # 作业情况-详情界面：获取数据
 def coursework_details_data(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         data_type = request.POST.get('type')
         item_id = request.POST.get('id')
@@ -415,8 +445,11 @@ def coursework_details_data(request):
 
 # 题库管理
 def repository_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
     Exercise.objects.filter(title="默认标题").delete()
@@ -425,7 +458,7 @@ def repository_teacher(request):
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'exercises': exercises,
         'exams': exams,
         'adminnotifications': adminnotifications
@@ -435,7 +468,11 @@ def repository_teacher(request):
 
 # 题库管理：练习列表
 def exercise_list_default(request):
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     classes = teacher.classes_assigned.all()
 
     exercise = Exercise.objects.create(
@@ -450,7 +487,11 @@ def exercise_list_default(request):
 
 
 def exercise_list(request, exercise_id):
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     classes = teacher.classes_assigned.all()
     exercise = get_object_or_404(Exercise, id=exercise_id)
 
@@ -472,6 +513,10 @@ def exercise_list(request, exercise_id):
 
 # 题库管理：练习列表-创建练习
 def create_exercise(request, exercise_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     exercise = get_object_or_404(Exercise, id=exercise_id)
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -490,6 +535,10 @@ def create_exercise(request, exercise_id):
 
 # 题库管理：练习列表-修改练习题
 def exercise_edit(request, exercise_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         exercise = Exercise.objects.get(id=exercise_id)
@@ -502,6 +551,10 @@ def exercise_edit(request, exercise_id):
 
 # 题库管理：练习列表-删除练习
 def exercise_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         exercise_id = request.POST.get('exercise_id')
         if exercise_id:
@@ -518,6 +571,10 @@ def exercise_delete(request):
 
 # 题库管理：练习列表-删除练习题
 def exercisequestion_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         question_id = request.POST.get('question_id')
         if question_id:
@@ -532,7 +589,11 @@ def exercisequestion_delete(request):
 
 # 题库管理：考试列表
 def exam_list_default(request):
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     classes = teacher.classes_assigned.all()
 
     exam = Exam.objects.create(
@@ -547,7 +608,11 @@ def exam_list_default(request):
 
 
 def exam_list(request, exam_id):
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     classes = teacher.classes_assigned.all()
     exam = get_object_or_404(Exam, id=exam_id)
 
@@ -569,6 +634,10 @@ def exam_list(request, exam_id):
 
 # 题库管理：考试列表-创建考试
 def create_exam(request, exam_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     exam = get_object_or_404(Exam, id=exam_id)
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -587,6 +656,10 @@ def create_exam(request, exam_id):
 
 # 题库管理：考试列表-修改考试题
 def exam_edit(request, exam_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
@@ -599,6 +672,10 @@ def exam_edit(request, exam_id):
 
 # 题库管理：考试列表-删除考试
 def exam_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         exam_id = request.POST.get('exam_id')
         if exam_id:
@@ -615,6 +692,10 @@ def exam_delete(request):
 
 # 题库管理：考试列表-删除考试题
 def examquestion_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         question_id = request.POST.get('question_id')
         if question_id:
@@ -629,14 +710,17 @@ def examquestion_delete(request):
 
 # 通知界面
 def notice_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     classes = teacher.classes_assigned.all()
     notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'notifications': notifications,
         'adminnotifications': adminnotifications
     }
@@ -645,8 +729,11 @@ def notice_teacher(request):
 
 # 发布通知
 def create_notice(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     classes = Class.objects.filter(teacher=teacher)
 
     if request.method == 'POST':
@@ -661,11 +748,15 @@ def create_notice(request):
             notification.recipients.set(recipients)
         return redirect('teacher_app:notice_teacher')
     return render(request, 'create_notice.html',
-                  {'dropdown_menu1': dropdown_menu1, 'classes': classes})
+                  {'user_id': user_id, 'classes': classes})
 
 
 # 删除通知
 def delete_notice(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         notification_id = request.POST.get('notification_id')
         if notification_id:
@@ -680,6 +771,10 @@ def delete_notice(request):
 
 # 通知详情
 def notification_content(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         notification_id = request.POST.get('notification_id')
         notification = Notification.objects.get(id=notification_id)
@@ -690,14 +785,17 @@ def notification_content(request):
 
 # 班级管理
 def class_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    teacher = Teacher.objects.get(userid=user_id)
     classes = Class.objects.filter(teacher=teacher)
 
     context = {
         'classes': classes,
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'adminnotifications': adminnotifications
     }
     return render(request, 'class_teacher.html', context)
@@ -705,10 +803,13 @@ def class_teacher(request):
 
 # 班级管理：创建班级
 def create_class(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'adminnotifications': adminnotifications
     }
     if request.method == 'POST':
@@ -736,6 +837,10 @@ def create_class(request):
 
 # 班级管理：删除班级
 def delete_class(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
         if class_id:
@@ -752,14 +857,17 @@ def delete_class(request):
 
 # 班级管理：班级详情
 def class_details(request, class_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
             students = Student.objects.filter(class_assigned=class_id)
             context = {
                 'students': students,
-                'dropdown_menu1': dropdown_menu1,
+                'user_id': user_id,
                 'adminnotifications': adminnotifications
             }
             return render(request, 'class_details.html', context)
@@ -772,6 +880,10 @@ def class_details(request, class_id):
 
 # 班级管理：删除学生
 def delete_student(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         student_id = request.POST.get('student_id')
         try:
@@ -788,6 +900,10 @@ def delete_student(request):
 
 # 班级管理：初始化密码
 def reset_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         student = Student.objects.get(id=request.POST.get('student_id'))
         try:
@@ -804,12 +920,15 @@ def reset_password(request):
 
 # 教师个人中心
 def profile_teacher(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     teacher = Teacher.objects.get(userid=request.session.get('user_id'))
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'teacher': teacher,
         'adminnotifications': adminnotifications
     }
@@ -818,12 +937,15 @@ def profile_teacher(request):
 
 # 教师个人中心-编辑
 def profile_teacher_edit(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    teacher = Teacher.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'teacher': teacher,
         'adminnotifications': adminnotifications
     }

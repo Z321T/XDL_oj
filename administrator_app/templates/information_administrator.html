@@ -94,90 +94,7 @@
             window.location.href = "{% url 'administrator_app:information_administrator' %}"
         }
     </script>
-    <style>
 
-
-        table {
-
-            width: 100%; /* 表格宽度填满容器 */
-            height: 80%;
-            border-collapse: collapse; /* 边框合并为单一线条 */
-            text-align: left; /* 文本左对齐 */
-            margin-top: 10px; /* 与上方内容的间距 */
-        }
-
-        th, td {
-            border: 1px solid #ddd; /* 单元格边框 */
-            padding: 8px; /* 单元格内边距 */
-        }
-
-        thead {
-            background-color: #f2f2f2; /* 表头背景颜色 */
-        }
-
-
-        /* 居中容器的样式，包含书签和方框 */
-        .centered-container {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%); /* 调整为居中 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0; /* 根据需要调整书签和方框之间的间距 */
-            max-height: 700px; /* 设置表格的最大高度 */
-            overflow-y: auto; /* 内容超出时显示垂直滚动条 */
-            border: 2px solid purple; /* 可选，添加边框以便更清晰地看到表格的边界 */
-            border-radius: 10px;
-        }
-
-        .tabs {
-            position: relative;
-
-            z-index: 2; /* 书签在方框之上 */
-            display: flex;
-            background-color: #ffffff;
-            border-radius: 10px 10px 0 0; /* 上左和上右圆角 */
-            overflow: hidden; /* 隐藏内部元素溢出的部分，确保书签的边框不会超出圆角 */
-        }
-
-        .tab-link {
-            background-color: #fff; /* 与方框相同的背景颜色 */
-            border: 1px solid purple; /* 相似的边框样式 */
-            border-radius: 0 5px 0 0; /* 适用于第一个书签 */
-        }
-
-        .tab-link.active, .tab-link:hover {
-            background-color: mediumpurple; /* 激活或悬停时的背景颜色 */
-        }
-
-
-        .tab-link:last-child {
-            border-radius: 0 0 5px 0; /* 适用于最后一个书签 */
-        }
-
-        .content-box {
-            position: relative;
-            width: 700px; /* 根据需要调整宽度 */
-            max-height: 650px; /* 或根据需要调整，以避免过高覆盖标签 */
-            overflow-y: auto; /* 添加滚动条 */
-            border: 1px solid #ccc;
-            border-radius: 0 0 10px 10px; /* 下左和下右圆角 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果增强立体感 */
-            padding: 20px;
-            background-color: #ffffff;
-        }
-
-        .tab-content {
-            display: none; /* 默认隐藏所有内容 */
-        }
-
-        .tab-content.active {
-            display: block; /* 显示激活的标签内容 */
-        }
-
-
-    </style>
 </head>
 <body>
 <div>
@@ -214,7 +131,7 @@
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                         <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
-                        <span class="nav-profile-name">{{ dropdown_menu1.user_id }}</span>
+                        <span class="nav-profile-name">{{ user_id }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="{% url 'administrator_app:profile_administrator' %}">
@@ -303,8 +220,12 @@
                                 <!-- 添加了 style 属性 -->
                                 <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                                     <div class="row">
+                                        <div class="col-sm-12 col-md-6"></div>
+                                        <div class="col-sm-12 col-md-6"></div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-sm-12">
-                                            <table id="recent-purchases-listing" class="table dataTable no-footer"
+                                            <table class="table dataTable no-footer"
                                                    role="grid">
                                                 <thead>
                                                 <tr role="row">
@@ -336,7 +257,7 @@
                                                         {% for class in teacher.classes_assigned.all %}
                                                             {{ class.name }}
                                                         {% empty %}
-                                                            No classes assigned
+                                                            暂无关联班级
                                                         {% endfor %}
                                                     </td>
                                                     <td>
@@ -347,6 +268,8 @@
                                                                 data-teacher-id="{{ teacher.id }}">初始化密码
                                                         </button>
                                                     </td>
+                                                {% empty %}
+                                                    <td colspan="3" style="text-align: center;">暂无教师</td>
                                                 {% endfor %}
                                                 </tbody>
                                             </table>

@@ -18,25 +18,21 @@ from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQues
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
 from CodeBERT_app.views import (analyze_code, analyze_programming_code, analyze_programming_report,
                                 score_report, run_cppcheck)
+from login.views import check_login
 
 
 # 学生主页
 def home_student(request):
-    # 获取用户id，判断是否是学生用户，若不是则返回登录页面
     user_id = request.session.get('user_id')
-    if user_id is None:
-        return redirect('/login/')
-    try:
-        student = Student.objects.get(userid=user_id)
-    except ObjectDoesNotExist:
+    if check_login(user_id):
         return redirect('/login/')
 
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     programing_exercises = ProgrammingExercise.objects.all().order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'notifications': notifications,
         'programing_exercises': programing_exercises,
     }
@@ -46,14 +42,17 @@ def home_student(request):
 
 # 学生主页：提交报告
 def report_student(request, programmingexercise_id):
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     programming_exercise = get_object_or_404(ProgrammingExercise, id=programmingexercise_id)
     if request.method == 'GET':
-        dropdown_menu1 = {'user_id': request.session.get('user_id')}
         notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
 
         context = {
-            'dropdown_menu1': dropdown_menu1,
+            'user_id': user_id,
             'notifications': notifications,
             'programming_exercise': programming_exercise,
         }
@@ -103,57 +102,72 @@ def report_student(request, programmingexercise_id):
 
 # 我的练习
 def practice_student(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
     exercises = Exercise.objects.filter(classes=class_assigned).order_by('-published_at')
     return render(request, 'practice_student.html',
-                  {'dropdown_menu1': dropdown_menu1, 'exercises': exercises, 'notifications': notifications})
+                  {'user_id': user_id, 'exercises': exercises, 'notifications': notifications})
 
 
 # 我的练习：练习详情
 def practice_list(request, exercise_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'GET':
         exercise = Exercise.objects.get(id=exercise_id)
         return render(request, 'practice_list.html',
-                      {'dropdown_menu1': dropdown_menu1, 'exercise': exercise, 'notifications': notifications})
+                      {'user_id': user_id, 'exercise': exercise, 'notifications': notifications})
 
 
 # 我的考试
 def test_student(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
     exams = Exam.objects.filter(classes=class_assigned).order_by('-published_at')
     return render(request, 'test_student.html',
-                  {'dropdown_menu1': dropdown_menu1, 'exams': exams, 'notifications': notifications})
+                  {'user_id': user_id, 'exams': exams, 'notifications': notifications})
 
 
 # 我的考试：考试详情
 def test_list(request, exam_id):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
         return render(request, 'test_list.html',
-                      {'dropdown_menu1': dropdown_menu1, 'exam': exam, 'notifications': notifications})
+                      {'user_id': user_id, 'exam': exam, 'notifications': notifications})
 
 
 # 学情分析
 def analyse_exercise(request):
-    student = Student.objects.get(userid=request.session.get('user_id'))
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     exercises = Exercise.objects.filter(classes=student.class_assigned).order_by('-published_at')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'notifications': notifications,
         'coursework': exercises,
     }
@@ -161,13 +175,16 @@ def analyse_exercise(request):
 
 
 def analyse_exam(request):
-    student = Student.objects.get(userid=request.session.get('user_id'))
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     exams = Exam.objects.filter(classes=student.class_assigned).order_by('-published_at')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'notifications': notifications,
         'coursework': exams,
     }
@@ -175,7 +192,11 @@ def analyse_exam(request):
 
 
 def analyse_data(request):
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     class_assigned = student.class_assigned
     if request.method == 'POST':
         data_type = request.POST.get('type')
@@ -249,12 +270,15 @@ def analyse_data(request):
 
 # 学生个人中心
 def profile_student(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'notifications': notifications,
         'student': student,
     }
@@ -264,12 +288,15 @@ def profile_student(request):
 
 # 学生个人中心-编辑
 def profile_student_edit(request):
-    dropdown_menu1 = {'user_id': request.session.get('user_id')}
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
 
     context = {
-        'dropdown_menu1': dropdown_menu1,
+        'user_id': user_id,
         'notifications': notifications,
         'student': student,
     }
@@ -285,6 +312,10 @@ def profile_student_edit(request):
 
 # 通知内容
 def notification_content(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'POST':
         notification_id = request.POST.get('notification_id')
         notification = Notification.objects.get(id=notification_id)
@@ -295,6 +326,10 @@ def notification_content(request):
 
 # 答题界面
 def coding_exercise(request, exercisequestion_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'GET':
         question = get_object_or_404(ExerciseQuestion, id=exercisequestion_id)
         question_set = question.exercise
@@ -305,6 +340,10 @@ def coding_exercise(request, exercisequestion_id):
 
 
 def coding_exam(request, examquestion_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
     if request.method == 'GET':
         question = get_object_or_404(ExamQuestion, id=examquestion_id)
         question_set = question.exam
@@ -361,7 +400,11 @@ def mark_exam_question_as_completed(student, exam_question):
 
 # 运行C++代码
 def run_cpp_code(request):
-    student = Student.objects.get(userid=request.session.get('user_id'))
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
     if request.method == 'POST':
         user_code = request.POST.get('code', '')  # 从表单数据中获取代码
         types = request.POST.get('types', '')  # 从表单数据中获取题目类型
