@@ -89,6 +89,10 @@
         function redirectToInformation() {
             window.location.href = "{% url 'administrator_app:information_administrator' %}"
         }
+
+        function redirectToAdminExam() {
+            window.location.href = "{% url 'administrator_app:exam_administrator' %}"
+        }
     </script>
     <style>
         table tbody tr:hover {
@@ -179,7 +183,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToNotice()">
+                    <a class="nav-link" href="#" onclick="redirectToAdminExam()">
                         <i class="mdi mdi-candy-outline menu-icon"></i>
                         <span class="menu-title">考试</span>
                     </a>

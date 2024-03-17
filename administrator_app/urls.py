@@ -6,7 +6,8 @@ from .views import notice_administrator, create_notice, delete_notice, notificat
 from .views import profile_administrator, profile_administrator_edit
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import information_administrator, add_teacher, delete_teacher, reset_password
-from .views import problems_administrator,report_administrator
+from .views import problems_administrator, report_administrator
+from .views import exam_administrator
 
 
 app_name = 'administrator_app'
@@ -22,6 +23,8 @@ urlpatterns = [
     # 题库查重管理
     path('problems/', problems_administrator, name='problems_administrator'),
     path('problems/report_administrator/', report_administrator, name='report_administrator'),
+    # 有关考试的操作
+    path('exam/', exam_administrator, name='exam_administrator'),
     # 有关通知的操作
     path('notice/', notice_administrator, name='notice_administrator'),
     path('notice/create/', create_notice, name='create_notice'),
