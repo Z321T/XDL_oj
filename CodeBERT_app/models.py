@@ -59,11 +59,16 @@ class ReportStandardScore(models.Model):
 
 
 class CodeStandardScore(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+    student = models.ForeignKey(Student, on_delete=models.CASCADE,
+                                verbose_name="学生",
                                 related_name='code_standards')
-    programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE, verbose_name="编程题",
+    programming_question = models.ForeignKey(ProgrammingExercise, on_delete=models.CASCADE,
+                                             verbose_name="练习题",
                                              related_name='code_standards')
     standard_score = models.IntegerField(default=0, verbose_name="代码规范性得分")
+    # 添加代码文件路径字段
+    file_path = models.CharField(max_length=200, verbose_name="代码文件路径", null=True, blank=True)
+
 
 
 
