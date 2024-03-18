@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
 
-#cpplint
+# cpplint
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -222,20 +222,27 @@ def score_report(student, document, programmingexercise_id):
 #
 #     return total_score
 
-#cpplint
+# cpplint
 
-@receiver(post_save, sender=CodeStandardScore)
-def run_cpplint(sender, instance, **kwargs):
-    student = instance.student
-    code_file = instance.file_path  # 假设 file_path 是 CodeStandardScore 模型中代表代码文件路径的字段
-    programmingexercise_id = instance.programming_question_id  # 假设 programming_question_id 是一个字段
+# @receiver(post_save, sender=CodeStandardScore)
+# def run_cpplint(sender, instance, **kwargs):
+def run_cpplint(student, file_path, programmingexercise_id):
+    student = student
+    code_file = file_path  # 假设 file_path 是 CodeStandardScore 模型中代表代码文件路径的字段
+    programmingexercise_id = programmingexercise_id
 
     cpplint_output = subprocess.check_output(['cpplint', code_file], stderr=subprocess.STDOUT)
     score = code_style_score(cpplint_output)
+    CodeStandardScore.objects.update_or_create(
+        student=student,
+        programming_question_id=programmingexercise_id,
+        defaults={'standard_score': score}
+    )
 
-    # 更新 instance 的 style_score 而不是创建新的实例
-    instance.style_score = score
-    instance.save()
+    # # 更新 instance 的 style_score 而不是创建新的实例
+    # instance.style_score = score
+    # instance.save()
+
 
 def code_style_score(cpplint_output):
     total_errors = 0

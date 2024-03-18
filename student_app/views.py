@@ -71,10 +71,10 @@ def report_student(request, programmingexercise_id):
                 full_text.append(paragraph.text)
             # 获得纯文本代码，去除了图片
             report = '\n'.join(full_text)
-            # 报告规范性评分
-            score_report(student, document, programmingexercise_id)
             # 分析报告特征
             analyze_programming_report(student, report, programmingexercise_id)
+            # 报告规范性评分
+            score_report(student, document, programmingexercise_id)
 
         # 读取TXT文件内容
         code_file = request.FILES.get('txtFile')
@@ -85,7 +85,6 @@ def report_student(request, programmingexercise_id):
             # 分析代码特征
             code = open(temp_file.name, encoding='utf-8').read()
             analyze_programming_code(student, code, programmingexercise_id)
-
             # 使用 run_cpplint 替代 run_cppcheck
             run_cpplint(student, temp_file.name, programmingexercise_id)
             # 删除临时文件
