@@ -146,17 +146,17 @@ def test_student(request):
 
     th_exams = Exam.objects.filter(classes=class_assigned)
     admin_exams = AdminExam.objects.filter(classes=class_assigned)
-    exams = th_exams.union(admin_exams).order_by('-published_at')
 
     context = {
         'user_id': user_id,
-        'exams': exams,
+        'th_exams': th_exams,
+        'admin_exams': admin_exams,
         'notifications': notifications,
     }
     return render(request, 'test_student.html', context)
 
 
-# 我的考试：考试详情
+# 我的考试：教师考试详情
 def test_list(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
@@ -166,6 +166,25 @@ def test_list(request, exam_id):
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
+
+        context = {
+            'user_id': user_id,
+            'exam': exam,
+            'notifications': notifications,
+        }
+        return render(request, 'test_list.html', context)
+
+
+# 我的考试：管理员考试详情
+def admintest_list(request, exam_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+    if request.method == 'GET':
+        exam = AdminExam.objects.get(id=exam_id)
 
         context = {
             'user_id': user_id,

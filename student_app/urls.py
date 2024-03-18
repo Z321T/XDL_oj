@@ -3,7 +3,7 @@ from django.urls import path
 from django.contrib.staticfiles.views import serve
 
 from .views import home_student, practice_student, test_student, profile_student, report_student
-from .views import test_list, practice_list, notification_content
+from .views import test_list, practice_list, notification_content, admintest_list
 from .views import analyse_exercise, analyse_exam, analyse_data
 from .views import coding_exercise, coding_exam, run_cpp_code
 from .views import profile_student_edit
@@ -26,6 +26,7 @@ urlpatterns = [
     # 考试相关
     path('test/', test_student, name='test_student'),
     path('test/test_list/<int:exam_id>/', test_list, name='test_list'),
+    path('test/admintest_list/<int:exam_id>/', admintest_list, name='admintest_list'),
     path('coding_exam/<int:examquestion_id>/', coding_exam, name='coding_exam'),
     # 学情分析相关
     path('analyse_exercise/', analyse_exercise, name='analyse_exercise'),
@@ -40,6 +41,6 @@ urlpatterns = [
     path('run-cpp/', run_cpp_code, name='run-cpp'),
 
     path('static/<path:path>', serve),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
