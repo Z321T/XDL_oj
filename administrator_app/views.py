@@ -128,6 +128,126 @@ def problems_administrator(request):
 # 考试
 def exam_administrator(request):
     return render(request, 'exam_administrator.html')
+#以下copy老师的view
+# 题库管理：考试列表
+def exam_list_default(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
+    classes = teacher.classes_assigned.all()
+
+    exam = Exam.objects.create(
+        title="默认标题",
+        content="默认内容",
+        deadline=datetime.now() + timedelta(days=7),
+        teacher=teacher
+    )
+
+    return render(request, 'exam_list.html',
+                  {'classes': classes, 'exam': exam})
+
+
+def exam_list(request, exam_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
+    classes = teacher.classes_assigned.all()
+    exam = get_object_or_404(Exam, id=exam_id)
+
+    if request.method == 'POST':
+        exam.title = request.POST.get('title')
+        exam.content = request.POST.get('content')
+        exam.published_at = datetime.now()
+        exam.deadline = request.POST.get('deadline')
+
+        recipient_ids = request.POST.get('recipients').split(',')
+        recipient_class = Class.objects.filter(id__in=recipient_ids)
+        if recipient_class:
+            exam.save()
+            exam.classes.set(recipient_class)
+            return redirect('teacher_app:repository_teacher')
+    return render(request, 'exam_list.html',
+                  {'classes': classes, 'exam': exam})
+
+
+# 题库管理：考试列表-创建考试
+def create_exam(request, exam_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    exam = get_object_or_404(Exam, id=exam_id)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        memory_limit = request.POST.get('memory_limit')
+        time_limit = request.POST.get('time_limit')
+        answer = request.POST.get('answer')
+
+        question = ExamQuestion(exam=exam, title=title, content=content,
+                                memory_limit=memory_limit, time_limit=time_limit, answer=answer)
+        question.save()
+
+        return redirect('teacher_app:exam_list', exam_id=exam.id)
+    return render(request, 'create_exam.html', {'exam': exam})
+
+
+# 题库管理：考试列表-修改考试题
+def exam_edit(request, exam_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    if request.method == 'GET':
+        exam = Exam.objects.get(id=exam_id)
+        context = {
+            'exam': exam,
+            'adminnotifications': adminnotifications
+        }
+        return render(request, 'exam_edit.html', context)
+
+
+# 题库管理：考试列表-删除考试
+def exam_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    if request.method == 'POST':
+        exam_id = request.POST.get('exam_id')
+        if exam_id:
+            exam_to_delete = Exam.objects.filter(id=exam_id).first()
+            if exam_to_delete:
+                exam_to_delete.questions.all().delete()
+                exam_to_delete.classes.clear()
+                exam_to_delete.delete()
+                return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': '考试未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+# 题库管理：考试列表-删除考试题
+def examquestion_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    if request.method == 'POST':
+        question_id = request.POST.get('question_id')
+        if question_id:
+            question_to_delete = ExamQuestion.objects.filter(id=question_id).first()
+            if question_to_delete:
+                question_to_delete.delete()
+                return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': '考试题未找到'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
 # 通知界面
