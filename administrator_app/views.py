@@ -128,7 +128,18 @@ def problems_administrator(request):
 
 # 考试
 def exam_administrator(request):
-    return render(request, 'exam_administrator.html')
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    AdminExam.objects.filter(title="默认标题").delete()
+    exams = AdminExam.objects.all().order_by('-published_at')
+
+    context = {
+        'user_id': user_id,
+        'exams': exams,
+    }
+    return render(request, 'exam_administrator.html', context)
 
 
 # 考试-考试列表
@@ -163,7 +174,6 @@ def adminexam_list(request, exam_id):
         exam.published_at = datetime.now()
         exam.deadline = request.POST.get('deadline')
 
-        # recipient_ids = request.POST.get('recipients').split(',')
         recipient_class = Class.objects.all()
         if recipient_class:
             exam.save()
@@ -192,7 +202,7 @@ def create_adminexam(request, exam_id):
         question.save()
 
         return redirect('administrator_app:adminexam_list', exam_id=exam.id)
-    return render(request, 'create_exam.html', {'exam': exam})
+    return render(request, 'create_adminexam.html', {'exam': exam})
 
 
 # 考试-考试列表-修改考试题

@@ -8,11 +8,10 @@ import tempfile
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 from io import BytesIO
 
-from administrator_app.models import ProgrammingExercise
+from administrator_app.models import ProgrammingExercise, AdminExam
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
@@ -107,8 +106,13 @@ def practice_student(request):
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
     exercises = Exercise.objects.filter(classes=class_assigned).order_by('-published_at')
-    return render(request, 'practice_student.html',
-                  {'user_id': user_id, 'exercises': exercises, 'notifications': notifications})
+
+    context = {
+        'user_id': user_id,
+        'exercises': exercises,
+        'notifications': notifications,
+    }
+    return render(request, 'practice_student.html', context)
 
 
 # 我的练习：练习详情
@@ -121,8 +125,13 @@ def practice_list(request, exercise_id):
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'GET':
         exercise = Exercise.objects.get(id=exercise_id)
-        return render(request, 'practice_list.html',
-                      {'user_id': user_id, 'exercise': exercise, 'notifications': notifications})
+
+        context = {
+            'user_id': user_id,
+            'exercise': exercise,
+            'notifications': notifications,
+        }
+        return render(request, 'practice_list.html', context)
 
 
 # 我的考试
@@ -134,9 +143,17 @@ def test_student(request):
     student = Student.objects.get(userid=user_id)
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
-    exams = Exam.objects.filter(classes=class_assigned).order_by('-published_at')
-    return render(request, 'test_student.html',
-                  {'user_id': user_id, 'exams': exams, 'notifications': notifications})
+
+    th_exams = Exam.objects.filter(classes=class_assigned)
+    admin_exams = AdminExam.objects.filter(classes=class_assigned)
+    exams = th_exams.union(admin_exams).order_by('-published_at')
+
+    context = {
+        'user_id': user_id,
+        'exams': exams,
+        'notifications': notifications,
+    }
+    return render(request, 'test_student.html', context)
 
 
 # 我的考试：考试详情
@@ -149,8 +166,13 @@ def test_list(request, exam_id):
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     if request.method == 'GET':
         exam = Exam.objects.get(id=exam_id)
-        return render(request, 'test_list.html',
-                      {'user_id': user_id, 'exam': exam, 'notifications': notifications})
+
+        context = {
+            'user_id': user_id,
+            'exam': exam,
+            'notifications': notifications,
+        }
+        return render(request, 'test_list.html', context)
 
 
 # 学情分析

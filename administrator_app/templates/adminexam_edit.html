@@ -19,8 +19,9 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
-    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
+
+
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -32,24 +33,7 @@
         }
     }
 
-    .chartjs-render-monitor {
-        animation: chartjs-render-animation 1ms
-    }
 
-    .chartjs-size-monitor,
-    .chartjs-size-monitor-expand,
-    .chartjs-size-monitor-shrink {
-        position: absolute;
-        direction: ltr;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-        pointer-events: none;
-        visibility: hidden;
-        z-index: -1
-    }
 
     .chartjs-size-monitor-expand > div {
         position: absolute;
@@ -143,7 +127,6 @@
             </ul>
          </div>
     </nav>
-
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
@@ -203,13 +186,14 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="content-wrapper">
+             <div class="content-wrapper">
                 <div class="stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">考试列表</p>
+                            <p class="card-title">考试题列表</p>
                             <div class="table-responsive"
-                                 style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                 style="max-height: 568px; overflow-y: auto; overflow-x: hidden;">
+                                <!-- 添加了 style 属性 -->
                                 <div id="recent-purchases-listing_wrapper"
                                      class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                                     <div class="row">
@@ -218,7 +202,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <table class="table dataTable no-footer" role="grid">
+                                            <table id="recent-purchases-listing" class="table dataTable no-footer"
+                                                   role="grid">
                                                 <thead>
                                                 <tr role="row">
                                                     <th class="sorting_asc" tabindex="0"
@@ -230,19 +215,13 @@
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">发布时间
+                                                        style="width: 155.6px;">内存限制
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">发布人
+                                                        style="width: 72.575px;">时间限制
                                                     </th>
-                                                    <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">截止时间
-                                                    </th>
-
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Price: activate to sort column ascending"
@@ -251,31 +230,23 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for exam in exams %}
+                                                {% for question in exam.questions.all %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1" id="question{{ question.id }}"> {{ exam.title }}
+                                                        <td class="sorting_1" id="question{{ question.id }}"> {{ question.title }}
                                                         </td>
-                                                        <td>{{ exam.published_at }}</td>
-                                                        <td>{{ exam.teacher.name }}</td>
-                                                        <td>{{ exam.deadline }}</td>
-{#                                                        <td>#}
-{#                                                            {% for class in exam.classes.all %}#}
-{#                                                                {{ class.name }}{% if not forloop.last %}, {% endif %}#}
-{#                                                            {% endfor %}#}
-{#                                                        </td>#}
+                                                        <td>{{ question.memory_limit }}</td>
+                                                        <td>{{ question.time_limit }}</td>
                                                         <td>
-                                                            <button class="button-class delete-exam btn-default"
+                                                            <button class="button-class delete-examquestion btn-default"
+                                                                    data-examquestion-id="{{ question.id }}"
                                                                     data-exam-id="{{ exam.id }}">删除
-                                                            </button>
-                                                            <button class="button-class edit-exam btn-default"
-                                                                    data-exam-id="{{ exam.id }}">编辑
                                                             </button>
                                                         </td>
                                                     </tr>
                                                 {% empty %}
                                                     <tr>
-                                                        <td colspan="6" style="text-align: center;">没有考试内容</td>
+                                                        <td colspan="4" style="text-align: center;">没有考试内容</td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -287,8 +258,8 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
-                                    <button onclick="window.location.href='{% url 'administrator_app:adminexam_list_default' %}'"
-                                         class="btn-default"   style="float: right;">发布考试
+                                    <button onclick="window.location.href='{% url 'administrator_app:exam_administrator' %}'"
+                                          class="btn-default"  style="float: right;">返回
                                     </button>
                                 </div>
                             </div>
@@ -296,13 +267,16 @@
                     </div>
                 </div>
             </div>
-            </div>
         </div>
     </div>
+</div>
 
 <!-- container-scroller -->
 
 <!-- plugins:js -->
+<script type="text/javascript" src="{% static 'teacher_app/js/vendor.bundle.base.js' %}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page-->
 <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
 <!-- Plugin js for this page-->
@@ -323,31 +297,23 @@
 <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-        $('.delete-exam').on('click', function () {
+        $('.delete-examquestion').on('click', function () {
+            var questionId = $(this).data('examquestion-id');
             var examId = $(this).data('exam-id');
             $.ajax({
-                url: "{% url 'administrator_app:adminexam_delete' %}",
+                url: "{% url 'administrator_app:adminexamquestion_delete' %}",
                 type: 'POST',
                 data: {
-                    'exam_id': examId,
+                    'question_id': questionId,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    window.location.href = "{% url 'administrator_app:exam_administrator' %}";
+                    window.location.href = "{% url 'administrator_app:adminexam_edit' exam_id='123' %}".replace('123', examId);
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
                 }
             });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('.edit-exam').on('click', function () {
-            var examId = $(this).data('exam-id');
-            {#var url = "{% url 'administrator_app:adminexam_edit' '123' %}".replace('123', examId);#}
-            window.location.href = "{% url 'administrator_app:adminexam_edit' '123' %}".replace('123', examId);
         });
     });
 </script>

@@ -336,7 +336,6 @@
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                         <td>
-                                                           
                                                             {{ question.title }}
                                                         </td>
                                                         <td>{{ exam.published_at }}</td>
@@ -361,10 +360,7 @@
                 </form>
                 <button class="btn-default" onclick="window.location.href='{% url 'administrator_app:create_adminexam' exam.id %}'">创建考试题</button>
             </div>
-
         </div>
-
-
     </div>
 </div>
 

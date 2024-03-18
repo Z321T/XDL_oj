@@ -7,7 +7,8 @@ from .views import profile_administrator, profile_administrator_edit
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import information_administrator, add_teacher, delete_teacher, reset_password
 from .views import problems_administrator, report_administrator
-from .views import exam_administrator, adminexam_list_default, adminexam_list, create_adminexam
+from .views import (exam_administrator, adminexam_list_default, adminexam_list,
+                    create_adminexam, adminexam_edit, adminexam_delete, adminexamquestion_delete)
 
 
 app_name = 'administrator_app'
@@ -28,10 +29,9 @@ urlpatterns = [
     path('exam/exam_list/', adminexam_list_default, name='adminexam_list_default'),
     path('exam/exam_list/<int:exam_id>/', adminexam_list, name='adminexam_list'),
     path('exam/exam_list/create_exam/<int:exam_id>/', create_adminexam, name='create_adminexam'),
-    # path('exam/exam_list/create_exam/<int:exam_id>/', create_exam, name='create_exam'),
-    # path('exam/delete_exam/', exam_delete, name='exam_delete'),
-    # path('exam/edit_exam/<int:exam_id>/', exam_edit, name='exam_edit'),
-    # path('exam/edit_exam/examquestion_delete/', examquestion_delete, name='examquestion_delete'),
+    path('exam/delete_exam/', adminexam_delete, name='adminexam_delete'),
+    path('exam/edit_exam/<int:exam_id>/', adminexam_edit, name='adminexam_edit'),
+    path('exam/edit_exam/adminexamquestion_delete/', adminexamquestion_delete, name='adminexamquestion_delete'),
     # 有关通知的操作
     path('notice/', notice_administrator, name='notice_administrator'),
     path('notice/create/', create_notice, name='create_notice'),
