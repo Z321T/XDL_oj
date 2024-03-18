@@ -25,6 +25,12 @@ urlpatterns = [
     path('problems/report_administrator/', report_administrator, name='report_administrator'),
     # 有关考试的操作
     path('exam/', exam_administrator, name='exam_administrator'),
+    path('exam/exam_list/', exam_list_default, name='exam_list_default'),
+    path('exam/exam_list/<int:exam_id>/', exam_list, name='exam_list'),
+    path('exam/exam_list/create_exam/<int:exam_id>/', create_exam, name='create_exam'),
+    path('exam/delete_exam/', exam_delete, name='exam_delete'),
+    path('exam/edit_exam/<int:exam_id>/', exam_edit, name='exam_edit'),
+    path('exam/edit_exam/examquestion_delete/', examquestion_delete, name='examquestion_delete'),
     # 有关通知的操作
     path('notice/', notice_administrator, name='notice_administrator'),
     path('notice/create/', create_notice, name='create_notice'),
