@@ -391,6 +391,21 @@
 <!-- End custom js for this page-->
 <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
 <script>
+    document.getElementById('exerciseFrom').onsubmit = function(e) {
+        // 获取所有的输入值
+        var recipientIds = document.getElementById('recipientIds').value.trim();
+        var title = document.getElementById('title').value.trim();
+        var content = document.getElementById('content').value.trim();
+        var deadline = document.getElementById('deadline').value.trim();
+
+        // 检查这些输入是否为空
+        if (!recipientIds || !title || !content || !deadline) {
+            e.preventDefault(); // 阻止表单提交
+            alert('所有字段都是必填的，请确保填写完整。'); // 弹出提醒
+        }
+    };
+</script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         var classItems = document.querySelectorAll('.class-list ul li');
         var recipientContainer = document.querySelector('.recipient-container');
