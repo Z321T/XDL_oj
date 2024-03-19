@@ -7,7 +7,7 @@ from .views import profile_administrator, profile_administrator_edit
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import information_administrator, add_teacher, delete_teacher, reset_password
 from .views import problems_administrator, report_administrator
-from .views import (exam_administrator, adminexam_list_default, adminexam_list,
+from .views import (exam_administrator, admin_examlist_default, admin_examlist,
                     create_adminexam, adminexam_edit, adminexam_delete, adminexamquestion_delete)
 
 
@@ -26,8 +26,8 @@ urlpatterns = [
     path('problems/report_administrator/', report_administrator, name='report_administrator'),
     # 有关考试的操作
     path('adminexam/', exam_administrator, name='exam_administrator'),
-    path('adminexam/adminexam_list/', adminexam_list_default, name='adminexam_list_default'),
-    path('adminexam/adminexam_list/<int:exam_id>/', adminexam_list, name='adminexam_list'),
+    path('adminexam/adminexam_list/', admin_examlist_default, name='admin_examlist_default'),
+    path('adminexam/adminexam_list/<int:exam_id>/', admin_examlist, name='admin_examlist'),
     path('adminexam/adminexam_list/create_exam/<int:exam_id>/', create_adminexam, name='create_adminexam'),
     path('adminexam/delete_exam/', adminexam_delete, name='adminexam_delete'),
     path('adminexam/edit_exam/<int:exam_id>/', adminexam_edit, name='adminexam_edit'),

@@ -144,8 +144,8 @@ def exam_student(request):
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
 
-    th_exams = Exam.objects.filter(classes=class_assigned)
-    admin_exams = AdminExam.objects.filter(classes=class_assigned)
+    th_exams = Exam.objects.filter(classes=class_assigned).order_by('-published_at')
+    admin_exams = AdminExam.objects.filter(classes=class_assigned).order_by('-published_at')
 
     context = {
         'user_id': user_id,

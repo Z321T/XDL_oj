@@ -234,26 +234,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToHome()">
                         <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">GUI编程</span>
+                        <span class="menu-title">学情分析</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false"
-                       aria-controls="ui-basic">
-                        <i class="mdi mdi-chart-pie menu-icon"></i>
-                        <span class="menu-title">作业情况</span>
+                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()"
+                       aria-expanded="false" aria-controls="auth">
+                        <i class="mdi mdi-source-repository-multiple menu-icon"></i>
+                        <span class="menu-title">程序设计题库</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProblems()"
+                       aria-expanded="false" aria-controls="auth">
+                        <i class="mdi mdi-source-repository menu-icon"></i>
+                        <span class="menu-title">题库查重管理</span>
                         <i class="menu-arrow"></i>
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()"
-                       aria-expanded="false" aria-controls="auth">
-                        <i class="mdi mdi-source-repository-multiple menu-icon"></i>
-                        <span class="menu-title">我的题库</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToAdminExam()">
                         <i class="mdi mdi-candy-outline menu-icon"></i>
                         <span class="menu-title">考试</span>
@@ -266,10 +266,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToClass()"
+                    <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToInformation()"
                        aria-expanded="false" aria-controls="auth">
-                        <i class="mdi mdi-microsoft-teams menu-icon"></i>
-                        <span class="menu-title">班级管理</span>
+                        <i class="mdi mdi-information-box menu-icon"></i>
+                        <span class="menu-title">教师管理</span>
                         <i class="menu-arrow"></i>
                     </a>
                 </li>
@@ -289,7 +289,7 @@
             <!-- 通知发布窗口 -->
             <div class="notification-panel">
                 <h3>发布考试</h3>
-                <form id="examFrom" method="post" action="{% url 'administrator_app:adminexam_list' exam.id %}">
+                <form id="examFrom" method="post" action="{% url 'administrator_app:admin_examlist' exam.id %}">
                     {% csrf_token %}
                     <div class="input-group">
                         <label for="title">考试标题：</label>

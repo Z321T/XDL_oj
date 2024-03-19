@@ -143,7 +143,7 @@ def exam_administrator(request):
 
 
 # 考试-考试列表
-def adminexam_list_default(request):
+def admin_examlist_default(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -156,11 +156,11 @@ def adminexam_list_default(request):
         teacher=admin
     )
 
-    return render(request, 'adminexam_list.html',
+    return render(request, 'admin_examlist.html',
                   {'exam': exam})
 
 
-def adminexam_list(request, exam_id):
+def admin_examlist(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -179,7 +179,7 @@ def adminexam_list(request, exam_id):
             exam.save()
             exam.classes.set(recipient_class)
             return redirect('administrator_app:exam_administrator')
-    return render(request, 'adminexam_list.html',
+    return render(request, 'admin_examlist.html',
                   {'exam': exam})
 
 
@@ -201,7 +201,7 @@ def create_adminexam(request, exam_id):
                                      memory_limit=memory_limit, time_limit=time_limit, answer=answer)
         question.save()
 
-        return redirect('administrator_app:adminexam_list', exam_id=exam.id)
+        return redirect('administrator_app:admin_examlist', exam_id=exam.id)
     return render(request, 'create_adminexam.html', {'exam': exam})
 
 
