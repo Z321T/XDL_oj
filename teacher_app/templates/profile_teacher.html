@@ -66,6 +66,12 @@
         left: 0;
         top: 0
     }
+    .centered-buttons {
+    display: flex; /* 使用Flexbox布局 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中，如果需要 */
+    gap: 10px; /* 按钮之间的距离，根据需要调整 */
+}
     </style>
     <script>
         function redirectToHome() {
@@ -310,8 +316,10 @@
                             <label for="email">邮箱：</label>
                             <input type="email" name="email" id="email" value="{{ teacher.email }}" readonly/>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row centered-buttons">
                             <button type="button" id="edit-info" class="btn-default" onclick="window.location.href='{% url 'teacher_app:profile_teacher_edit' %}';">修改信息</button>
+{#                            点击链接需要修改#}
+                            <button type="button" id="edit-password" class="btn-default" onclick="window.location.href='{% url 'teacher_app:profile_teacher_edit' %}';">修改密码</button>
                         </div>
                     </form>
                 </div>
