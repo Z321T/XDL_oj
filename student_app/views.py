@@ -157,7 +157,7 @@ def exam_student(request):
 
 
 # 我的考试：教师考试详情
-def exam_list(request, exam_id):
+def teacherexam_list(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -172,7 +172,7 @@ def exam_list(request, exam_id):
             'exam': exam,
             'notifications': notifications,
         }
-        return render(request, 'exam_list.html', context)
+        return render(request, 'teacherexam_list.html', context)
 
 
 # 我的考试：管理员考试详情

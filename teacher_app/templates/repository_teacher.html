@@ -416,7 +416,6 @@
             </div>
         </div>
     </div>
-</div>
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
      aria-hidden="true">
@@ -512,8 +511,7 @@
     $(document).ready(function () {
         $('.edit-exam').on('click', function () {
             var examId = $(this).data('exam-id');
-            var url = "{% url 'teacher_app:exam_edit' '123' %}".replace('123', examId);
-            window.location.href = url;
+            window.location.href = "{% url 'teacher_app:exam_edit' '123' %}".replace('123', examId);;
         });
     });
 </script>

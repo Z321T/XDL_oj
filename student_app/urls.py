@@ -3,7 +3,7 @@ from django.urls import path
 from django.contrib.staticfiles.views import serve
 
 from .views import home_student, practice_student, exam_student, profile_student, report_student
-from .views import exam_list, practice_list, notification_content, adminexam_list
+from .views import teacherexam_list, practice_list, notification_content, adminexam_list
 from .views import analyse_exercise, analyse_exam, analyse_data
 from .views import coding_exercise, coding_exam, run_cpp_code, coding_adminexam
 from .views import profile_student_edit
@@ -25,7 +25,7 @@ urlpatterns = [
     path('coding_exercise/<int:exercisequestion_id>/', coding_exercise, name='coding_exercise'),
     # 考试相关
     path('exam/', exam_student, name='exam_student'),
-    path('exam/exam_list/<int:exam_id>/', exam_list, name='exam_list'),
+    path('exam/exam_list/<int:exam_id>/', teacherexam_list, name='teacherexam_list'),
     path('exam/adminexam_list/<int:exam_id>/', adminexam_list, name='adminexam_list'),
     path('coding_exam/<int:examquestion_id>/', coding_exam, name='coding_exam'),
     path('coding_adminexam/<int:examquestion_id>/', coding_adminexam, name='coding_adminexam'),

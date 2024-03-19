@@ -88,7 +88,7 @@
             if (types === 'exercise')
                 window.location.href = "{% url 'student_app:practice_list' '123' %}".replace('123', question_setId);
             else if (types === 'exam')
-                window.location.href = "{% url 'student_app:exam_list' '123' %}".replace('123', question_setId);
+                window.location.href = "{% url 'student_app:teacherexam_list' '123' %}".replace('123', question_setId);
                 else
                 window.location.href = "{% url 'student_app:adminexam_list' '123' %}".replace('123', question_setId);
         }
