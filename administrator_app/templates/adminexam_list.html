@@ -254,6 +254,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="redirectToAdminExam()">
+                        <i class="mdi mdi-candy-outline menu-icon"></i>
+                        <span class="menu-title">考试</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToNotice()">
                         <i class="mdi mdi-bulletin-board menu-icon"></i>
                         <span class="menu-title">通知</span>
@@ -279,28 +285,12 @@
         </nav>
         <!-- partial -->
         <div class="container">
-{#            <!-- 班级列表部分 -->#}
-{#            <div class="class-list">#}
-{#                <h3>班级列表</h3>#}
-{#                <ul>#}
-{#                    {% for class in classes %}#}
-{#                        <li data-class-id="{{ class.id }}">{{ class.name }}</li>#}
-{#                    {% empty %}#}
-{#                        <li>No classes found</li>#}
-{#                    {% endfor %}#}
-{#                </ul>#}
-{#            </div>#}
 
             <!-- 通知发布窗口 -->
             <div class="notification-panel">
                 <h3>发布考试</h3>
                 <form id="examFrom" method="post" action="{% url 'administrator_app:adminexam_list' exam.id %}">
                     {% csrf_token %}
-{#                    <div class="input-group">#}
-{#                        <label for="recipient">接收班级：</label>#}
-{#                        <div id="recipient" class="recipient-container"></div>#}
-{#                        <input type="hidden" id="recipientIds" name="recipients">#}
-{#                    </div>#}
                     <div class="input-group">
                         <label for="title">考试标题：</label>
                         <input type="text" id="title" name="title" placeholder="请输入考试标题">
@@ -387,51 +377,5 @@
 <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4(1).js' %}"></script>
 <!-- End custom js for this page-->
 <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-{#<script>#}
-{#    document.addEventListener('DOMContentLoaded', function () {#}
-{#        var classItems = document.querySelectorAll('.class-list ul li');#}
-{#        var recipientContainer = document.querySelector('.recipient-container');#}
-{#        var recipientIdsInput = document.querySelector('#recipientIds');#}
-{##}
-{#        function updateRecipientIds() {#}
-{#            var classTags = recipientContainer.querySelectorAll('.class-tag');#}
-{#            var ids = Array.from(classTags).map(function (tag) {#}
-{#                return tag.dataset.classId;#}
-{#            });#}
-{#            recipientIdsInput.value = ids.join(',');  // 更新input元素的值#}
-{#        }#}
-{##}
-{#        classItems.forEach(function (item) {#}
-{#            item.addEventListener('click', function () {#}
-{#                var className = this.textContent;#}
-{#                var classId = this.dataset.classId;#}
-{#                // 检查是否已经添加了这个班级的卡片#}
-{#                var existingTags = recipientContainer.querySelectorAll('.class-tag');#}
-{#                var isClassAlreadyAdded = Array.from(existingTags).some(function (tag) {#}
-{#                    return tag.dataset.classId === classId;#}
-{#                });#}
-{#                if (isClassAlreadyAdded) {#}
-{#                    return;#}
-{#                }#}
-{#                // 创建班级卡片#}
-{#                var tag = document.createElement('div');#}
-{#                tag.className = 'class-tag';#}
-{#                tag.dataset.classId = classId; // 使用 classId 作为唯一标识#}
-{#                tag.textContent = className;#}
-{#                // 创建移除按钮#}
-{#                var removeBtn = document.createElement('span');#}
-{#                removeBtn.textContent = '❌';#}
-{#                removeBtn.className = 'remove-class';#}
-{#                removeBtn.onclick = function () {#}
-{#                    recipientContainer.removeChild(tag);#}
-{#                    updateRecipientIds();#}
-{#                };#}
-{#                tag.appendChild(removeBtn);#}
-{#                recipientContainer.appendChild(tag);#}
-{#                updateRecipientIds();#}
-{#            });#}
-{#        });#}
-{#    });#}
-{#</script>#}
 </body>
 </html>
