@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.staticfiles.views import serve
 
 from .views import home_teacher, repeat_report, repeat_report_details, repeat_code_details
-from .views import profile_teacher, profile_teacher_edit
+from .views import profile_teacher, profile_teacher_edit, profile_teacher_password
 from .views import class_teacher, create_class, delete_class, class_details, delete_student, reset_password
 from .views import (repository_teacher, exercise_list_default, exercise_list,
                     create_exercise, exercise_delete, exercise_edit, exercisequestion_delete)
@@ -62,6 +62,7 @@ urlpatterns = [
     # 个人中心
     path('profile/', profile_teacher, name='profile_teacher'),
     path('profile/edit/', profile_teacher_edit, name='profile_teacher_edit'),
+    path('profile/password/', profile_teacher_password, name='profile_teacher_password'),
 
     path('static/<path:path>', serve),
 

@@ -959,3 +959,35 @@ def profile_teacher_edit(request):
         return redirect('teacher_app:profile_teacher')
 
     return render(request, 'profile_teacher_edit.html', context)
+
+
+# 教师个人中心-修改密码
+def profile_teacher_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+
+    context = {
+        'user_id': user_id,
+        'teacher': teacher,
+        'adminnotifications': adminnotifications
+    }
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if teacher.check_password(old_password):
+            if new_password == confirm_password:
+                teacher.password = make_password(new_password)
+                teacher.save()
+                return redirect('teacher_app:profile_teacher')
+            else:
+                messages.error(request, '两次输入的密码不一致')
+        else:
+            messages.error(request, '旧密码错误')
+    return render(request, 'password_teacher_edit.html', context)
