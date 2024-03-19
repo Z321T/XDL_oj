@@ -178,12 +178,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="redirectToAdminExam()">
-                        <i class="mdi mdi-candy-outline menu-icon"></i>
-                        <span class="menu-title">考试</span>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToNotice()">
                         <i class="mdi mdi-bulletin-board menu-icon"></i>
                         <span class="menu-title">通知</span>
@@ -265,11 +259,6 @@
                                                         <td>{{ exam.published_at }}</td>
                                                         <td>{{ exam.teacher.name }}</td>
                                                         <td>{{ exam.deadline }}</td>
-{#                                                        <td>#}
-{#                                                            {% for class in exam.classes.all %}#}
-{#                                                                {{ class.name }}{% if not forloop.last %}, {% endif %}#}
-{#                                                            {% endfor %}#}
-{#                                                        </td>#}
                                                         <td>
                                                             <button class="button-class delete-exam btn-default"
                                                                     data-exam-id="{{ exam.id }}">删除
@@ -352,7 +341,6 @@
     $(document).ready(function () {
         $('.edit-exam').on('click', function () {
             var examId = $(this).data('exam-id');
-            {#var url = "{% url 'administrator_app:adminexam_edit' '123' %}".replace('123', examId);#}
             window.location.href = "{% url 'administrator_app:adminexam_edit' '123' %}".replace('123', examId);
         });
     });
