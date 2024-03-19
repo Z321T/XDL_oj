@@ -68,11 +68,21 @@
     </style>
     <script>
         function redirectToSpecificQuestion(questionId) {
+
             window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
         }
     </script>
     <script>
         var types = "{{ types }}";
+
+        function redirectToSpecificQuestion(questionId) {
+            if (types === 'exercise')
+                window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
+            else if (types === 'exam')
+                window.location.href = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);
+                else
+                window.location.href = "{% url 'student_app:coding_adminexam' '123' %}".replace('123', questionId);
+        }
 
         function redirectToList(question_setId) {
             if (types === 'exercise')
