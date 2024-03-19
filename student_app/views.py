@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from io import BytesIO
 
-from administrator_app.models import ProgrammingExercise, AdminExam
+from administrator_app.models import ProgrammingExercise, AdminExam, AdminExamQuestion
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
@@ -135,7 +135,7 @@ def practice_list(request, exercise_id):
 
 
 # 我的考试
-def test_student(request):
+def exam_student(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -153,11 +153,11 @@ def test_student(request):
         'admin_exams': admin_exams,
         'notifications': notifications,
     }
-    return render(request, 'test_student.html', context)
+    return render(request, 'exam_student.html', context)
 
 
 # 我的考试：教师考试详情
-def test_list(request, exam_id):
+def exam_list(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -172,11 +172,11 @@ def test_list(request, exam_id):
             'exam': exam,
             'notifications': notifications,
         }
-        return render(request, 'test_list.html', context)
+        return render(request, 'exam_list.html', context)
 
 
 # 我的考试：管理员考试详情
-def admintest_list(request, exam_id):
+def adminexam_list(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -191,7 +191,7 @@ def admintest_list(request, exam_id):
             'exam': exam,
             'notifications': notifications,
         }
-        return render(request, 'test_list.html', context)
+        return render(request, 'adminexam_list.html', context)
 
 
 # 学情分析
@@ -391,6 +391,20 @@ def coding_exam(request, examquestion_id):
     return render(request, 'coding_student.html')
 
 
+def coding_adminexam(request, examquestion_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    if request.method == 'GET':
+        question = get_object_or_404(AdminExamQuestion, id=examquestion_id)
+        question_set = question.exam
+        types = 'adminexam'
+        return render(request, 'coding_student.html',
+                      {'question_set': question_set, 'question': question, 'types': types})
+    return render(request, 'coding_student.html')
+
+
 def call_node_api(request):
     response = requests.get('http://localhost:3000/api')  # Node.js服务器的地址
     return HttpResponse(response.json())
@@ -464,22 +478,30 @@ def run_cpp_code(request):
             if result.returncode == 0:  # 如果运行成功
                 if types == 'exercise':
                     question = ExerciseQuestion.objects.get(id=question_id)
-                else:
+                elif types == 'exam':
                     question = ExamQuestion.objects.get(id=question_id)
+                else:
+                    question = AdminExamQuestion.objects.get(id=question_id)
                 if question.answer == result.stdout:
                     if types == 'exercise':
                         mark_exercise_question_as_completed(student, question)
-                        Score.objects.create(
+                        Score.objects.update_or_create(
                             student=student,
                             exercise_question=question,
-                            score=10
+                            defaults={'score': 10}
                         )
-                    else:
+                    elif types == 'exam':
                         mark_exam_question_as_completed(student, question)
-                        Score.objects.create(
+                        Score.objects.update_or_create(
                             student=student,
                             exam_question=question,
-                            score=10
+                            defaults={'score': 10}
+                        )
+                    else:
+                        Score.objects.update_or_create(
+                            student=student,
+                            adminexam_question=question,
+                            defaults={'score': 10}
                         )
                     analyze_code(student, user_code, types, question_id)
                     # 这里仅返回了执行结果和时间，与前端代码对应
