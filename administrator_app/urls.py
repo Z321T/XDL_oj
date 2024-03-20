@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.staticfiles.views import serve
 
-from .views import home_administrator, programmingexercise_details_data
+from .views import home_administrator, programmingexercise_details_data, home_administrator_exam, exam_details_data
 from .views import notice_administrator, create_notice, delete_notice, notification_content
 from .views import profile_administrator, profile_administrator_edit, profile_adminadministrator_password
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
@@ -17,6 +17,8 @@ urlpatterns = [
     # 管理员使用界面
     path('home/', home_administrator, name='home_administrator'),
     path('home/programmingexercise_details_data/', programmingexercise_details_data, name='programmingexercise_details_data'),
+    path('home/exam/', home_administrator_exam, name='home_administrator_exam'),
+    path('home/exam/exam_details_data/', exam_details_data, name='exam_details_data'),
     # 有关程序设计题库的操作
     path('repository/', repository_administrator, name='repository_administrator'),
     path('repository/programmingexercise_delete/', programmingexercise_delete, name='programmingexercise_delete'),

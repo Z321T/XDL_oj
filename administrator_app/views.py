@@ -7,12 +7,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from teacher_app.models import Teacher, Class
-from student_app.models import Student
+from student_app.models import Student, Score
 from CodeBERT_app.models import ReportStandardScore
 from login.views import check_login
 
 
-# 管理员主页
+# 管理员主页-程序设计
 def home_administrator(request):
     # 获取用户id，若没有登录则返回登录页面
     user_id = request.session.get('user_id')
@@ -28,6 +28,22 @@ def home_administrator(request):
     return render(request, 'home_administrator.html', context)
 
 
+# 管理员主页-考试
+def home_administrator_exam(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    exams = AdminExam.objects.all().order_by('-published_at')
+
+    context = {
+        'user_id': user_id,
+        'coursework': exams,
+    }
+    return render(request, 'home_administrator_exam.html', context)
+
+
+# 程序设计题详情
 def programmingexercise_details_data(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
@@ -51,6 +67,41 @@ def programmingexercise_details_data(request):
 
         except ProgrammingExercise.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': '未找到对应的练习题'}, status=404)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
+
+
+# 考试题详情
+def exam_details_data(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    if request.method == 'POST':
+        exam_id = request.POST.get('id')
+        try:
+            exam = AdminExam.objects.get(id=exam_id)
+            questions = exam.questions.all()
+            question_avg_scores = []
+
+            for question in questions:
+                # 获取当前题目所有分数对象
+                scores = Score.objects.filter(adminexam_question=question)
+                total_score = sum(score.score for score in scores)
+                total_students = Student.objects.count()
+                # 计算平均分，若学生总数为0，则平均分为0
+                avg_score = (total_score / total_students) if total_students else 0
+
+                question_avg_scores.append({
+                    'question_title': question.title,
+                    'average_score': avg_score
+                })
+
+            return JsonResponse({'data': question_avg_scores})
+
+        except AdminExam.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': '未找到对应的考试'}, status=404)
 
     else:
         return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
