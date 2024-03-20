@@ -3,7 +3,7 @@ from django.contrib.staticfiles.views import serve
 
 from .views import home_administrator, programmingexercise_details_data
 from .views import notice_administrator, create_notice, delete_notice, notification_content
-from .views import profile_administrator, profile_administrator_edit
+from .views import profile_administrator, profile_administrator_edit, profile_adminadministrator_password
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import information_administrator, add_teacher, delete_teacher, reset_password
 from .views import problems_administrator, report_administrator
@@ -45,6 +45,7 @@ urlpatterns = [
     # 个人中心
     path('profile/', profile_administrator, name='profile_administrator'),
     path('profile/edit/', profile_administrator_edit, name='profile_administrator_edit'),
+    path('profile/password/', profile_adminadministrator_password, name='profile_administrator_password'),
 
     path('static/<path:path>', serve),
 

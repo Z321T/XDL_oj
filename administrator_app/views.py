@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -433,6 +433,36 @@ def profile_administrator_edit(request):
         return redirect('administrator_app:profile_administrator')
 
     return render(request, 'profile_administrator_edit.html', context)
+
+
+# 管理员个人中心-修改密码
+def profile_adminadministrator_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    administrator = Administrator.objects.get(userid=user_id)
+
+    context = {
+        'user_id': user_id,
+    }
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if check_password(old_password, administrator.password):
+            if new_password == confirm_password:
+                administrator.password = make_password(new_password)
+                administrator.save()
+                return JsonResponse({'status': 'success', 'message': '密码修改成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '两次输入的密码不一致'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': '旧密码错误'}, status=400)
+
+    return render(request, 'password_admin_edit.html', context)
 
 
 # about report_administrator.html
