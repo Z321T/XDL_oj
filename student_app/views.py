@@ -4,12 +4,13 @@ import docx
 import requests
 import subprocess
 import tempfile
+from io import BytesIO
 
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from io import BytesIO
+from django.contrib.auth.hashers import make_password, check_password
 
 from administrator_app.models import ProgrammingExercise, AdminExam, AdminExamQuestion
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
@@ -346,6 +347,38 @@ def profile_student_edit(request):
         return redirect('student_app:profile_student')
 
     return render(request, 'profile_student_edit.html', context)
+
+
+# 学生个人中心-修改密码
+def profile_student_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    context = {
+        'user_id': user_id,
+        'notifications': notifications,
+        'student': student,
+    }
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if check_password(old_password, student.password):
+            if new_password == confirm_password:
+                student.password = make_password(new_password)
+                student.save()
+                return JsonResponse({'status': 'success', 'message': '密码修改成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '两次输入的密码不一致'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': '旧密码错误'}, status=400)
+    return render(request, 'password_student_edit.html', context)
 
 
 # 通知内容

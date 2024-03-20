@@ -6,7 +6,7 @@ from .views import home_student, practice_student, exam_student, profile_student
 from .views import teacherexam_list, practice_list, notification_content, adminexam_list
 from .views import analyse_exercise, analyse_exam, analyse_data
 from .views import coding_exercise, coding_exam, run_cpp_code, coding_adminexam
-from .views import profile_student_edit
+from .views import profile_student_edit, profile_student_password
 # 开发环境配置
 from django.conf import settings
 from django.conf.urls.static import static
@@ -36,6 +36,7 @@ urlpatterns = [
     # 学生个人中心
     path('profile/', profile_student, name='profile_student'),
     path('profile/edit/', profile_student_edit, name='profile_student_edit'),
+    path('profile/password/', profile_student_password, name='profile_student_password'),
     # 通知相关
     path('notification_content/', notification_content, name='notification_content'),
     # 编码运行相关

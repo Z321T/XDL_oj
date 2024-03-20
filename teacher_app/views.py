@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
@@ -981,13 +981,13 @@ def profile_teacher_password(request):
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
 
-        if teacher.check_password(old_password):
+        if check_password(old_password, teacher.password):
             if new_password == confirm_password:
                 teacher.password = make_password(new_password)
                 teacher.save()
-                return redirect('teacher_app:profile_teacher')
+                return JsonResponse({'status': 'success', 'message': '密码修改成功'})
             else:
-                messages.error(request, '两次输入的密码不一致')
+                return JsonResponse({'status': 'error', 'message': '两次输入的密码不一致'}, status=400)
         else:
-            messages.error(request, '旧密码错误')
+            return JsonResponse({'status': 'error', 'message': '旧密码错误'}, status=400)
     return render(request, 'password_teacher_edit.html', context)
