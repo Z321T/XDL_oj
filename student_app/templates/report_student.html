@@ -19,6 +19,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'administrator_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/secondPage.css' %}">
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -87,19 +88,19 @@
         }
     </script>
     <style>
-        input[type="text"],
-        input[type="password"],
-        input[type="file"],
-        input[type="text"]:hover,
-        input[type="password"]:hover,
-        input[type="file"]:hover {
+       input[type="text"]:not(.nav-search .input-group),
+        input[type="password"]:not(.nav-search .input-group),
+        input[type="file"]:not(.nav-search .input-group)
+        input[type="text"]:hover:not(.nav-search .input-group),
+        input[type="password"]:hover:not(.nav-search .input-group),
+        input[type="file"]:hover:not(.nav-search .input-group){
             /* 其他样式保持不变 */
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
-        input[type="text"]:hover,
-        input[type="password"]:hover,
-        input[type="file"]:hover {
+        input[type="text"]:not(.nav-search .input-group)hover,
+        input[type="password"]:not(.nav-search .input-group):hover,
+        input[type="file"]:not(.nav-search .input-group):hover{
             border-color: #66afe9; /* 悬停时的边框颜色 */
             box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* 悬停时的立体阴影效果 */
         }
@@ -139,63 +140,6 @@
             height: auto;
         }
 
-        .btn-default {
-            background-color: #ffffff; /* White background */
-            color: #333333; /* Dark text */
-            border: 1px solid #cccccc; /* Light gray border */
-            padding: 10px 20px; /* Padding inside the button */
-            font-size: 16px; /* Text size */
-            border-radius: 5px; /* Rounded corners */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
-            transition: all 0.3s; /* Smooth transition for hover effects */
-        }
-
-        .btn-default:hover, .btn-default:focus {
-            border-color: #66afe9; /* Blue border on hover/focus */
-            outline: none; /* Remove outline on focus */
-            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* More pronounced shadow on hover/focus */
-        }
-
-        .form-control-file {
-            border: none !important;
-            box-shadow: none /* 如果有的话也移除阴影 */ !important;
-        }
-
-
-        /* 以下是导航栏和侧边栏的样式，根据你的实际结构进行调整 */
-        .navbar {
-            background-color: #f8f8f8;
-            border-color: #e7e7e7;
-        }
-
-        .navbar-brand-wrapper {
-            width: 100%;
-        }
-
-        .navbar-toggler {
-            border: none;
-            background: transparent;
-        }
-
-        .sidebar-offcanvas {
-            background: white;
-            color: #fff;
-        }
-
-        .nav .nav-item .nav-link {
-            color: #fff;
-        }
-
-        .nav .nav-item .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav .nav-item.active .nav-link,
-        .nav .nav-item.active .nav-link:hover {
-            color: #fff;
-            background-color: #495057;
-        }
-
         .menu-icon {
             margin-right: 5px;
         }
@@ -208,14 +152,8 @@
             float: right;
         }
 
-        .page-body-wrapper {
-            padding-top: 70px; /* 确保顶部导航栏不覆盖内容 */
-        }
 
-        .main-panel {
-            background: #fff;
-            padding: 20px;
-        }
+
 
         /* 对响应式布局的支持 */
         @media (max-width: 768px) {
@@ -249,7 +187,7 @@
                 </div>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <ul class="navbar-nav mr-lg-4 w-100">
+             <ul class="navbar-nav mr-lg-4 w-100">
                 <li class="nav-item nav-search d-none d-lg-block w-100">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -257,7 +195,7 @@
                   <i class="mdi mdi-magnify"></i>
                 </span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Search now" aria-label="search"
+                        <input type="text" class="form-control input-group" placeholder="Search now" aria-label="search"
                                aria-describedby="search">
                     </div>
                 </li>
@@ -313,8 +251,8 @@
         </div>
         </nav>
         <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
 
+        <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                <ul class="nav">
                 <li class="nav-item active">
@@ -354,6 +292,9 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
+                 <div class="col-md-12 stretch-card">
+                      <div class="card">
+                            <div class="card-body">
               <form action="{% url 'student_app:report_student' programming_exercise.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="programmingexercise_id" value="{{ programming_exercise.id }}">
@@ -375,6 +316,9 @@
                 </div>
                 <button type="submit" class="btn btn-default">提交</button>
             </form>
+                            </div>
+                      </div>
+                 </div>
             </div>
         </div>
     </div>
