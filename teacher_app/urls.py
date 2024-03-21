@@ -9,7 +9,7 @@ from .views import (repository_teacher, exercise_list_default, exercise_list,
 from .views import (exam_list_default, exam_list,
                     create_exam, exam_delete, exam_edit, examquestion_delete)
 from .views import notice_teacher, create_notice, delete_notice, notification_content
-from .views import (coursework_exercise, coursework_exam, coursework_data,
+from .views import (coursework_exercise, coursework_exam, coursework_adminexam, coursework_data,
                     coursework_exercise_details, coursework_exam_details, coursework_details_data)
 from .views import standard_report, scores_details
 
@@ -28,6 +28,7 @@ urlpatterns = [
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),
+    path('coursework/adminexam/', coursework_adminexam, name='coursework_adminexam'),
     path('coursework/data/', coursework_data, name='coursework_data'),
     path('coursework/exercise/details/<int:class_id>/', coursework_exercise_details, name='coursework_exercise_details'),
     path('coursework/exam/details/<int:class_id>/', coursework_exam_details, name='coursework_exam_details'),

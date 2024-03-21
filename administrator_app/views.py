@@ -33,7 +33,8 @@ def home_administrator_exam(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
-
+    
+    AdminExam.objects.filter(title="默认标题").delete()
     exams = AdminExam.objects.all().order_by('-published_at')
 
     context = {

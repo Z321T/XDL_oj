@@ -16,7 +16,7 @@ from administrator_app.models import ProgrammingExercise, AdminExam, AdminExamQu
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import (analyze_code, analyze_programming_report,
+from CodeBERT_app.views import (analyze_programming_report,
                                 score_report, run_cpplint, analyze_programming_code)
 from login.views import check_login
 
@@ -536,7 +536,7 @@ def run_cpp_code(request):
                             adminexam_question=question,
                             defaults={'score': 10}
                         )
-                    analyze_code(student, user_code, types, question_id)
+                    # analyze_code(student, user_code, types, question_id)
                     # 这里仅返回了执行结果和时间，与前端代码对应
                     return JsonResponse({'output': result.stdout, 'time': execution_time})
                 else:

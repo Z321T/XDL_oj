@@ -259,19 +259,19 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <!-- 添加切换按钮 -->
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary exercise-button"
-                                                        data-type="exercise">学生练习
-                                                </button>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-type="exam">班级考试
-                                                </button>
-                                                <button type="button" class="btn btn-secondary adminexam-button"
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-secondary exercise-button"
+                                                            data-type="exercise">学生练习
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary exam-button"
+                                                            data-type="exam">班级考试
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary"
                                                             data-type="adminexam">年级考试
                                                     </button>
-                                            </div>
-                                                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-                                                   <div class="row">
+                                                </div>
+                                              <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                                <div class="row">
                                                     <table class="table">
                                                         <thead>
                                                         <tr>
@@ -281,19 +281,18 @@
                                                         </thead>
                                                         <tbody>
                                                         {% for question in coursework %}
-                                                        <tr data-id="{{ question.id }}">
-                                                            <td>{{ question.title }}</td>
-                                                            <td>{{ question.published_at }}</td>
-                                                        </tr>
+                                                            <tr data-id="{{ question.id }}">
+                                                                <td>{{ question.title }}</td>
+                                                                <td>{{ question.published_at }}</td>
+                                                            </tr>
                                                         {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                 </div>
+                                              </div>
                                             </div>
                                         </div>
                                     </div>
-
 
 
                                 </div>
@@ -302,7 +301,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class=" stretch-card">
                 <div class="card">
@@ -326,10 +324,11 @@
                 </div>
                 <!-- container-scroller -->
             </div>
+          </div>
+         </div>
         </div>
     </div>
-</div>
-</div>
+
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
      aria-hidden="true">
@@ -385,20 +384,20 @@
         series: [{
             name: '完成情况',
             type: 'bar',
-            data: [1, 0.4, 0.2, 0.3, 0.7, 0.1]
+            data: [0.7, 1, 0.2, 0.4, 0.5, 0.1]
         }]
     };
     myChart.setOption(option);
 </script>
 <script>
-    $(function (){
-        $('.btn-group .btn-secondary[data-type="exam"]').addClass('active')
+    $(function () {
+        $('.btn-group .btn-secondary[data-type="adminexam"]').addClass('active')
 
+        $('.btn-group .btn-secondary.exam-button').click(function () {
+            window.location.href = "{% url 'teacher_app:coursework_exam' %}"
+        });
         $('.btn-group .btn-secondary.exercise-button').click(function () {
            window.location.href = "{% url 'teacher_app:coursework_exercise' %}"
-        });
-        $('.btn-group .btn-secondary.adminexam-button').click(function () {
-            window.location.href = "{% url 'teacher_app:coursework_adminexam' %}"
         });
 
         $('table tbody').on('click', 'tr', function () {
@@ -412,7 +411,7 @@
                     'type': type,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
-                success: function(response) {
+                success: function (response) {
                     updateChart(response.data);
                 },
                 error: function (response) {
@@ -421,13 +420,14 @@
             });
         });
     })
+
     // 更新柱状图的函数
     function updateChart(data) {
         var myChart = echarts.init(document.getElementById('cash-deposits-chart'));
-        var classNames = data.map(function(item) {
+        var classNames = data.map(function (item) {
             return item.class_name;
         });
-        var completionRates = data.map(function(item) {
+        var completionRates = data.map(function (item) {
             return item.completion_rate;
         });
         var option = {
@@ -452,7 +452,7 @@
     $(document).ready(function () {
          $('.class-id').on('click', function () {
             var classId = $(this).data('class-id');
-            window.location.href = "{% url 'teacher_app:coursework_exam_details' '123' %}".replace('123', classId);
+            window.location.href = "{% url 'teacher_app:coursework_exercise_details' '123' %}".replace('123', classId);
         });
     });
 </script>

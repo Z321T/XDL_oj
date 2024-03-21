@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
-from administrator_app.models import AdminNotification, ProgrammingExercise
+from administrator_app.models import AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from login.views import check_login
 from teacher_app.models import (Teacher, Class, Notification,
                                 Exercise, ExerciseQuestion, Exam, ExamQuestion, ReportScore)
@@ -252,6 +252,8 @@ def coursework_exercise(request):
     if check_login(user_id):
         return redirect('/login/')
 
+    Exercise.objects.filter(title="默认标题").delete()
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     teacher = Teacher.objects.get(userid=user_id)
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
@@ -272,6 +274,8 @@ def coursework_exam(request):
     if check_login(user_id):
         return redirect('/login/')
 
+    Exam.objects.filter(title="默认标题").delete()
+
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
@@ -287,11 +291,35 @@ def coursework_exam(request):
     return render(request, 'coursework_exam.html', context)
 
 
+def coursework_adminexam(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    AdminExam.objects.filter(title="默认标题").delete()
+
+    teacher = Teacher.objects.get(userid=user_id)
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    exams = AdminExam.objects.all().order_by('-published_at')
+    classes = teacher.classes_assigned.all()
+
+    context = {
+        'user_id': user_id,
+        'coursework': exams,
+        'classes': classes,
+        'adminnotifications': adminnotifications
+    }
+
+    return render(request, 'coursework_adminexam.html', context)
+
+
 # 作业情况：获取数据
 def coursework_data(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
 
     if request.method == 'POST':
         data_type = request.POST.get('type')
@@ -304,6 +332,9 @@ def coursework_data(request):
         elif data_type == 'exam':
             exam = get_object_or_404(Exam, id=item_id)
             related_classes = exam.classes.all()
+        elif data_type == 'adminexam':
+            adminexam = get_object_or_404(AdminExam, id=item_id)
+            related_classes = teacher.classes_assigned.all()
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)
 
@@ -315,8 +346,12 @@ def coursework_data(request):
             if total_students > 0:
                 if data_type == 'exercise':
                     completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
-                else:
+                elif data_type == 'exam':
                     completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
+                elif data_type == 'adminexam':
+                    completed_count = 0
+                    for student in students:
+                        completed_count += AdminExamQuestion.objects.filter(exam=adminexam, student=student).count()
 
                 completion_rate = (completed_count / total_students) * 100
                 response_data.append({
