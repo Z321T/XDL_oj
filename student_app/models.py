@@ -1,6 +1,6 @@
 from django.db import models
 from teacher_app.models import Class, ExerciseQuestion, ExamQuestion, Exercise, Exam
-from administrator_app.models import AdminExamQuestion
+from administrator_app.models import AdminExam, AdminExamQuestion
 
 
 # Create your models here.
@@ -75,4 +75,25 @@ class ExamQuestionCompletion(models.Model):
     def __str__(self):
         return f"{self.student.name} - {self.exam_question} - 完成: {bool(self.completed_at)}"
 
+
+class AdminExamCompletion(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='adminexam_completions')
+    adminexam = models.ForeignKey(AdminExam, on_delete=models.CASCADE, verbose_name="考试",
+                                  related_name='adminexam_completions')
+    completed_at = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.adminexam.title} - 完成: {bool(self.completed_at)}"
+
+
+class AdminExamQuestionCompletion(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生",
+                                related_name='adminexam_question_completions')
+    adminexam_question = models.ForeignKey(AdminExamQuestion, on_delete=models.CASCADE, verbose_name="考试题",
+                                           related_name='adminexam_question_completions')
+    completed_at = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.adminexam_question} - 完成: {bool(self.completed_at)}"
 

@@ -12,8 +12,9 @@ from administrator_app.models import AdminNotification, ProgrammingExercise, Adm
 from login.views import check_login
 from teacher_app.models import (Teacher, Class, Notification,
                                 Exercise, ExerciseQuestion, Exam, ExamQuestion, ReportScore)
-from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
-                                Score, ExerciseQuestionCompletion, ExamQuestionCompletion)
+from student_app.models import (Student, ExerciseCompletion, ExamCompletion, Score,
+                                ExerciseQuestionCompletion, ExamQuestionCompletion,
+                                AdminExamCompletion, AdminExamQuestionCompletion)
 
 
 # Create your views here.
@@ -349,9 +350,7 @@ def coursework_data(request):
                 elif data_type == 'exam':
                     completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
                 elif data_type == 'adminexam':
-                    completed_count = 0
-                    for student in students:
-                        completed_count += AdminExamQuestion.objects.filter(exam=adminexam, student=student).count()
+                    completed_count = AdminExamCompletion.objects.filter(adminexam=adminexam, student_id__in=student_ids).count()
 
                 completion_rate = (completed_count / total_students) * 100
                 response_data.append({
@@ -415,6 +414,29 @@ def coursework_exam_details(request, class_id):
             return HttpResponseNotFound('所请求的数据不存在')
 
 
+# 作业情况：年级考试详情
+def coursework_adminexam_details(request, class_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    if request.method == 'GET':
+        try:
+            # class_item = Class.objects.get(id=class_id)  # NOTICE!!!
+            adminexams = AdminExam.objects.all().order_by('-published_at')
+
+            context = {
+                'user_id': user_id,
+                'coursework': adminexams,
+                'class_id': class_id,
+                'adminnotifications': adminnotifications
+            }
+            return render(request, 'coursework_adminexam_details.html', context)
+        except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
+            return HttpResponseNotFound('所请求的数据不存在')
+
+
 # 作业情况-详情界面：获取数据
 def coursework_details_data(request):
     user_id = request.session.get('user_id')
@@ -474,6 +496,30 @@ def coursework_details_data(request):
             context = {
                 'exam_data': exam_data,
                 'examquestion_data': examquestion_data
+            }
+            return JsonResponse({'data': context})
+
+        elif data_type == 'adminexam':
+            adminexam = get_object_or_404(AdminExam, id=item_id)
+            adminexam_completed_count = AdminExamCompletion.objects.filter(adminexam=adminexam, student_id__in=student_ids).count()
+            adminexam_completion_rate = (adminexam_completed_count / total_students) * 100 if total_students > 0 else 0
+            adminexam_data = [{
+                'completion_rate': adminexam_completion_rate
+            }]
+
+            questions = AdminExamQuestion.objects.filter(exam=adminexam)
+            adminexamquestion_data = []
+            for question in questions:
+                question_completed_count = AdminExamQuestionCompletion.objects.filter(adminexam_question=question, student_id__in=student_ids).count()
+                question_completion_rate = (question_completed_count / total_students) * 100 if total_students > 0 else 0
+                adminexamquestion_data.append({
+                    'question_title': question.title,
+                    'completion_rate': question_completion_rate
+                })
+
+            context = {
+                'adminexam_data': adminexam_data,
+                'adminexamquestion_data': adminexamquestion_data
             }
             return JsonResponse({'data': context})
 

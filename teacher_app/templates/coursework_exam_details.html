@@ -239,7 +239,7 @@
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel"
                                          aria-labelledby="overview-tab">
                                         <div class="d-flex flex-wrap justify-content-xl-between">
-                                            
+
                                         </div>
                                     </div>
                                     <!--重复提交次数-->
@@ -259,8 +259,15 @@
                                                 <div class="card-body">
                                                      <!-- 添加切换按钮 -->
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button type="button" class="btn btn-secondary exercise-button" data-type="exercise">练习</button>
-                                                        <button type="button" class="btn btn-secondary" data-type="exam">考试</button>
+                                                        <button type="button" class="btn btn-secondary exercise-button"
+                                                                data-type="exercise">学生练习
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-type="exam">班级考试
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary adminexam-button"
+                                                            data-type="adminexam">年级考试
+                                                </button>
                                                     </div>
                                                       <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                                         <div class="row">
@@ -359,16 +366,6 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-{#查重跳转#}
-{#    <script>#}
-{#               // JavaScript#}
-{#        function redirectToOtherPage() {#}
-{#            window.location.href = "/other_page/";#}
-{#        }#}
-{##}
-{#        document.querySelector("mb-1 text-muted").addEventListener("click", redirectToOtherPage);#}
-{#    </script>#}
-
     <script>
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('myChart'));
@@ -438,6 +435,10 @@
              var classId = {{ class_id }};
              window.location.href = "{% url 'teacher_app:coursework_exercise_details' '123' %}".replace('123', classId);
         });
+        $('.btn-group .btn-secondary.adminexam-button').click(function () {
+             var classId = {{ class_id }};
+             window.location.href = "{% url 'teacher_app:coursework_adminexam_details' '123' %}".replace('123', classId);
+        });
 
         $('table tbody').on('click', 'tr', function () {
             var id = $(this).data('id');
@@ -454,8 +455,8 @@
                 },
                 success: function (response) {
                     var data = response.data;
-                    updatePieChart(data.exercise_data || data.exam_data);
-                    updateBarChart(data.exercisequestion_data || data.examquestion_data);
+                    updatePieChart(data.exam_data);
+                    updateBarChart(data.examquestion_data);
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);

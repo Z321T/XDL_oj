@@ -452,7 +452,7 @@
     $(document).ready(function () {
          $('.class-id').on('click', function () {
             var classId = $(this).data('class-id');
-            window.location.href = "{% url 'teacher_app:coursework_exercise_details' '123' %}".replace('123', classId);
+            window.location.href = "{% url 'teacher_app:coursework_adminexam_details' '123' %}".replace('123', classId);
         });
     });
 </script>

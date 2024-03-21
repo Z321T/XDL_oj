@@ -14,7 +14,8 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from administrator_app.models import ProgrammingExercise, AdminExam, AdminExamQuestion
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
-                                ExamCompletion, ExamQuestionCompletion)
+                                ExamCompletion, ExamQuestionCompletion,
+                                AdminExamCompletion, AdminExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
 from CodeBERT_app.views import (analyze_programming_report,
                                 score_report, run_cpplint, analyze_programming_code)
@@ -483,6 +484,25 @@ def mark_exam_question_as_completed(student, exam_question):
         )
 
 
+def mark_adminexam_question_as_completed(student, adminexam_question):
+    AdminExamQuestionCompletion.objects.create(
+        student=student,
+        adminexam_question=adminexam_question,
+        completed_at=timezone.now()
+    )
+    all_questions = adminexam_question.exam.questions.all()
+    completed_questions = AdminExamQuestionCompletion.objects.filter(
+        student=student,
+        adminexam_question__in=all_questions
+    )
+    if all_questions.count() == completed_questions.count():
+        AdminExamCompletion.objects.create(
+            student=student,
+            adminexam=adminexam_question.exam,
+            completed_at=timezone.now()
+        )
+
+
 # 运行C++代码
 def run_cpp_code(request):
     user_id = request.session.get('user_id')
@@ -531,6 +551,7 @@ def run_cpp_code(request):
                             defaults={'score': 10}
                         )
                     else:
+                        mark_adminexam_question_as_completed(student, question)
                         Score.objects.update_or_create(
                             student=student,
                             adminexam_question=question,
