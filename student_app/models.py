@@ -29,7 +29,7 @@ class Score(models.Model):
     score = models.DecimalField(verbose_name="得分", max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return f"{self.student.name} - {self.exercise_question or self.exam_question} - {self.score}"
+        return f"{self.student.name} - {self.exercise_question or self.exam_question or self.adminexam_question} - {self.score}"
 
 
 class ExerciseCompletion(models.Model):
