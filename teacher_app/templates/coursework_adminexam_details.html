@@ -306,11 +306,6 @@
                 <div class="card">
                     <div class="card-body">
                         <p class="card-title">学生成绩详情</p>
-
-{#                                <div class="card-container">#}
-{#                                    <div class="stretch-card">#}
-{#                    <div class="card">#}
-{#                        <div class="card-body">#}
                             <div class="table-responsive"
                                  style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                 <!-- 添加了 style 属性 -->
@@ -336,60 +331,22 @@
                                                         aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">学号
                                                     </th>
-{#                                                    <th class="sorting" tabindex="0"#}
-{#                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"#}
-{#                                                        aria-label="Price: activate to sort column ascending"#}
-{#                                                        style="width: 72.575px;">作答时间#}
-{#                                                    </th>#}
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Price: activate to sort column ascending"
                                                         style="width: 72.575px;">得分
                                                     </th>
-
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-{#                                                {% for exercise in exercises %}#}
-{#                                                    <tr role="row"#}
-{#                                                        class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">#}
-{#                                                        <td class="sorting_1" id="question{{ question.id }}"> {{ exercise.title }}#}
-{#                                                        </td>#}
-{#                                                        <td>{{ exercise.published_at }}</td>#}
-{#                                                        <td>{{ exercise.teacher.name }}</td>#}
-{#                                                        <td>{{ exercise.deadline }}</td>#}
-{#                                                        <td>#}
-{#                                                            {% for class in exercise.classes.all %}#}
-{#                                                                {{ class.name }}{% if not forloop.last %}, {% endif %}#}
-{#                                                            {% endfor %}#}
-{#                                                        </td>#}
-{#                                                        <td>#}
-{#                                                            <button class="button-class delete-exercise btn-default"#}
-{#                                                                    data-exercise-id="{{ exercise.id }}">删除#}
-{#                                                            </button>#}
-{#                                                            <button class="button-class edit-exercise btn-default"#}
-{#                                                                    data-exercise-id="{{ exercise.id }}">编辑#}
-{#                                                            </button>#}
-{#                                                        </td>#}
-{#                                                    </tr>#}
-{#                                                {% empty %}#}
-{#                                                    <tr>#}
-{#                                                        <td colspan="6" style="text-align: center;">没有练习内容</td>#}
-{#                                                    </tr>#}
-{#                                                {% endfor %}#}
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5"></div>
-                                <div class="col-sm-12 col-md-7">
-{#                                    <button onclick="window.location.href='{% url 'teacher_app:exercise_list_default' %}'"#}
-{#                                       class="btn-default"     style="float: right;">发布练习#}
-{#                                    </button>#}
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -401,15 +358,15 @@
                             <!-- partial -->
                         </div>
                         <!-- main-panel ends -->
-                    </div>
+
                     <!-- page-body-wrapper ends -->
-                </div>
+
                 <!-- container-scroller -->
-            </div>
+
                 <!-- partial -->
-            </div>
+
             <!-- main-panel ends -->
-        </div>
+
         <!-- page-body-wrapper ends -->
     <!-- container-scroller -->
 <!-- Modal -->
@@ -452,7 +409,6 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-
     <script>
             // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zhutu'));
@@ -466,7 +422,7 @@
                 type: 'value'
             },
             series: [{
-                data: [0.56, 0.24, 1, 0.76, 0.69, 0.34],
+                data: [0.46, 1, 0.54, 0.26, 0.19, 0.34],
                 type: 'bar'
             }]
         };
@@ -502,6 +458,16 @@
                 success: function (response) {
                     var data = response.data;
                     updateBarChart(data.adminexamquestion_data);
+                    var studentScores = data.student_scores_data;
+                    var tbody = $('table tbody');
+                    tbody.empty(); // 清空表格当前内容
+                    studentScores.forEach(function (student) {
+                        var tr = $('<tr></tr>');
+                        tr.append($('<td></td>').text(student.name));
+                        tr.append($('<td></td>').text(student.userid));
+                        tr.append($('<td></td>').text(student.total_score));
+                        tbody.append(tr);
+                    });
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);

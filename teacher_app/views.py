@@ -507,7 +507,7 @@ def coursework_details_data(request):
 
             # 一次性查询出所有学生的总分数据
             students_scores = Score.objects.filter(
-                exercise_question__exercise=exam,
+                exam_question__exam=exam,
                 student__in=students
             ).values('student').annotate(total_score=Sum('score'))
             # 转换查询结果为字典，通过学生ID索引总分
@@ -521,10 +521,9 @@ def coursework_details_data(request):
                     'total_score': student_total_score
                 })
 
-
-
             context = {
-                'examquestion_data': examquestion_data
+                'examquestion_data': examquestion_data,
+                'student_scores_data': student_scores_data
             }
             return JsonResponse({'data': context})
 
@@ -543,8 +542,25 @@ def coursework_details_data(request):
                     'completion_rate': question_completion_rate
                 })
 
+            # 一次性查询出所有学生的总分数据
+            students_scores = Score.objects.filter(
+                adminexam_question__exam=adminexam,
+                student__in=students
+            ).values('student').annotate(total_score=Sum('score'))
+            # 转换查询结果为字典，通过学生ID索引总分
+            student_scores_dict = {score['student']: score['total_score'] for score in students_scores}
+            # 构造每个学生的得分数据
+            for student in students:
+                student_total_score = student_scores_dict.get(student.id, 0)  # 获取学生总分，默认为0
+                student_scores_data.append({
+                    'name': student.name,
+                    'userid': student.userid,
+                    'total_score': student_total_score
+                })
+
             context = {
-                'adminexamquestion_data': adminexamquestion_data
+                'adminexamquestion_data': adminexamquestion_data,
+                'student_scores_data': student_scores_data
             }
             return JsonResponse({'data': context})
 
