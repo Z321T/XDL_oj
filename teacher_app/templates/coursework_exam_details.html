@@ -247,9 +247,9 @@
                                         <div class="col-md-7 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="card-title">班级完成情况</p>
+                                                    <p class="card-title">题目作答情况</p>
                                                      <!-- 图表的容器 -->
-                                                    <div id="myChart" style="width: 600px;height:400px;"></div>
+                                                     <div id="zhutu" style="width:600px;height:400px;"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -305,10 +305,10 @@
                 <div class=" stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-title">题目作答情况</p>
+                        <p class="card-title">学生成绩详情</p>
 
                                 <div class="card-container">
-                                    <div id="zhutu" style="width:1000px;height:400px;"></div>
+
                                 </div>
                             </div>
 
@@ -366,46 +366,7 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-    <script>
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('myChart'));
-        // 指定图表的配置项和数据
-        var option = {
-            title : {
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['已完成','未完成']
-            },
-            series : [
-                {
-                    name: '完成情况',
-                    type: 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-                    data:[
-                        {value:335, name:'已完成'},
-                        {value:310, name:'未完成'}
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-    </script>
+
     <script>
             // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zhutu'));
@@ -455,7 +416,7 @@
                 },
                 success: function (response) {
                     var data = response.data;
-                    updatePieChart(data.exam_data);
+                    {#updatePieChart(data.exam_data);#}
                     updateBarChart(data.examquestion_data);
                 },
                 error: function (response) {
@@ -465,44 +426,6 @@
         });
     })
 
-    // 更新饼图的函数
-    function updatePieChart(data) {
-        var myChart = echarts.init(document.getElementById('myChart'));
-        var option = {
-            title : {
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['已完成','未完成']
-            },
-            series : [
-                {
-                    name: '完成情况',
-                    type: 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-                    data: [
-                        {value: data[0].completion_rate, name:'已完成'},
-                        {value: 100 - data[0].completion_rate, name:'未完成'}
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        myChart.setOption(option);
-    }
     // 更新柱状图的函数
     function updateBarChart(data) {
         var myChart = echarts.init(document.getElementById('zhutu'));
