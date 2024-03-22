@@ -267,7 +267,7 @@
                                                         </button>
                                                         <button type="button" class="btn btn-secondary"
                                                             data-type="adminexam">年级考试
-                                                </button>
+                                                        </button>
                                                     </div>
                                                       <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                                         <div class="row">
@@ -317,7 +317,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <table class="table dataTable no-footer" role="grid">
+                                            <table id="student-scores-table" class="table dataTable no-footer" role="grid">
                                                 <thead>
                                                 <tr role="row">
                                                     <th class="sorting_asc" tabindex="0"
@@ -339,7 +339,12 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                {% for i in im %}
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="3" style="text-align: center;">选择题目</td>
+                                                    </tr>
+                                                {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -459,7 +464,7 @@
                     var data = response.data;
                     updateBarChart(data.adminexamquestion_data);
                     var studentScores = data.student_scores_data;
-                    var tbody = $('table tbody');
+                    var tbody = $('#student-scores-table tbody');
                     tbody.empty(); // 清空表格当前内容
                     studentScores.forEach(function (student) {
                         var tr = $('<tr></tr>');
