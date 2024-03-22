@@ -438,8 +438,8 @@
              var classId = {{ class_id }};
              window.location.href = "{% url 'teacher_app:coursework_adminexam_details' '123' %}".replace('123', classId);
         });
-
-        $('table tbody').on('click', 'tr', function () {
+{#此处是不是后端需要相应修改，现在可以只更新下面表格#}
+        $('.dataTable tbody').on('click', 'tr', function () {
             var id = $(this).data('id');
             var classId = {{ class_id }};
             var type = $('.btn-group .btn-secondary.active').data('type');
@@ -456,7 +456,7 @@
                     var data = response.data;
                     updateBarChart(data.exercisequestion_data);
                     var studentScores = data.student_scores_data;
-                    var tbody = $('table tbody');
+                    var tbody = $('.dataTable  tbody');
                     tbody.empty(); // 清空表格当前内容
                     studentScores.forEach(function (student) {
                         var tr = $('<tr></tr>');
