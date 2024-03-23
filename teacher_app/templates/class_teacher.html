@@ -388,7 +388,7 @@
                 },
                 success: function (response) {
                     alert(response.message);
-                    window.location.href = "{% url 'teacher_app:class_teacher' %}";
+                    window.location.reload()
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);

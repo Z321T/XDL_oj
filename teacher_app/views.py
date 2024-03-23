@@ -178,7 +178,7 @@ def standard_report(request):
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     try:
-        stand_score = ReportScore.objects.filter(teacher=teacher)
+        stand_score = ReportScore.objects.get(teacher=teacher)
     except ObjectDoesNotExist:
         stand_score = None
 
