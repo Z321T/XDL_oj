@@ -13,7 +13,7 @@ from django.dispatch import receiver
 from CodeBERT_app.models import (ProgrammingCodeFeature, ProgrammingReportFeature,
                                  ReportStandardScore, CodeStandardScore)
 from administrator_app.models import ProgrammingExercise
-from teacher_app.models import ExerciseQuestion, ExamQuestion, ReportScore, Teacher
+from teacher_app.models import ExerciseQuestion, ExamQuestion, ReportScore, Teacher, Class
 
 # 加载 CodeBERT 模型和分词器
 tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
@@ -117,7 +117,7 @@ def compute_cosine_similarity(feature_json1, feature_json2):
 # 报告规范性评分
 def score_report(student, document, programmingexercise_id):
     class_assigned = student.class_assigned
-    teacher = get_object_or_404(Teacher, classes_assigned=class_assigned)
+    teacher = get_object_or_404(Class, id=class_assigned.id).teacher
     report_score = ReportScore.objects.get(teacher=teacher)
 
     total_score = report_score.totalscore
