@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>师生信息管理</title>
+    <title>教师信息管理</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'administrator_app/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'administrator_app/css/vendor.bundle.base.css' %}">
@@ -248,6 +248,11 @@
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                         aria-label="Office: activate to sort column ascending"
+                                                        style="width: 155.6px;">教工号
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
                                                         style="width: 155.6px;">班级
                                                     </th>
                                                     <th class="sorting" tabindex="0"
@@ -261,10 +266,10 @@
                                                 {% for teacher in teachers %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                    <td class="sorting_1" id="teacher{{ teacher.id }}"> {{ teacher.name }}
-                                                    </td>
+                                                    <td class="sorting_1" id="teacher{{ teacher.id }}"> {{ teacher.name }}</td>
+                                                    <td>{{ teacher.userid }}</td>
                                                     <td>
-                                                        {% for class in teacher.classes_assigned.all %}
+                                                        {% for class in teacher.class_set.all %}
                                                             {{ class.name }}
                                                         {% empty %}
                                                             暂无关联班级
