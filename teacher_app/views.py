@@ -178,7 +178,7 @@ def standard_report(request):
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     try:
-        stand_score = ReportScore.objects.filter(teacher=teacher).first()
+        stand_score = ReportScore.objects.filter(teacher=teacher)
     except ObjectDoesNotExist:
         stand_score = None
 
@@ -234,10 +234,14 @@ def scores_details(request, programmingexercise_id):
     for student in students:
         try:
             code_score = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise)
-            report_score = ReportStandardScore.objects.get(student=student, programming_question=programmingexercise)
-            student_scores.append((student, code_score, report_score))
         except CodeStandardScore.DoesNotExist:
-            student_scores.append((student, None, None))
+            code_score = None
+        try:
+            report_score = ReportStandardScore.objects.get(student=student, programming_question=programmingexercise)
+        except ReportStandardScore.DoesNotExist:
+            report_score = None
+        student_scores.append((student, code_score, report_score))
+
     context = {
         'student_scores': student_scores,
         'user_id': user_id,

@@ -277,7 +277,6 @@
                                                             <td class="sorting_1" id="class{{ class.id }}"> {{ class.name }}</td>
                                                             <td>{{ class.students.count }}</td>
                                                             <td>
-{#                                                                需要修改#}
                                                                 <button class="button-class class-scores-details btn-default"
                                                                     data-class-id="{{ class.id }}"
                                                                     data-programmingexercise-id="{{ programmingexercise_id }}">分项得分
@@ -336,18 +335,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for student,similarity, sim_student in student_similarities %}
-{#                                                            <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">#}
-{#                                                                <td class="sorting_1">{{ student.name }}</td>#}
-{#                                                                <td>{{ student.userid }}</td>#}
-{#                                                                {% if similarity != None and sim_student %}#}
-{#                                                                    <td>{{ sim_student.name }}</td>#}
-{#                                                                    <td>{{ sim_student.userid }}</td>#}
-{#                                                                    <td>{{ similarity|floatformat:2 }}</td>#}
-{#                                                                {% else %}#}
-{#                                                                    <td colspan="3" style="text-align: center;">未评定</td>#}
-{#                                                                {% endif %}#}
-{#                                                            </tr>#}
+                                                        {% for i in item %}
                                                         {% empty %}
                                                             <tr>
                                                                 <td colspan="6" style="text-align: center;">选择查看项目</td>
