@@ -90,7 +90,7 @@
     <style>
        input[type="text"]:not(.nav-search .input-group),
         input[type="password"]:not(.nav-search .input-group),
-        input[type="file"]:not(.nav-search .input-group)
+        input[type="file"]:not(.nav-search .input-group),
         input[type="text"]:hover:not(.nav-search .input-group),
         input[type="password"]:hover:not(.nav-search .input-group),
         input[type="file"]:hover:not(.nav-search .input-group){
@@ -98,7 +98,7 @@
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
-        input[type="text"]:not(.nav-search .input-group)hover,
+        input[type="text"]:not(.nav-search .input-group):hover,
         input[type="password"]:not(.nav-search .input-group):hover,
         input[type="file"]:not(.nav-search .input-group):hover{
             border-color: #66afe9; /* 悬停时的边框颜色 */
@@ -315,7 +315,7 @@
                     <input type="file" class="form-control-file" id="txtFileInput" name="txtFile" accept=".txt" required>
                 </div>
                 <button type="submit" class="btn btn-default">提交</button>
-            </form>
+              </form>
                             </div>
                       </div>
                  </div>
@@ -388,5 +388,31 @@
         });
     });
     </script>
+<script>
+$(document).ready(function(){
+    $("form").on('submit', function(event){
+        // Prevent the form from submitting via the browser.
+        event.preventDefault();
+        var form_data = new FormData(this);
+        $.ajax({
+            url: '{% url 'student_app:report_student' programming_exercise.id %}',
+            type: 'POST',
+            data: form_data,
+            processData: false,  // Important!
+            contentType: false,  // Important!
+            success: function(response){
+                //Handle your success action here;
+                console.log('Success:', response);
+                window.location.href = "{% url 'student_app:home_student' %}";
+            },
+            error: function(error_data){
+                console.log('Error:', error_data);
+                var error_message = error_data.responseJSON.message; // extract the error message
+                alert(error_message); // display the error message
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

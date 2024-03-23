@@ -16,7 +16,7 @@ from administrator_app.models import ProgrammingExercise, AdminExam, AdminExamQu
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
                                 ExamCompletion, ExamQuestionCompletion,
                                 AdminExamCompletion, AdminExamQuestionCompletion)
-from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
+from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion, ReportScore
 from CodeBERT_app.views import (analyze_programming_report,
                                 score_report, run_cpplint, analyze_programming_code)
 from login.views import check_login
@@ -60,42 +60,47 @@ def report_student(request, programmingexercise_id):
         return render(request, 'report_student.html', context)
 
     if request.method == 'POST':
-        word_file = request.FILES['wordFile']
+        reportstandards = ReportScore.objects.filter(teacher=student.class_assigned.teacher)
+        if reportstandards:
+            word_file = request.FILES['wordFile']
 
-        if word_file:
-            # 读取文件内容并使用BytesIO创建一个类似文件的对象
-            word_file_bytes = BytesIO(word_file.read())
-            # 使用BytesIO对象创建docx文档对象
-            document = docx.Document(word_file_bytes)
-            full_text = []
-            for paragraph in document.paragraphs:
-                full_text.append(paragraph.text)
-            # 获得纯文本代码，去除了图片
-            report = '\n'.join(full_text)
-            # 分析报告特征
-            analyze_programming_report(student, report, programmingexercise_id)
-            # 报告规范性评分
-            score_report(student, document, programmingexercise_id)
+            if word_file:
+                # 读取文件内容并使用BytesIO创建一个类似文件的对象
+                word_file_bytes = BytesIO(word_file.read())
+                # 使用BytesIO对象创建docx文档对象
+                document = docx.Document(word_file_bytes)
+                full_text = []
+                for paragraph in document.paragraphs:
+                    full_text.append(paragraph.text)
+                # 获得纯文本代码，去除了图片
+                report = '\n'.join(full_text)
+                # 分析报告特征
+                analyze_programming_report(student, report, programmingexercise_id)
+                # 报告规范性评分
+                score_report(student, document, programmingexercise_id)
 
-        # 读取TXT文件内容
-        code_file = request.FILES.get('txtFile')
-        if code_file:
-            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
-            temp_file.write(code_file.read())
-            temp_file.close()
-            # 分析代码特征
-            code = open(temp_file.name, encoding='utf-8').read()
-            analyze_programming_code(student, code, programmingexercise_id)
-            # 使用 run_cpplint 替代 run_cppcheck
-            run_cpplint(student, temp_file.name, programmingexercise_id)
-            # 删除临时文件
-            os.unlink(temp_file.name)
-        # 存储
-        # student.word_file = word_file
-        # student.code_file = code_file
-        # student.save()
+            # 读取TXT文件内容
+            code_file = request.FILES.get('txtFile')
+            if code_file:
+                temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+                temp_file.write(code_file.read())
+                temp_file.close()
+                # 分析代码特征
+                code = open(temp_file.name, encoding='utf-8').read()
+                analyze_programming_code(student, code, programmingexercise_id)
+                # 使用 run_cpplint 替代 run_cppcheck
+                run_cpplint(student, temp_file.name, programmingexercise_id)
+                # 删除临时文件
+                os.unlink(temp_file.name)
+            # 存储
+            # student.word_file = word_file
+            # student.code_file = code_file
+            # student.save()
 
-        return redirect('student_app:home_student')
+            return redirect('student_app:home_student')
+
+        else:
+            return JsonResponse({'status': 'error', 'message': '教师未设置报告规范性评分标准'}, status=400)
 
 
 # 我的练习

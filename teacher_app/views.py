@@ -259,7 +259,7 @@ def coursework_exercise(request):
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     teacher = Teacher.objects.get(userid=user_id)
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     context = {
         'user_id': user_id,
@@ -281,7 +281,7 @@ def coursework_exam(request):
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     context = {
         'user_id': user_id,
@@ -303,7 +303,7 @@ def coursework_adminexam(request):
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exams = AdminExam.objects.all().order_by('-published_at')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     context = {
         'user_id': user_id,
@@ -336,7 +336,7 @@ def coursework_data(request):
             related_classes = exam.classes.all()
         elif data_type == 'adminexam':
             adminexam = get_object_or_404(AdminExam, id=item_id)
-            related_classes = teacher.classes_assigned.all()
+            related_classes = Class.objects.filter(teacher=teacher)
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)
 
@@ -595,7 +595,7 @@ def exercise_list_default(request):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     exercise = Exercise.objects.create(
         title="默认标题",
@@ -614,7 +614,7 @@ def exercise_list(request, exercise_id):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
     exercise = get_object_or_404(Exercise, id=exercise_id)
 
     if request.method == 'POST':
@@ -716,7 +716,7 @@ def exam_list_default(request):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     exam = Exam.objects.create(
         title="默认标题",
@@ -735,7 +735,7 @@ def exam_list(request, exam_id):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
     exam = get_object_or_404(Exam, id=exam_id)
 
     if request.method == 'POST':
@@ -838,7 +838,7 @@ def notice_teacher(request):
 
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
     notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
 
     context = {
@@ -942,7 +942,7 @@ def create_class(request):
         if class_name and initial_password and file:
             teacher = Teacher.objects.get(userid=request.session.get('user_id'))
             new_class = Class.objects.create(name=class_name, teacher=teacher)
-            teacher.classes_assigned.add(new_class)
+            # teacher.classes_assigned.add(new_class)
 
             data = pd.read_excel(file)
             for index, row in data.iterrows():
