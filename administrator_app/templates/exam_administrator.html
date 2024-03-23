@@ -328,7 +328,7 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    window.location.href = "{% url 'administrator_app:exam_administrator' %}";
+                    window.location.reload()
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);

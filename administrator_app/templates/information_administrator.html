@@ -349,7 +349,7 @@
                 },
                 success: function (response) {
                     alert(response.message);
-                    window.location.href = "{% url 'administrator_app:information_administrator' %}";
+                    window.location.reload()
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
