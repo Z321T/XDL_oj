@@ -96,8 +96,8 @@ def report_student(request, programmingexercise_id):
             # student.word_file = word_file
             # student.code_file = code_file
             # student.save()
-
-            return redirect('student_app:home_student')
+            # return redirect('student_app:home_student')
+            return JsonResponse({'status': 'success', 'message': '提交成功'})
 
         else:
             return JsonResponse({'status': 'error', 'message': '教师未设置报告规范性评分标准'}, status=400)
