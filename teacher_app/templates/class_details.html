@@ -417,6 +417,7 @@
                 },
                 success: function (response) {
                     alert(response.message);
+                    window.location.reload();
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);

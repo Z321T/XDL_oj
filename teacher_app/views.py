@@ -970,12 +970,9 @@ def delete_class(request):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
         if class_id:
-            class_to_delete = Class.objects.filter(id=class_id).first()
-            if class_to_delete:
-                for teacher in class_to_delete.teacher_set.all():
-                    teacher.classes_assigned.remove(class_to_delete)
-                class_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '班级删除成功'}, status=200)
+            class_to_delete = Class.objects.filter(id=class_id)
+            class_to_delete.delete()
+            return JsonResponse({'status': 'success', 'message': '班级删除成功'}, status=200)
         return JsonResponse({'status': 'error', 'message': '班级未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
