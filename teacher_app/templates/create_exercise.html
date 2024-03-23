@@ -18,7 +18,7 @@
         {#    box-sizing: border-box;#}
         {#    width: 80%; /* 增加宽度 */#}
         {#    max-width: 1000px; /* 根据需要调整最大宽度 */#}
-        {#}#}
+
 
         .newproblem-container {
             display: flex;
@@ -64,8 +64,7 @@
             width:500px;
             height: 500px !important; /* 或者根据你的需求设置为其他值 */
         }
-        .container-flex
-        {
+        .container-flex {
             display: flex;
             justify-content: space-between
         }
@@ -74,30 +73,30 @@
 <body>
 <div class="container mt-5">
     <div class="newproblem-container bg-light p-4 border rounded">
-        <div method="post" action="{% url 'teacher_app:create_exercise' exercise.id %}">
+        <form method="post" action="{% url 'teacher_app:create_exercise' exercise.id %}">
             {% csrf_token %}
             <div class="container-flex">
-                       <div>
-                        <input type="text" class="form-control" name="title" placeholder="编辑标题">
-                        <hr>
-                        <textarea class="form-control mb-3 custom-textarea" name="content" placeholder="编辑题目内容..."></textarea>
-                        <div class="input-container mb-3">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="memory-addon">内存限制</span>
-                                </div>
-                                <input type="text" class="form-control" name="memory_limit" placeholder="例如，256MB"
-                                       aria-label="MemoryLimit" aria-describedby="memory-addon">
+               <div>
+                    <input type="text" class="form-control" name="title" placeholder="编辑标题">
+                    <hr>
+                    <textarea class="form-control mb-3 custom-textarea" name="content" placeholder="编辑题目内容..."></textarea>
+                    <div class="input-container mb-3">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="memory-addon">内存限制</span>
                             </div>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="time-addon">时间限制</span>
-                                </div>
-                                <input type="text" class="form-control" name="time_limit" placeholder="例如，1s"
-                                       aria-label="TimeLimit" aria-describedby="time-addon">
-                            </div>
+                            <input type="text" class="form-control" name="memory_limit" placeholder="例如，256MB"
+                                   aria-label="MemoryLimit" aria-describedby="memory-addon">
                         </div>
-            </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="time-addon">时间限制</span>
+                            </div>
+                            <input type="text" class="form-control" name="time_limit" placeholder="例如，1s"
+                                   aria-label="TimeLimit" aria-describedby="time-addon">
+                        </div>
+                    </div>
+               </div>
                 <div>
                     <textarea class="form-control mb-3 custom-textarea" style="margin-top: 73px" name="answer" placeholder="编辑答案..."></textarea>
                     <div class="button-container text-center">
@@ -105,9 +104,8 @@
                     </div>
                 </div>
             </div>
-        </div>
         </form>
-
+    </div>
 </div>
 <script>
   document.querySelector('form[method="post"]').onsubmit = function(event) {
