@@ -89,7 +89,7 @@ def report_student(request, programmingexercise_id):
                 code = open(temp_file.name, encoding='utf-8').read()
                 analyze_programming_code(student, code, programmingexercise_id)
                 # 使用 run_cpplint 替代 run_cppcheck
-                run_cpplint(student, temp_file.name, programmingexercise_id)
+                # run_cpplint(student, temp_file.name, programmingexercise_id)
                 # 删除临时文件
                 os.unlink(temp_file.name)
             # 存储
