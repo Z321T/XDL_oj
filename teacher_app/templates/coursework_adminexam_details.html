@@ -247,7 +247,7 @@
                                         <div class="col-md-7 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="card-title">题目作答情况</p>
+                                                    <p class="card-title">题目完成情况</p>
                                                      <!-- 图表的容器 -->
                                                     <div id="zhutu" style="width:600px;height:400px;"></div>
                                                 </div>
@@ -419,14 +419,16 @@
         var myChart = echarts.init(document.getElementById('zhutu'));
         // 指定图表的配置项和数据
         var option = {
+            tooltip: {},
+            legend: {
+                data: ['完成情况']
+            },
             xAxis: {
-                type: 'category',
                 data: ['第一题', '第二题', '第三题', '第四题', '第五题', '第六题']
             },
-            yAxis: {
-                type: 'value'
-            },
+            yAxis: {},
             series: [{
+                name: '完成情况',
                 data: [0.46, 1, 0.54, 0.26, 0.19, 0.34],
                 type: 'bar'
             }]
