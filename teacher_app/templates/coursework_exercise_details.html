@@ -491,13 +491,21 @@
                 })
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                min: 0,
+                max: 1,
+                axisLabel: {
+                    formatter: function(value) {
+                        return (value * 100) + "%";
+                    }
+                }
             },
             series: [{
                 data: data.map(function (item) {
                     return item.completion_rate;
                 }),
-                type: 'bar'
+                type: 'bar',
+                barWidth: '55'
             }]
         };
         myChart.setOption(option);

@@ -4,8 +4,8 @@ import subprocess
 from sklearn.decomposition import PCA
 from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
-from sklearn.metrics.pairwise import cosine_similarity
 from torch.nn.functional import cosine_similarity
+# from cpplint import liplnt
 # cpplint
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -104,12 +104,21 @@ def compute_cosine_similarity(feature_json1, feature_json2):
     feature1 = torch.tensor(json.loads(feature_json1)).float()
     feature2 = torch.tensor(json.loads(feature_json2)).float()
 
-    # 将特征转换为NumPy数组，以适应sklearn的cosine_similarity函数
-    feature1_numpy = feature1.numpy()
-    feature2_numpy = feature2.numpy()
+    # 填充较小的张量以匹配较大的张量的维度
+    if feature1.numel() < feature2.numel():
+        # 在第二个维度填充零
+        padding = feature2.numel() - feature1.numel()
+        feature1 = torch.cat([feature1, torch.zeros(padding)], dim=0)
+    elif feature1.numel() > feature2.numel():
+        padding = feature1.numel() - feature2.numel()
+        feature2 = torch.cat([feature2, torch.zeros(padding)], dim=0)
 
-    # 计算余弦相似度
-    similarity_score = cosine_similarity([feature1_numpy], [feature2_numpy])[0][0]
+    feature1 = feature1.view(1, -1)
+    feature2 = feature2.view(1, -1)
+
+    similarity_tensor = cosine_similarity(feature1, feature2)
+
+    similarity_score = similarity_tensor.item()
 
     return similarity_score
 
@@ -263,26 +272,26 @@ def score_report(student, document, programmingexercise_id):
  #   return error_count
 
 import subprocess
-
-
-def count_cpplint_errors(file_paths):
-    """
-    计算指定文件列表中cpplint的错误数量。
-    :param file_paths: 文件路径列表。
-    :return: cpplint错误数量。
-    """
-    cpplint_command = "cpplint"  # 假设cpplint在系统PATH中
-    cpplint_errors_count = 0
-
-    for file_path in file_paths:
-        try:
-            # 使用subprocess运行cpplint命令
-            cpplint_output = subprocess.check_output([cpplint_command, file_path])
-        except subprocess.CalledProcessError as e:
-            # cpplint返回非零退出状态，表示发现错误
-            cpplint_errors_count += e.output.count(b'\n')
-        else:
-            # 没有错误
-            continue
-
-    return cpplint_errors_count
+#
+#
+# def count_cpplint_errors(file_paths):
+#     """
+#     计算指定文件列表中cpplint的错误数量。
+#     :param file_paths: 文件路径列表。
+#     :return: cpplint错误数量。
+#     """
+#     cpplint_command = "cpplint"  # 假设cpplint在系统PATH中
+#     cpplint_errors_count = 0
+#
+#     for file_path in file_paths:
+#         try:
+#             # 使用subprocess运行cpplint命令
+#             cpplint_output = subprocess.check_output([cpplint_command, file_path])
+#         except subprocess.CalledProcessError as e:
+#             # cpplint返回非零退出状态，表示发现错误
+#             cpplint_errors_count += e.output.count(b'\n')
+#         else:
+#             # 没有错误
+#             continue
+#
+#     return cpplint_errors_count
