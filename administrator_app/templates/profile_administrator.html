@@ -69,11 +69,11 @@
     }
 
     .centered-buttons {
-    display: flex; /* 使用Flexbox布局 */
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中，如果需要 */
-    gap: 10px; /* 按钮之间的距离，根据需要调整 */
-}
+        display: flex; /* 使用Flexbox布局 */
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中，如果需要 */
+        gap: 10px; /* 按钮之间的距离，根据需要调整 */
+    }
     </style>
     <script>
         function redirectToHome() {
@@ -104,7 +104,7 @@
             window.location.href = "{% url 'administrator_app:exam_administrator' %}"
         }
     </script>
-     <style>
+    <style>
         .profile-card {
             background-color: #fff;
             margin: 0px auto;
@@ -158,9 +158,9 @@
         }
 
 
-             .profile-card form p {
-    margin-bottom: 4px; /* 减少底部间距，您可以调整此值以得到期望的效果 */
-}
+        .profile-card form p {
+            margin-bottom: 4px; /* 减少底部间距，您可以调整此值以得到期望的效果 */
+        }
 
     </style>
 </head>
@@ -175,8 +175,8 @@
                 </button>
             </div>
         </div>
-         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-              <ul class="navbar-nav mr-lg-4 w-100">
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <ul class="navbar-nav mr-lg-4 w-100">
                 <li class="nav-item nav-search d-none d-lg-block w-100">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -189,7 +189,7 @@
                     </div>
                 </li>
             </ul>
-              <ul class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav navbar-nav-right">
 
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
@@ -203,12 +203,12 @@
                         </a>
                         <a class="dropdown-item" href="{% url 'login:log_out' %}">
                             <i class="mdi mdi-logout text-primary"></i>
-                            退出登录
+                            退出
                         </a>
                     </div>
                 </li>
             </ul>
-         </div>
+        </div>
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
@@ -268,9 +268,9 @@
             </ul>
         </nav>
         <!-- partial -->
-         <div class="main-panel">
+        <div class="main-panel">
             <div class="content-wrapper">
-                 <div class="row d-flex" id="proBanner">
+                <div class="row d-flex" id="proBanner">
                     <div class="col-md-12 grid-margin">
                         <div class="card bg-gradient-primary border-0">
                             <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
@@ -302,13 +302,19 @@
                             <input type="email" name="email" id="email" value="{{ administrator.email }}" readonly/>
                         </div>
                         <div class="form-row centered-buttons">
-                            <button type="button" id="edit-info" class="btn-default" onclick="window.location.href='{% url 'administrator_app:profile_administrator_edit' %}';">修改信息</button>
-                            <button type="button" id="edit-passsword" class="btn-default" onclick="window.location.href='{% url 'administrator_app:profile_administrator_password' %}';">修改密码</button>
+                            <button type="button" id="edit-info" class="btn-default"
+                                    onclick="window.location.href='{% url 'administrator_app:profile_administrator_edit' %}';">
+                                修改信息
+                            </button>
+                            <button type="button" id="edit-passsword" class="btn-default"
+                                    onclick="window.location.href='{% url 'administrator_app:profile_administrator_password' %}';">
+                                修改密码
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
-         </div>
+        </div>
 
 
         <!-- partial -->

@@ -369,6 +369,7 @@
                                                                 {% if similarity != None and sim_student %}
                                                                     <td>{{ sim_student.name }}</td>
                                                                     <td>{{ sim_student.userid }}</td>
+                                                                    <td>{{ sim_student.class.name }}</td>
                                                                     <td>{{ similarity|floatformat:2 }}</td>
                                                                 {% else %}
                                                                     <td colspan="4" style="text-align: center;">未评定</td>

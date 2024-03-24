@@ -100,7 +100,7 @@
 <body>
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex justify-content-center">
             <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -108,8 +108,8 @@
                 </button>
             </div>
         </div>
-         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-              <ul class="navbar-nav mr-lg-4 w-100">
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <ul class="navbar-nav mr-lg-4 w-100">
                 <li class="nav-item nav-search d-none d-lg-block w-100">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -122,7 +122,7 @@
                     </div>
                 </li>
             </ul>
-              <ul class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav navbar-nav-right">
 
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
@@ -136,12 +136,12 @@
                         </a>
                         <a class="dropdown-item" href="{% url 'login:log_out' %}">
                             <i class="mdi mdi-logout text-primary"></i>
-                            退出登录
+                            退出
                         </a>
                     </div>
                 </li>
             </ul>
-         </div>
+        </div>
     </nav>
 
     <!-- partial -->
@@ -254,7 +254,8 @@
                                                 {% for exam in exams %}
                                                     <tr role="row"
                                                         class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1" id="question{{ question.id }}"> {{ exam.title }}
+                                                        <td class="sorting_1"
+                                                            id="question{{ question.id }}"> {{ exam.title }}
                                                         </td>
                                                         <td>{{ exam.published_at }}</td>
                                                         <td>{{ exam.teacher.name }}</td>
@@ -283,7 +284,7 @@
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
                                     <button onclick="window.location.href='{% url 'administrator_app:admin_examlist_default' %}'"
-                                         class="btn-default"   style="float: right;">发布考试
+                                            class="btn-default" style="float: right;">发布考试
                                     </button>
                                 </div>
                             </div>
@@ -291,9 +292,9 @@
                     </div>
                 </div>
             </div>
-            </div>
         </div>
     </div>
+</div>
 
 <!-- container-scroller -->
 
