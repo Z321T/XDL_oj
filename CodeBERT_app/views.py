@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA
 from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
-
+from cpplint import liplnt
 # cpplint
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -244,15 +244,59 @@ def run_cpplint(student, file_path, programmingexercise_id):
     # instance.save()
 
 
-def code_style_score(cpplint_output):
-    total_errors = 0
-    for line in cpplint_output.decode('utf-8').split('\n'):
-        if 'Total errors found' in line:
-            total_errors = int(line.split()[-1])
-            break
-    score = max(100 - total_errors, 0)
-    return score
+#def code_style_score(cpplint_output):
+#    total_errors = 0
+#   for line in cpplint_output.decode('utf-8').split('\n'):
+#        if 'Total errors found' in line:
+#           total_errors = int(line.split()[-1])
+#            break
+#    score = max(100 - total_errors, 0)
+#    return score
 
 # 注意：确保你已经为你的CodeStandardScore模型创建了file_path 和 programming_question_id 字段。
 
 
+#def count_style_score(file_path):
+ #   cpplint_output = subprocess.check_output(['cpplint', file_path])
+  #  error_lines = cpplint_output.decode('utf-8').split('\n')
+ #   error_count = len([line for line in error_lines if line.startswith('Total errors found:')])
+ #   return error_count
+import subprocess
+import os
+
+# 指定cpplint工具和cpplint.py的路径
+CPPLINT_PATH = 'E:\\GithubDesktop\\CPPLINTTTT\\cpplint\\cpplint.py'  # 根据实际路径修改
+
+# 指定需要检查的根目录
+ROOT_DIR = 'E:\\pythonProject2'  # 根据实际路径修改
+
+
+# 递归搜索所有的.cpp和.h文件
+def find_source_files(directory):
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.cpp') or file.endswith('.h'):
+                yield os.path.join(root, file)
+
+
+# 运行cpplint并计算错误行数
+def count_cpplint_errors(cpplint_path, root_dir):
+    total_errors = 0
+    for file in find_source_files(root_dir):
+        try:
+            # 运行cpplint命令
+            result = subprocess.run([
+                'python', cpplint_path, '--counting=toplevel', file],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+                text=True)
+
+            # 解析cpplint的输出
+            for line in result.stdout.splitlines():
+                if line.startswith('total: '):
+                    total_errors += int(line.split()[1])
+        except subprocess.CalledProcessError as e:
+            # 处理cpplint运行错误
+            print(f'Error running cpplint on {file}: {e.stderr.strip()}')
+    return total_errors
