@@ -18,7 +18,7 @@ from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQues
                                 AdminExamCompletion, AdminExamQuestionCompletion)
 from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion, ReportScore
 from CodeBERT_app.views import (analyze_programming_report,
-                                score_report, run_cpplint, analyze_programming_code)
+                                score_report, analyze_programming_code)
 from login.views import check_login
 
 
