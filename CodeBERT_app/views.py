@@ -104,6 +104,15 @@ def compute_cosine_similarity(feature_json1, feature_json2):
     feature1 = torch.tensor(json.loads(feature_json1)).float()
     feature2 = torch.tensor(json.loads(feature_json2)).float()
 
+    # 填充较小的张量以匹配较大的张量的维度
+    if feature1.numel() < feature2.numel():
+        # 在第二个维度填充零
+        padding = feature2.numel() - feature1.numel()
+        feature1 = torch.cat([feature1, torch.zeros(padding)], dim=0)
+    elif feature1.numel() > feature2.numel():
+        padding = feature1.numel() - feature2.numel()
+        feature2 = torch.cat([feature2, torch.zeros(padding)], dim=0)
+
     feature1 = feature1.view(1, -1)
     feature2 = feature2.view(1, -1)
 
