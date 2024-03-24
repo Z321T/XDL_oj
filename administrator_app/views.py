@@ -267,6 +267,7 @@ def adminexam_edit(request, exam_id):
         exam = AdminExam.objects.get(id=exam_id)
         context = {
             'exam': exam,
+            'user_id': user_id,
         }
         return render(request, 'adminexam_edit.html', context)
 
