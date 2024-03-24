@@ -237,7 +237,7 @@ def run_cpplint(student, file_path, programmingexercise_id):
         student=student,
         programming_question_id=programmingexercise_id,
         defaults={'standard_score': score}
-    )
+
 
     # # 更新 instance 的 style_score 而不是创建新的实例
     # instance.style_score = score
@@ -261,42 +261,28 @@ def run_cpplint(student, file_path, programmingexercise_id):
   #  error_lines = cpplint_output.decode('utf-8').split('\n')
  #   error_count = len([line for line in error_lines if line.startswith('Total errors found:')])
  #   return error_count
+
 import subprocess
-import os
-
-# 指定cpplint工具和cpplint.py的路径
-CPPLINT_PATH = 'E:\\GithubDesktop\\CPPLINTTTT\\cpplint\\cpplint.py'  # 根据实际路径修改
-
-# 指定需要检查的根目录
-ROOT_DIR = 'E:\\pythonProject2'  # 根据实际路径修改
 
 
-# 递归搜索所有的.cpp和.h文件
-def find_source_files(directory):
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith('.cpp') or file.endswith('.h'):
-                yield os.path.join(root, file)
+def count_cpplint_errors(file_paths):
+    """
+    计算指定文件列表中cpplint的错误数量。
+    :param file_paths: 文件路径列表。
+    :return: cpplint错误数量。
+    """
+    cpplint_command = "cpplint"  # 假设cpplint在系统PATH中
+    cpplint_errors_count = 0
 
-
-# 运行cpplint并计算错误行数
-def count_cpplint_errors(cpplint_path, root_dir):
-    total_errors = 0
-    for file in find_source_files(root_dir):
+    for file_path in file_paths:
         try:
-            # 运行cpplint命令
-            result = subprocess.run([
-                'python', cpplint_path, '--counting=toplevel', file],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=True,
-                text=True)
-
-            # 解析cpplint的输出
-            for line in result.stdout.splitlines():
-                if line.startswith('total: '):
-                    total_errors += int(line.split()[1])
+            # 使用subprocess运行cpplint命令
+            cpplint_output = subprocess.check_output([cpplint_command, file_path])
         except subprocess.CalledProcessError as e:
-            # 处理cpplint运行错误
-            print(f'Error running cpplint on {file}: {e.stderr.strip()}')
-    return total_errors
+            # cpplint返回非零退出状态，表示发现错误
+            cpplint_errors_count += e.output.count(b'\n')
+        else:
+            # 没有错误
+            continue
+
+    return cpplint_errors_count
