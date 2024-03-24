@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA
 from django.shortcuts import get_object_or_404
 from transformers import AutoTokenizer, AutoModel
 from torch.nn.functional import cosine_similarity
-
+from cpplint import liplnt
 # cpplint
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -246,22 +246,52 @@ def run_cpplint(student, file_path, programmingexercise_id):
         student=student,
         programming_question_id=programmingexercise_id,
         defaults={'standard_score': score}
-    )
+
 
     # # 更新 instance 的 style_score 而不是创建新的实例
     # instance.style_score = score
     # instance.save()
 
 
-def code_style_score(cpplint_output):
-    total_errors = 0
-    for line in cpplint_output.decode('utf-8').split('\n'):
-        if 'Total errors found' in line:
-            total_errors = int(line.split()[-1])
-            break
-    score = max(100 - total_errors, 0)
-    return score
+#def code_style_score(cpplint_output):
+#    total_errors = 0
+#   for line in cpplint_output.decode('utf-8').split('\n'):
+#        if 'Total errors found' in line:
+#           total_errors = int(line.split()[-1])
+#            break
+#    score = max(100 - total_errors, 0)
+#    return score
 
 # 注意：确保你已经为你的CodeStandardScore模型创建了file_path 和 programming_question_id 字段。
 
 
+#def count_style_score(file_path):
+ #   cpplint_output = subprocess.check_output(['cpplint', file_path])
+  #  error_lines = cpplint_output.decode('utf-8').split('\n')
+ #   error_count = len([line for line in error_lines if line.startswith('Total errors found:')])
+ #   return error_count
+
+import subprocess
+
+
+def count_cpplint_errors(file_paths):
+    """
+    计算指定文件列表中cpplint的错误数量。
+    :param file_paths: 文件路径列表。
+    :return: cpplint错误数量。
+    """
+    cpplint_command = "cpplint"  # 假设cpplint在系统PATH中
+    cpplint_errors_count = 0
+
+    for file_path in file_paths:
+        try:
+            # 使用subprocess运行cpplint命令
+            cpplint_output = subprocess.check_output([cpplint_command, file_path])
+        except subprocess.CalledProcessError as e:
+            # cpplint返回非零退出状态，表示发现错误
+            cpplint_errors_count += e.output.count(b'\n')
+        else:
+            # 没有错误
+            continue
+
+    return cpplint_errors_count
