@@ -415,7 +415,7 @@
     $(document).ready(function () {
         $('.doing-exam').on('click', function () {
             var examId = $(this).data('exam-id');
-            window.location.href = "{% url 'student_app:exam_list' '123' %}".replace('123', examId);
+            window.location.href = "{% url 'student_app:teacherexam_list' '123' %}".replace('123', examId);
         });
     });
 </script>

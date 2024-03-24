@@ -258,11 +258,17 @@
                                     <div class="col-md-5 grid-margin stretch-card">
                                         <div class="card">
                                             <div class="card-body">
-
                                                 <!-- 添加切换按钮 -->
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary exercise-button" data-type="exercise">练习</button>
-                                                <button type="button" class="btn btn-secondary" data-type="exam">考试</button>
+                                                <button type="button" class="btn btn-secondary exercise-button"
+                                                        data-type="exercise">学生练习
+                                                </button>
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-type="exam">班级考试
+                                                </button>
+                                                <button type="button" class="btn btn-secondary adminexam-button"
+                                                            data-type="adminexam">年级考试
+                                                </button>
                                             </div>
                                                  <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                                    <div class="row">
@@ -379,7 +385,7 @@
         series: [{
             name: '完成情况',
             type: 'bar',
-            data: [0.4, 0.2, 1, 0.3, 0.5, 0.3]
+            data: [1, 0.4, 0.2, 0.3, 0.7, 0.1]
         }]
     };
     myChart.setOption(option);
@@ -390,6 +396,9 @@
 
         $('.btn-group .btn-secondary.exercise-button').click(function () {
            window.location.href = "{% url 'teacher_app:coursework_exercise' %}"
+        });
+        $('.btn-group .btn-secondary.adminexam-button').click(function () {
+            window.location.href = "{% url 'teacher_app:coursework_adminexam' %}"
         });
 
         $('table tbody').on('click', 'tr', function () {

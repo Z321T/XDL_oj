@@ -1,18 +1,18 @@
 import pandas as pd
 from datetime import datetime, timedelta
 
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from teacher_app.models import Teacher, Class
-from student_app.models import Student
+from student_app.models import Student, Score
 from CodeBERT_app.models import ReportStandardScore
 from login.views import check_login
 
 
-# 管理员主页
+# 管理员主页-程序设计
 def home_administrator(request):
     # 获取用户id，若没有登录则返回登录页面
     user_id = request.session.get('user_id')
@@ -28,6 +28,23 @@ def home_administrator(request):
     return render(request, 'home_administrator.html', context)
 
 
+# 管理员主页-考试
+def home_administrator_exam(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+    
+    AdminExam.objects.filter(title="默认标题").delete()
+    exams = AdminExam.objects.all().order_by('-published_at')
+
+    context = {
+        'user_id': user_id,
+        'coursework': exams,
+    }
+    return render(request, 'home_administrator_exam.html', context)
+
+
+# 程序设计题详情
 def programmingexercise_details_data(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
@@ -51,6 +68,41 @@ def programmingexercise_details_data(request):
 
         except ProgrammingExercise.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': '未找到对应的练习题'}, status=404)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
+
+
+# 考试题详情
+def exam_details_data(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    if request.method == 'POST':
+        exam_id = request.POST.get('id')
+        try:
+            exam = AdminExam.objects.get(id=exam_id)
+            questions = exam.questions.all()
+            question_avg_scores = []
+
+            for question in questions:
+                # 获取当前题目所有分数对象
+                scores = Score.objects.filter(adminexam_question=question)
+                total_score = sum(score.score for score in scores)
+                total_students = Student.objects.count()
+                # 计算平均分，若学生总数为0，则平均分为0
+                avg_score = (total_score / total_students) if total_students else 0
+
+                question_avg_scores.append({
+                    'question_title': question.title,
+                    'average_score': avg_score
+                })
+
+            return JsonResponse({'data': question_avg_scores})
+
+        except AdminExam.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': '未找到对应的考试'}, status=404)
 
     else:
         return JsonResponse({'status': 'error', 'message': '无效的请求方法'}, status=400)
@@ -143,7 +195,7 @@ def exam_administrator(request):
 
 
 # 考试-考试列表
-def adminexam_list_default(request):
+def admin_examlist_default(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -156,11 +208,11 @@ def adminexam_list_default(request):
         teacher=admin
     )
 
-    return render(request, 'adminexam_list.html',
+    return render(request, 'admin_examlist.html',
                   {'exam': exam})
 
 
-def adminexam_list(request, exam_id):
+def admin_examlist(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -179,7 +231,7 @@ def adminexam_list(request, exam_id):
             exam.save()
             exam.classes.set(recipient_class)
             return redirect('administrator_app:exam_administrator')
-    return render(request, 'adminexam_list.html',
+    return render(request, 'admin_examlist.html',
                   {'exam': exam})
 
 
@@ -201,7 +253,7 @@ def create_adminexam(request, exam_id):
                                      memory_limit=memory_limit, time_limit=time_limit, answer=answer)
         question.save()
 
-        return redirect('administrator_app:adminexam_list', exam_id=exam.id)
+        return redirect('administrator_app:admin_examlist', exam_id=exam.id)
     return render(request, 'create_adminexam.html', {'exam': exam})
 
 
@@ -215,6 +267,7 @@ def adminexam_edit(request, exam_id):
         exam = AdminExam.objects.get(id=exam_id)
         context = {
             'exam': exam,
+            'user_id': user_id,
         }
         return render(request, 'adminexam_edit.html', context)
 
@@ -433,6 +486,36 @@ def profile_administrator_edit(request):
         return redirect('administrator_app:profile_administrator')
 
     return render(request, 'profile_administrator_edit.html', context)
+
+
+# 管理员个人中心-修改密码
+def profile_adminadministrator_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    administrator = Administrator.objects.get(userid=user_id)
+
+    context = {
+        'user_id': user_id,
+    }
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if check_password(old_password, administrator.password):
+            if new_password == confirm_password:
+                administrator.password = make_password(new_password)
+                administrator.save()
+                return JsonResponse({'status': 'success', 'message': '密码修改成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '两次输入的密码不一致'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': '旧密码错误'}, status=400)
+
+    return render(request, 'password_admin_edit.html', context)
 
 
 # about report_administrator.html

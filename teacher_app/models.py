@@ -3,7 +3,8 @@ from django.db import models
 
 # Create your models here.
 class Class(models.Model):
-    name = models.CharField(verbose_name="班级名称", max_length=255)
+    name = models.CharField(verbose_name="班级名称", max_length=30)
+    teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE, verbose_name="教师", null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -29,7 +30,7 @@ class Teacher(models.Model):
     email = models.EmailField(verbose_name="邮箱", unique=True, null=True, blank=True)
     phone_num = models.CharField(verbose_name="电话号码", max_length=12, null=True)
     last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
-    classes_assigned = models.ManyToManyField(Class, verbose_name="所教班级", blank=True)
+    # classes_assigned = models.ManyToManyField(Class, verbose_name="所教班级", blank=True)
 
 
 class Exercise(models.Model):

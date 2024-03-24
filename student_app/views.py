@@ -4,18 +4,20 @@ import docx
 import requests
 import subprocess
 import tempfile
+from io import BytesIO
 
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from io import BytesIO
+from django.contrib.auth.hashers import make_password, check_password
 
 from administrator_app.models import ProgrammingExercise, AdminExam, AdminExamQuestion
 from student_app.models import (Student, Score, ExerciseCompletion, ExerciseQuestionCompletion,
-                                ExamCompletion, ExamQuestionCompletion)
-from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion
-from CodeBERT_app.views import (analyze_code, analyze_programming_report,
+                                ExamCompletion, ExamQuestionCompletion,
+                                AdminExamCompletion, AdminExamQuestionCompletion)
+from teacher_app.models import Notification, Exercise, Exam, ExerciseQuestion, ExamQuestion, ReportScore
+from CodeBERT_app.views import (analyze_programming_report,
                                 score_report, run_cpplint, analyze_programming_code)
 from login.views import check_login
 
@@ -58,42 +60,47 @@ def report_student(request, programmingexercise_id):
         return render(request, 'report_student.html', context)
 
     if request.method == 'POST':
-        word_file = request.FILES['wordFile']
+        reportstandards = ReportScore.objects.filter(teacher=student.class_assigned.teacher)
+        if reportstandards:
+            word_file = request.FILES['wordFile']
 
-        if word_file:
-            # 读取文件内容并使用BytesIO创建一个类似文件的对象
-            word_file_bytes = BytesIO(word_file.read())
-            # 使用BytesIO对象创建docx文档对象
-            document = docx.Document(word_file_bytes)
-            full_text = []
-            for paragraph in document.paragraphs:
-                full_text.append(paragraph.text)
-            # 获得纯文本代码，去除了图片
-            report = '\n'.join(full_text)
-            # 分析报告特征
-            analyze_programming_report(student, report, programmingexercise_id)
-            # 报告规范性评分
-            score_report(student, document, programmingexercise_id)
+            if word_file:
+                # 读取文件内容并使用BytesIO创建一个类似文件的对象
+                word_file_bytes = BytesIO(word_file.read())
+                # 使用BytesIO对象创建docx文档对象
+                document = docx.Document(word_file_bytes)
+                full_text = []
+                for paragraph in document.paragraphs:
+                    full_text.append(paragraph.text)
+                # 获得纯文本代码，去除了图片
+                report = '\n'.join(full_text)
+                # 分析报告特征
+                analyze_programming_report(student, report, programmingexercise_id)
+                # 报告规范性评分
+                score_report(student, document, programmingexercise_id)
 
-        # 读取TXT文件内容
-        code_file = request.FILES.get('txtFile')
-        if code_file:
-            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
-            temp_file.write(code_file.read())
-            temp_file.close()
-            # 分析代码特征
-            code = open(temp_file.name, encoding='utf-8').read()
-            analyze_programming_code(student, code, programmingexercise_id)
-            # 使用 run_cpplint 替代 run_cppcheck
-            run_cpplint(student, temp_file.name, programmingexercise_id)
-            # 删除临时文件
-            os.unlink(temp_file.name)
-        # 存储
-        # student.word_file = word_file
-        # student.code_file = code_file
-        # student.save()
+            # 读取TXT文件内容
+            code_file = request.FILES.get('txtFile')
+            if code_file:
+                temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+                temp_file.write(code_file.read())
+                temp_file.close()
+                # 分析代码特征
+                code = open(temp_file.name, encoding='utf-8').read()
+                analyze_programming_code(student, code, programmingexercise_id)
+                # 使用 run_cpplint 替代 run_cppcheck
+                # run_cpplint(student, temp_file.name, programmingexercise_id)
+                # 删除临时文件
+                os.unlink(temp_file.name)
+            # 存储
+            # student.word_file = word_file
+            # student.code_file = code_file
+            # student.save()
+            # return redirect('student_app:home_student')
+            return JsonResponse({'status': 'success', 'message': '提交成功'})
 
-        return redirect('student_app:home_student')
+        else:
+            return JsonResponse({'status': 'error', 'message': '教师未设置报告规范性评分标准'}, status=400)
 
 
 # 我的练习
@@ -144,8 +151,8 @@ def exam_student(request):
     notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
     class_assigned = student.class_assigned
 
-    th_exams = Exam.objects.filter(classes=class_assigned)
-    admin_exams = AdminExam.objects.filter(classes=class_assigned)
+    th_exams = Exam.objects.filter(classes=class_assigned).order_by('-published_at')
+    admin_exams = AdminExam.objects.filter(classes=class_assigned).order_by('-published_at')
 
     context = {
         'user_id': user_id,
@@ -157,7 +164,7 @@ def exam_student(request):
 
 
 # 我的考试：教师考试详情
-def exam_list(request, exam_id):
+def teacherexam_list(request, exam_id):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
@@ -172,7 +179,7 @@ def exam_list(request, exam_id):
             'exam': exam,
             'notifications': notifications,
         }
-        return render(request, 'exam_list.html', context)
+        return render(request, 'teacherexam_list.html', context)
 
 
 # 我的考试：管理员考试详情
@@ -348,6 +355,38 @@ def profile_student_edit(request):
     return render(request, 'profile_student_edit.html', context)
 
 
+# 学生个人中心-修改密码
+def profile_student_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    student = Student.objects.get(userid=user_id)
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    context = {
+        'user_id': user_id,
+        'notifications': notifications,
+        'student': student,
+    }
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if check_password(old_password, student.password):
+            if new_password == confirm_password:
+                student.password = make_password(new_password)
+                student.save()
+                return JsonResponse({'status': 'success', 'message': '密码修改成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '两次输入的密码不一致'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': '旧密码错误'}, status=400)
+    return render(request, 'password_student_edit.html', context)
+
+
 # 通知内容
 def notification_content(request):
     user_id = request.session.get('user_id')
@@ -450,6 +489,25 @@ def mark_exam_question_as_completed(student, exam_question):
         )
 
 
+def mark_adminexam_question_as_completed(student, adminexam_question):
+    AdminExamQuestionCompletion.objects.create(
+        student=student,
+        adminexam_question=adminexam_question,
+        completed_at=timezone.now()
+    )
+    all_questions = adminexam_question.exam.questions.all()
+    completed_questions = AdminExamQuestionCompletion.objects.filter(
+        student=student,
+        adminexam_question__in=all_questions
+    )
+    if all_questions.count() == completed_questions.count():
+        AdminExamCompletion.objects.create(
+            student=student,
+            adminexam=adminexam_question.exam,
+            completed_at=timezone.now()
+        )
+
+
 # 运行C++代码
 def run_cpp_code(request):
     user_id = request.session.get('user_id')
@@ -498,12 +556,13 @@ def run_cpp_code(request):
                             defaults={'score': 10}
                         )
                     else:
+                        mark_adminexam_question_as_completed(student, question)
                         Score.objects.update_or_create(
                             student=student,
                             adminexam_question=question,
                             defaults={'score': 10}
                         )
-                    analyze_code(student, user_code, types, question_id)
+                    # analyze_code(student, user_code, types, question_id)
                     # 这里仅返回了执行结果和时间，与前端代码对应
                     return JsonResponse({'output': result.stdout, 'time': execution_time})
                 else:

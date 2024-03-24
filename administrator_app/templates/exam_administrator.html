@@ -159,7 +159,7 @@
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToRepository()"
                        aria-expanded="false" aria-controls="auth">
                         <i class="mdi mdi-source-repository-multiple menu-icon"></i>
-                        <span class="menu-title">程序设计题库</span>
+                        <span class="menu-title">GUI题库</span>
                         <i class="menu-arrow"></i>
                     </a>
                 </li>
@@ -259,11 +259,6 @@
                                                         <td>{{ exam.published_at }}</td>
                                                         <td>{{ exam.teacher.name }}</td>
                                                         <td>{{ exam.deadline }}</td>
-{#                                                        <td>#}
-{#                                                            {% for class in exam.classes.all %}#}
-{#                                                                {{ class.name }}{% if not forloop.last %}, {% endif %}#}
-{#                                                            {% endfor %}#}
-{#                                                        </td>#}
                                                         <td>
                                                             <button class="button-class delete-exam btn-default"
                                                                     data-exam-id="{{ exam.id }}">删除
@@ -287,7 +282,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-5"></div>
                                 <div class="col-sm-12 col-md-7">
-                                    <button onclick="window.location.href='{% url 'administrator_app:adminexam_list_default' %}'"
+                                    <button onclick="window.location.href='{% url 'administrator_app:admin_examlist_default' %}'"
                                          class="btn-default"   style="float: right;">发布考试
                                     </button>
                                 </div>
@@ -333,7 +328,7 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    window.location.href = "{% url 'administrator_app:exam_administrator' %}";
+                    window.location.reload()
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
@@ -346,7 +341,6 @@
     $(document).ready(function () {
         $('.edit-exam').on('click', function () {
             var examId = $(this).data('exam-id');
-            {#var url = "{% url 'administrator_app:adminexam_edit' '123' %}".replace('123', examId);#}
             window.location.href = "{% url 'administrator_app:adminexam_edit' '123' %}".replace('123', examId);
         });
     });

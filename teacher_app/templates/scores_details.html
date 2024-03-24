@@ -437,29 +437,29 @@
     $(document).ready(function () {
         // 对查看报告详情的按钮添加事件监听器
         $('.class-report-details').on('click', function () {
-            var classId = $(this).data('class-id');
+            var class_id = $(this).data('class-id');
             var programmingExerciseId = $(this).data('programmingexercise-id');
             var reportDetailsUrlTemplate = "{% url 'teacher_app:repeat_report_details' programmingexercise_id=0 %}";
             var detailUrl = reportDetailsUrlTemplate.replace('0', programmingExerciseId);
-            detailUrl += '?classId=' + encodeURIComponent(classId);
+            detailUrl += '?class_id=' + encodeURIComponent(class_id);
             window.location.href = detailUrl;
         });
         // 对查看代码详情的按钮添加事件监听器
         $('.class-code-details').on('click', function () {
-            var classId = $(this).data('class-id');
+            var class_id = $(this).data('class-id');
             var programmingExerciseId = $(this).data('programmingexercise-id');
             var codeDetailsUrlTemplate = "{% url 'teacher_app:repeat_code_details' programmingexercise_id=0 %}";
             var detailUrl = codeDetailsUrlTemplate.replace('0', programmingExerciseId);
-            detailUrl += '?classId=' + encodeURIComponent(classId);
+            detailUrl += '?class_id=' + encodeURIComponent(class_id);
             window.location.href = detailUrl;
         });
          // 对"分项得分"按钮添加事件监听器
         $('.class-scores-details').on('click', function () {
-            var classId = $(this).data('class-id');
+            var class_id = $(this).data('class-id');
             var programmingExerciseId = $(this).data('programmingexercise-id');
             var scoreDetailsUrlTemplate = "{% url 'teacher_app:scores_details' programmingexercise_id=0%}";
             var detailUrl = scoreDetailsUrlTemplate.replace('0', programmingExerciseId);
-            detailUrl += '?classId=' + encodeURIComponent(classId);
+            detailUrl += '?class_id=' + encodeURIComponent(class_id);
             window.location.href = detailUrl;
         });
     });

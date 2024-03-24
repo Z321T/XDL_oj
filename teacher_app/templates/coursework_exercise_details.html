@@ -240,21 +240,6 @@
                                          aria-labelledby="overview-tab">
                                         <div class="d-flex flex-wrap justify-content-xl-between">
 
-
-
-                                            <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                                                <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                                                <div class="d-flex flex-column justify-content-around">
-                                                    <small class="mb-1 text-muted">代码查重和规范性评估</small>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                                                <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                                                <div class="d-flex flex-column justify-content-around">
-                                                    <small class="mb-1 text-muted">报告查重率</small>
-                                                    <h5 class="mr-2 mb-0">....</h5>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <!--重复提交次数-->
@@ -262,9 +247,10 @@
                                         <div class="col-md-7 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="card-title">班级完成情况</p>
+                                                    <p class="card-title">题目完成情况</p>
                                                      <!-- 图表的容器 -->
-                                                    <div id="myChart" style="width: 600px;height:400px;"></div>
+                                                    <div id="zhutu" style="width:600px;height:400px;"></div>
+{#                                                    <div id="myChart" style="width: 600px;height:400px;"></div>#}
                                                 </div>
                                             </div>
                                         </div>
@@ -274,8 +260,15 @@
                                                 <div class="card-body">
                                                      <!-- 添加切换按钮 -->
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button type="button" class="btn btn-secondary" data-type="exercise">练习</button>
-                                                        <button type="button" class="btn btn-secondary exam-button" data-type="exam">考试</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-type="exercise">学生练习
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary exam-button"
+                                                                data-type="exam">班级考试
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary adminexam-button"
+                                                            data-type="adminexam">年级考试
+                                                        </button>
                                                     </div>
                                                      <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
                                                         <div class="row">
@@ -313,10 +306,57 @@
                 <div class=" stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-title">题目作答情况</p>
+                        <p class="card-title">学生成绩详情</p>
+                            <div class="table-responsive"
+                                 style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                <!-- 添加了 style 属性 -->
+                                <div id="recent-purchases-listing_wrapper"
+                                     class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6"></div>
+                                        <div class="col-sm-12 col-md-6"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="student-scores-table" class="table dataTable no-footer" role="grid">
+                                                <thead>
+                                                <tr role="row">
+                                                    <th class="sorting_asc" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label="Name: activate to sort column descending"
+                                                        style="width: 167.95px;">姓名
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 155.6px;">学号
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
+                                                        aria-label="Price: activate to sort column ascending"
+                                                        style="width: 72.575px;">得分
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for i in im %}
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="3" style="text-align: center;">选择题目</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <div class="card-container">
-                                    <div id="zhutu" style="width:1000px;height:400px;"></div>
+
                                 </div>
                             </div>
 
@@ -325,13 +365,9 @@
                         <!-- main-panel ends -->
                     </div>
                     <!-- page-body-wrapper ends -->
-                </div>
                 <!-- container-scroller -->
-            </div>
                 <!-- partial -->
-            </div>
             <!-- main-panel ends -->
-        </div>
         <!-- page-body-wrapper ends -->
     <!-- container-scroller -->
 <!-- Modal -->
@@ -374,68 +410,21 @@
     <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
     <!-- End custom js for this page-->
     <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-{#查重跳转#}
-{#    <script>#}
-{#               // JavaScript#}
-{#        function redirectToOtherPage() {#}
-{#            window.location.href = "/other_page/";#}
-{#        }#}
-{##}
-{#        document.querySelector("mb-1 text-muted").addEventListener("click", redirectToOtherPage);#}
-{#    </script>#}
-    <script>
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('myChart'));
-        // 指定图表的配置项和数据
-        var option = {
-            title : {
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['已完成','未完成']
-            },
-            series : [
-                {
-                    name: '完成情况',
-                    type: 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-                    data:[
-                        {value:335, name:'已完成'},
-                        {value:310, name:'未完成'}
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-    </script>
     <script>
             // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zhutu'));
         // 指定图表的配置项和数据
         var option = {
+            tooltip: {},
+            legend: {
+                data: ['完成情况']
+            },
             xAxis: {
-                type: 'category',
                 data: ['第一题', '第二题', '第三题', '第四题', '第五题', '第六题']
             },
-            yAxis: {
-                type: 'value'
-            },
+            yAxis: {},
             series: [{
+                name: '完成情况',
                 data: [0.56, 0.24, 1, 0.76, 0.69, 0.34],
                 type: 'bar'
             }]
@@ -451,6 +440,10 @@
         $('.btn-group .btn-secondary.exam-button').click(function () {
              var classId = {{ class_id }};
              window.location.href = "{% url 'teacher_app:coursework_exam_details' '123' %}".replace('123', classId);
+        });
+        $('.btn-group .btn-secondary.adminexam-button').click(function () {
+             var classId = {{ class_id }};
+             window.location.href = "{% url 'teacher_app:coursework_adminexam_details' '123' %}".replace('123', classId);
         });
 
         $('table tbody').on('click', 'tr', function () {
@@ -468,8 +461,17 @@
                 },
                 success: function (response) {
                     var data = response.data;
-                    updatePieChart(data.exercise_data || data.exam_data);
-                    updateBarChart(data.exercisequestion_data || data.examquestion_data);
+                    updateBarChart(data.exercisequestion_data);
+                    var studentScores = data.student_scores_data;
+                    var tbody = $('#student-scores-table tbody');
+                    tbody.empty(); // 清空表格当前内容
+                    studentScores.forEach(function (student) {
+                        var tr = $('<tr></tr>');
+                        tr.append($('<td></td>').text(student.name));
+                        tr.append($('<td></td>').text(student.userid));
+                        tr.append($('<td></td>').text(student.total_score));
+                        tbody.append(tr);
+                    });
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
@@ -477,44 +479,7 @@
             });
         });
     })
-    // 更新饼图的函数
-    function updatePieChart(data) {
-        var myChart = echarts.init(document.getElementById('myChart'));
-        var option = {
-            title : {
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['已完成','未完成']
-            },
-            series : [
-                {
-                    name: '完成情况',
-                    type: 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-                    data: [
-                        {value: data[0].completion_rate, name:'已完成'},
-                        {value: 100 - data[0].completion_rate, name:'未完成'}
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        myChart.setOption(option);
-    }
+
     // 更新柱状图的函数
     function updateBarChart(data) {
         var myChart = echarts.init(document.getElementById('zhutu'));

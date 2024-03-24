@@ -147,6 +147,12 @@
         }
 
         /* 减少底部间距，您可以调整此值以得到期望的效果 */
+        .centered-buttons {
+    display: flex; /* 使用Flexbox布局 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中，如果需要 */
+    gap: 10px; /* 按钮之间的距离，根据需要调整 */
+}
 
     </style>
 </head>
@@ -301,7 +307,7 @@
                             <label for="email">邮箱：</label>
                             <input type="email" name="email" id="email" value="{{ student.email }}">
                         </div>
-                        <div class="form-row">
+                        <div class="form-row centered-buttons">
                             <button type="submit" id="edit-info" class="btn-default">提交</button>
                         </div>
                     </form>

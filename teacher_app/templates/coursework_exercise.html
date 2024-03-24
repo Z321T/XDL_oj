@@ -261,10 +261,13 @@
                                                 <!-- 添加切换按钮 -->
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     <button type="button" class="btn btn-secondary"
-                                                            data-type="exercise">练习
+                                                            data-type="exercise">学生练习
                                                     </button>
                                                     <button type="button" class="btn btn-secondary exam-button"
-                                                            data-type="exam">考试
+                                                            data-type="exam">班级考试
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary adminexam-button"
+                                                            data-type="adminexam">年级考试
                                                     </button>
                                                 </div>
                                               <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
@@ -392,6 +395,9 @@
 
         $('.btn-group .btn-secondary.exam-button').click(function () {
             window.location.href = "{% url 'teacher_app:coursework_exam' %}"
+        });
+        $('.btn-group .btn-secondary.adminexam-button').click(function () {
+            window.location.href = "{% url 'teacher_app:coursework_adminexam' %}"
         });
 
         $('table tbody').on('click', 'tr', function () {

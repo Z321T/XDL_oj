@@ -1,19 +1,21 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
-from administrator_app.models import AdminNotification, ProgrammingExercise
+from administrator_app.models import AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from login.views import check_login
 from teacher_app.models import (Teacher, Class, Notification,
                                 Exercise, ExerciseQuestion, Exam, ExamQuestion, ReportScore)
-from student_app.models import (Student, ExerciseCompletion, ExamCompletion,
-                                Score, ExerciseQuestionCompletion, ExamQuestionCompletion)
+from student_app.models import (Student, ExerciseCompletion, ExamCompletion, Score,
+                                ExerciseQuestionCompletion, ExamQuestionCompletion,
+                                AdminExamCompletion, AdminExamQuestionCompletion)
 
 
 # Create your views here.
@@ -176,7 +178,7 @@ def standard_report(request):
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     try:
-        stand_score = ReportScore.objects.filter(teacher=teacher).first()
+        stand_score = ReportScore.objects.get(teacher=teacher)
     except ObjectDoesNotExist:
         stand_score = None
 
@@ -232,10 +234,14 @@ def scores_details(request, programmingexercise_id):
     for student in students:
         try:
             code_score = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise)
-            report_score = ReportStandardScore.objects.get(student=student, programming_question=programmingexercise)
-            student_scores.append((student, code_score, report_score))
         except CodeStandardScore.DoesNotExist:
-            student_scores.append((student, None, None))
+            code_score = None
+        try:
+            report_score = ReportStandardScore.objects.get(student=student, programming_question=programmingexercise)
+        except ReportStandardScore.DoesNotExist:
+            report_score = None
+        student_scores.append((student, code_score, report_score))
+
     context = {
         'student_scores': student_scores,
         'user_id': user_id,
@@ -252,10 +258,12 @@ def coursework_exercise(request):
     if check_login(user_id):
         return redirect('/login/')
 
+    Exercise.objects.filter(title="默认标题").delete()
+
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     teacher = Teacher.objects.get(userid=user_id)
     exercises = Exercise.objects.filter(teacher=teacher).order_by('-published_at')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     context = {
         'user_id': user_id,
@@ -272,10 +280,12 @@ def coursework_exam(request):
     if check_login(user_id):
         return redirect('/login/')
 
+    Exam.objects.filter(title="默认标题").delete()
+
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     exams = Exam.objects.filter(teacher=teacher).order_by('-published_at')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     context = {
         'user_id': user_id,
@@ -287,11 +297,35 @@ def coursework_exam(request):
     return render(request, 'coursework_exam.html', context)
 
 
+def coursework_adminexam(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    AdminExam.objects.filter(title="默认标题").delete()
+
+    teacher = Teacher.objects.get(userid=user_id)
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    exams = AdminExam.objects.all().order_by('-published_at')
+    classes = Class.objects.filter(teacher=teacher)
+
+    context = {
+        'user_id': user_id,
+        'coursework': exams,
+        'classes': classes,
+        'adminnotifications': adminnotifications
+    }
+
+    return render(request, 'coursework_adminexam.html', context)
+
+
 # 作业情况：获取数据
 def coursework_data(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
 
     if request.method == 'POST':
         data_type = request.POST.get('type')
@@ -304,6 +338,9 @@ def coursework_data(request):
         elif data_type == 'exam':
             exam = get_object_or_404(Exam, id=item_id)
             related_classes = exam.classes.all()
+        elif data_type == 'adminexam':
+            adminexam = get_object_or_404(AdminExam, id=item_id)
+            related_classes = Class.objects.filter(teacher=teacher)
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid data type'}, status=400)
 
@@ -315,8 +352,10 @@ def coursework_data(request):
             if total_students > 0:
                 if data_type == 'exercise':
                     completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
-                else:
+                elif data_type == 'exam':
                     completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
+                elif data_type == 'adminexam':
+                    completed_count = AdminExamCompletion.objects.filter(adminexam=adminexam, student_id__in=student_ids).count()
 
                 completion_rate = (completed_count / total_students) * 100
                 response_data.append({
@@ -380,6 +419,29 @@ def coursework_exam_details(request, class_id):
             return HttpResponseNotFound('所请求的数据不存在')
 
 
+# 作业情况：年级考试详情
+def coursework_adminexam_details(request, class_id):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+    if request.method == 'GET':
+        try:
+            # class_item = Class.objects.get(id=class_id)  # NOTICE!!!
+            adminexams = AdminExam.objects.all().order_by('-published_at')
+
+            context = {
+                'user_id': user_id,
+                'coursework': adminexams,
+                'class_id': class_id,
+                'adminnotifications': adminnotifications
+            }
+            return render(request, 'coursework_adminexam_details.html', context)
+        except (Class.DoesNotExist, Exercise.DoesNotExist) as e:
+            return HttpResponseNotFound('所请求的数据不存在')
+
+
 # 作业情况-详情界面：获取数据
 def coursework_details_data(request):
     user_id = request.session.get('user_id')
@@ -393,52 +455,116 @@ def coursework_details_data(request):
         students = class_item.students.all()
         total_students = students.count()
         student_ids = students.values_list('id', flat=True)
+        student_scores_data = []
 
         if data_type == 'exercise':
             exercise = get_object_or_404(Exercise, id=item_id)
-            exercise_completed_count = ExerciseCompletion.objects.filter(exercise=exercise, student_id__in=student_ids).count()
-            exercise_completion_rate = (exercise_completed_count / total_students) * 100 if total_students > 0 else 0
-            exercise_data = [{
-                'completion_rate': exercise_completion_rate
-            }]
-
             questions = ExerciseQuestion.objects.filter(exercise=exercise)
             exercisequestion_data = []
+
             for question in questions:
-                question_completed_count = ExerciseQuestionCompletion.objects.filter(exercise_question=question, student_id__in=student_ids).count()
-                question_completion_rate = (question_completed_count / total_students) * 100 if total_students > 0 else 0
+                question_completed_count = ExerciseQuestionCompletion.objects.filter(
+                    exercise_question=question, student_id__in=student_ids).count()
+                question_completion_rate = (question_completed_count / total_students) * 100 \
+                    if total_students > 0 else 0
                 exercisequestion_data.append({
                     'question_title': question.title,
-                    'completion_rate': question_completion_rate
+                    'completion_rate': question_completion_rate,
+                })
+
+            # 一次性查询出所有学生的总分数据
+            students_scores = Score.objects.filter(
+                exercise_question__exercise=exercise,
+                student__in=students
+            ).values('student').annotate(total_score=Sum('score'))
+            # 转换查询结果为字典，通过学生ID索引总分
+            student_scores_dict = {score['student']: score['total_score'] for score in students_scores}
+            # 构造每个学生的得分数据
+            for student in students:
+                student_total_score = student_scores_dict.get(student.id, 0)  # 获取学生总分，默认为0
+                student_scores_data.append({
+                    'name': student.name,
+                    'userid': student.userid,
+                    'total_score': student_total_score
                 })
 
             context = {
-                'exercise_data': exercise_data,
-                'exercisequestion_data': exercisequestion_data
+                'exercisequestion_data': exercisequestion_data,
+                'student_scores_data': student_scores_data
             }
             return JsonResponse({'data': context})
 
         elif data_type == 'exam':
             exam = get_object_or_404(Exam, id=item_id)
-            exam_completed_count = ExamCompletion.objects.filter(exam=exam, student_id__in=student_ids).count()
-            exam_completion_rate = (exam_completed_count / total_students) * 100 if total_students > 0 else 0
-            exam_data = [{
-                'completion_rate': exam_completion_rate
-            }]
-
             questions = ExamQuestion.objects.filter(exam=exam)
             examquestion_data = []
+
             for question in questions:
-                question_completed_count = ExamQuestionCompletion.objects.filter(exam_question=question, student_id__in=student_ids).count()
-                question_completion_rate = (question_completed_count / total_students) * 100 if total_students > 0 else 0
+                question_completed_count = ExamQuestionCompletion.objects.filter(
+                    exam_question=question, student_id__in=student_ids).count()
+                question_completion_rate = (question_completed_count / total_students) * 100 \
+                    if total_students > 0 else 0
                 examquestion_data.append({
                     'question_title': question.title,
                     'completion_rate': question_completion_rate
                 })
 
+            # 一次性查询出所有学生的总分数据
+            students_scores = Score.objects.filter(
+                exam_question__exam=exam,
+                student__in=students
+            ).values('student').annotate(total_score=Sum('score'))
+            # 转换查询结果为字典，通过学生ID索引总分
+            student_scores_dict = {score['student']: score['total_score'] for score in students_scores}
+            # 构造每个学生的得分数据
+            for student in students:
+                student_total_score = student_scores_dict.get(student.id, 0)  # 获取学生总分，默认为0
+                student_scores_data.append({
+                    'name': student.name,
+                    'userid': student.userid,
+                    'total_score': student_total_score
+                })
+
             context = {
-                'exam_data': exam_data,
-                'examquestion_data': examquestion_data
+                'examquestion_data': examquestion_data,
+                'student_scores_data': student_scores_data
+            }
+            return JsonResponse({'data': context})
+
+        elif data_type == 'adminexam':
+            adminexam = get_object_or_404(AdminExam, id=item_id)
+            questions = AdminExamQuestion.objects.filter(exam=adminexam)
+            adminexamquestion_data = []
+
+            for question in questions:
+                question_completed_count = AdminExamQuestionCompletion.objects.filter(
+                    adminexam_question=question, student_id__in=student_ids).count()
+                question_completion_rate = (question_completed_count / total_students) * 100 \
+                    if total_students > 0 else 0
+                adminexamquestion_data.append({
+                    'question_title': question.title,
+                    'completion_rate': question_completion_rate
+                })
+
+            # 一次性查询出所有学生的总分数据
+            students_scores = Score.objects.filter(
+                adminexam_question__exam=adminexam,
+                student__in=students
+            ).values('student').annotate(total_score=Sum('score'))
+            # 转换查询结果为字典，通过学生ID索引总分
+            student_scores_dict = {score['student']: score['total_score'] for score in students_scores}
+            # 构造每个学生的得分数据
+            for student in students:
+                student_total_score = student_scores_dict.get(student.id, 0)  # 获取学生总分，默认为0
+                student_scores_data.append({
+                    'name': student.name,
+                    'userid': student.userid,
+                    'total_score': student_total_score
+                })
+
+            context = {
+                'adminexamquestion_data': adminexamquestion_data,
+                'student_scores_data': student_scores_data
             }
             return JsonResponse({'data': context})
 
@@ -473,7 +599,7 @@ def exercise_list_default(request):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     exercise = Exercise.objects.create(
         title="默认标题",
@@ -492,7 +618,7 @@ def exercise_list(request, exercise_id):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
     exercise = get_object_or_404(Exercise, id=exercise_id)
 
     if request.method == 'POST':
@@ -594,7 +720,7 @@ def exam_list_default(request):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
 
     exam = Exam.objects.create(
         title="默认标题",
@@ -613,7 +739,7 @@ def exam_list(request, exam_id):
         return redirect('/login/')
 
     teacher = Teacher.objects.get(userid=user_id)
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
     exam = get_object_or_404(Exam, id=exam_id)
 
     if request.method == 'POST':
@@ -716,7 +842,7 @@ def notice_teacher(request):
 
     teacher = Teacher.objects.get(userid=user_id)
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
-    classes = teacher.classes_assigned.all()
+    classes = Class.objects.filter(teacher=teacher)
     notifications = Notification.objects.filter(recipients__in=classes).order_by('-date_posted').distinct()
 
     context = {
@@ -820,7 +946,7 @@ def create_class(request):
         if class_name and initial_password and file:
             teacher = Teacher.objects.get(userid=request.session.get('user_id'))
             new_class = Class.objects.create(name=class_name, teacher=teacher)
-            teacher.classes_assigned.add(new_class)
+            # teacher.classes_assigned.add(new_class)
 
             data = pd.read_excel(file)
             for index, row in data.iterrows():
@@ -844,12 +970,9 @@ def delete_class(request):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
         if class_id:
-            class_to_delete = Class.objects.filter(id=class_id).first()
-            if class_to_delete:
-                for teacher in class_to_delete.teacher_set.all():
-                    teacher.classes_assigned.remove(class_to_delete)
-                class_to_delete.delete()
-                return JsonResponse({'status': 'success', 'message': '班级删除成功'}, status=200)
+            class_to_delete = Class.objects.filter(id=class_id)
+            class_to_delete.delete()
+            return JsonResponse({'status': 'success', 'message': '班级删除成功'}, status=200)
         return JsonResponse({'status': 'error', 'message': '班级未找到'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
@@ -959,3 +1082,35 @@ def profile_teacher_edit(request):
         return redirect('teacher_app:profile_teacher')
 
     return render(request, 'profile_teacher_edit.html', context)
+
+
+# 教师个人中心-修改密码
+def profile_teacher_password(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    teacher = Teacher.objects.get(userid=user_id)
+    adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
+
+    context = {
+        'user_id': user_id,
+        'teacher': teacher,
+        'adminnotifications': adminnotifications
+    }
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if check_password(old_password, teacher.password):
+            if new_password == confirm_password:
+                teacher.password = make_password(new_password)
+                teacher.save()
+                return JsonResponse({'status': 'success', 'message': '密码修改成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '两次输入的密码不一致'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': '旧密码错误'}, status=400)
+    return render(request, 'password_teacher_edit.html', context)

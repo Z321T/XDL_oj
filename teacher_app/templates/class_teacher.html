@@ -335,7 +335,6 @@
             </div>
         </div>
     </div>
-</div>
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
      aria-hidden="true">
@@ -389,7 +388,7 @@
                 },
                 success: function (response) {
                     alert(response.message);
-                    window.location.href = "{% url 'teacher_app:class_teacher' %}";
+                    window.location.reload()
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);

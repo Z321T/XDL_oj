@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>通知</title>
+    <title>作业情况</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'teacher_app/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'teacher_app/css/vendor.bundle.base.css' %}">
@@ -16,12 +16,10 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{% static 'teacher_app/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
+    <link rel="stylesheet" href="{% static 'teacher_app/css/test.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'teacher_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
-
 
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
@@ -94,8 +92,18 @@
         }
 
     </script>
+    <style>
+        table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
 
+        .card-item.card-title:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
 
+        }
+
+    </style>
 </head>
 <body>
 <div class="container-scroller">
@@ -149,6 +157,7 @@
                         {% endfor %}
                     </div>
                 </li>
+
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                         <img src="{% static 'student_app/photo/face5.jpg' %}" alt="profile">
@@ -166,6 +175,8 @@
                     </div>
                 </li>
             </ul>
+
+
         </div>
     </nav>
     <!-- partial -->
@@ -179,7 +190,7 @@
                         <span class="menu-title">GUI编程</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToTest()" aria-expanded="false"
                        aria-controls="ui-basic">
                         <i class="mdi mdi-chart-pie menu-icon"></i>
@@ -195,7 +206,7 @@
                         <i class="menu-arrow"></i>
                     </a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="redirectToNotice()">
                         <i class="mdi mdi-bulletin-board menu-icon"></i>
                         <span class="menu-title">通知</span>
@@ -221,102 +232,103 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
-            <div class="content-wrapper">
-                <div class="row d-flex" id="proBanner">
-                    <div class="col-md-12 grid-margin">
-                        <div class="card bg-gradient-primary border-0">
-                            <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 stretch-card">
+          <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">通知列表</p>
-                            <div class="table-responsive"
-                                 style="max-height: 428px; overflow-y: auto; overflow-x: hidden;">
-                                <!-- 添加了 style 属性 -->
-                                <div id="recent-purchases-listing_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6"></div>
-                                        <div class="col-sm-12 col-md-6"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table class="table dataTable no-footer" role="grid">
-                                                <thead>
-                                                <tr role="row">
-                                                    <th class="sorting_asc" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-sort="ascending"
-                                                        aria-label="Name: activate to sort column descending"
-                                                        style="width: 167.95px;">通知
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Office: activate to sort column ascending"
-                                                        style="width: 155.6px;">发布时间
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">接收班级
-                                                    </th>
-                                                    <th class="sorting" tabindex="0"
-                                                        aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                        aria-label="Price: activate to sort column ascending"
-                                                        style="width: 72.575px;">操作
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for notification in notifications %}
-                                                    <tr role="row"
-                                                        class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
-                                                        <td class="sorting_1" id="notification{{ notification.id }}">{{ notification.title }}
-                                                        </td>
-                                                        <td>{{ notification.date_posted }}</td>
-                                                        <td>
-                                                            {% for class in notification.recipients.all %}
-                                                                {{ class }}{% if not forloop.last %}, {% endif %}
-                                                            {% endfor %}
-                                                        </td>
-                                                        <td>
-                                                            <button class="button-class delete-notification btn-default"
-                                                                    data-notification-id="{{ notification.id }}">删除
-                                                            </button>
-                                                            <button class="button-class content-notification btn-default"
-                                                                    data-notification-id="{{ notification.id }}">详情
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                {% empty %}
-                                                    <tr>
-                                                        <td colspan="4" style="text-align: center;">暂无通知</td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
+                        <div class="card-body dashboard-tabs p-0">
+
+                            <div class="tab-content py-0 px-0">
+
+                                <!--班级完成情况-->
+                                <div class="row">
+                                    <div class="col-md-7 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p class="card-title">班级完成情况</p>
+                                                <div id="cash-deposits-chart-legend"
+                                                     class="d-flex justify-content-center pt-3"></div>
+                                                <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                                                <div id="cash-deposits-chart" style="width: 600px;height:400px;"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5"></div>
-                                <div class="col-sm-12 col-md-7">
-                                    <button onclick="window.location.href='{% url 'teacher_app:create_notice' %}'"
-                                           class="btn-default" style="float: right;">发布通知
-                                    </button>
+
+                                    <!--练习考试切换-->
+                                    <div class="col-md-5 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <!-- 添加切换按钮 -->
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-secondary exercise-button"
+                                                            data-type="exercise">学生练习
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary exam-button"
+                                                            data-type="exam">班级考试
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-type="adminexam">年级考试
+                                                    </button>
+                                                </div>
+                                              <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                                <div class="row">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">名称</th>
+                                                            <th scope="col">发布时间</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for question in coursework %}
+                                                            <tr data-id="{{ question.id }}">
+                                                                <td>{{ question.title }}</td>
+                                                                <td>{{ question.published_at }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class=" stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">班级列表</p>
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                            <div class="table-responsive">
+                                <div class="card-container">
+                                    {% for class in classes %}
+                                        <div class="card class-id" data-class-id="{{ class.id }}">
+                                            <div class="card-item card-title">{{ class.name }}</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- partial -->
+                        </div>
+                        <!-- main-panel ends -->
+                    </div>
+                    <!-- page-body-wrapper ends -->
+                </div>
+                <!-- container-scroller -->
+            </div>
+          </div>
+         </div>
         </div>
     </div>
-</div>
+
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
      aria-hidden="true">
@@ -337,9 +349,6 @@
         </div>
     </div>
 </div>
-
-<!-- container-scroller -->
-
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'teacher_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
@@ -360,49 +369,90 @@
 <script type="text/javascript" src="{% static 'teacher_app/js/dataTables.bootstrap4(1).js' %}"></script>
 <!-- End custom js for this page-->
 <script src="{% static 'teacher_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
+<script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('cash-deposits-chart'));
+    var option = {
+        tooltip: {},
+        legend: {
+            data: ['完成情况']
+        },
+        xAxis: {
+            data: ["班级1", "班级2", "班级3", "班级4", "班级5", "班级6"]
+        },
+        yAxis: {},
+        series: [{
+            name: '完成情况',
+            type: 'bar',
+            data: [0.7, 1, 0.2, 0.4, 0.5, 0.1]
+        }]
+    };
+    myChart.setOption(option);
+</script>
 <script>
-    $(document).ready(function () {
-        $('.delete-notification').on('click', function () {
-            var notificationId = $(this).data('notification-id');
+    $(function () {
+        $('.btn-group .btn-secondary[data-type="adminexam"]').addClass('active')
+
+        $('.btn-group .btn-secondary.exam-button').click(function () {
+            window.location.href = "{% url 'teacher_app:coursework_exam' %}"
+        });
+        $('.btn-group .btn-secondary.exercise-button').click(function () {
+           window.location.href = "{% url 'teacher_app:coursework_exercise' %}"
+        });
+
+        $('table tbody').on('click', 'tr', function () {
+            var id = $(this).data('id');
+            var type = $('.btn-group .btn-secondary.active').data('type');
             $.ajax({
-                url: "{% url 'teacher_app:delete_notice' %}",
+                url: "{% url 'teacher_app:coursework_data' %}",
                 type: 'POST',
                 data: {
-                    'notification_id': notificationId,
+                    'id': id,
+                    'type': type,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
-                    window.location.reload()
+                    updateChart(response.data);
                 },
                 error: function (response) {
                     alert(response.responseJSON.message);
                 }
             });
         });
-    });
+    })
+
+    // 更新柱状图的函数
+    function updateChart(data) {
+        var myChart = echarts.init(document.getElementById('cash-deposits-chart'));
+        var classNames = data.map(function (item) {
+            return item.class_name;
+        });
+        var completionRates = data.map(function (item) {
+            return item.completion_rate;
+        });
+        var option = {
+            tooltip: {},
+            legend: {
+                data: ['完成情况']
+            },
+            xAxis: {
+                data: classNames
+            },
+            yAxis: {},
+            series: [{
+                name: '完成情况',
+                type: 'bar',
+                data: completionRates
+            }]
+        };
+        myChart.setOption(option);
+    }
 </script>
 <script>
     $(document).ready(function () {
-        $('.content-notification').on('click', function () {
-            var notificationId = $(this).data('notification-id');
-            $.ajax({
-                url: "{% url 'teacher_app:notification_content' %}",
-                type: 'POST',
-                data: {
-                    'notification_id': notificationId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (response) {
-                    // 更新模态框的内容
-                    $('#notificationModalLabel').text(response.title);
-                    $('#notificationModalContent').text(response.content);
-                    // 显示模态框
-                    $('#notificationModal').modal('show');
-                },
-                error: function (response) {
-                    alert(response.responseJSON.message);
-                }
-            });
+         $('.class-id').on('click', function () {
+            var classId = $(this).data('class-id');
+            window.location.href = "{% url 'teacher_app:coursework_adminexam_details' '123' %}".replace('123', classId);
         });
     });
 </script>

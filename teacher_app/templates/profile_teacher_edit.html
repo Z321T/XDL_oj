@@ -66,6 +66,12 @@
         left: 0;
         top: 0
     }
+    .centered-buttons {
+    display: flex; /* 使用Flexbox布局 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中，如果需要 */
+    gap: 10px; /* 按钮之间的距离，根据需要调整 */
+}
     </style>
     <script>
         function redirectToHome() {
@@ -311,7 +317,7 @@
                             <label for="email">邮箱：</label>
                             <input type="email" name="email" id="email" value="{{ teacher.email }}">
                         </div>
-                        <div class="form-row">
+                        <div class="form-row centered-buttons">
                             <button type="submit" id="edit-info" class="btn-default">提交</button>
                         </div>
                     </form>

@@ -2,15 +2,16 @@ from django.urls import path
 from django.contrib.staticfiles.views import serve
 
 from .views import home_teacher, repeat_report, repeat_report_details, repeat_code_details
-from .views import profile_teacher, profile_teacher_edit
+from .views import profile_teacher, profile_teacher_edit, profile_teacher_password
 from .views import class_teacher, create_class, delete_class, class_details, delete_student, reset_password
 from .views import (repository_teacher, exercise_list_default, exercise_list,
                     create_exercise, exercise_delete, exercise_edit, exercisequestion_delete)
 from .views import (exam_list_default, exam_list,
                     create_exam, exam_delete, exam_edit, examquestion_delete)
 from .views import notice_teacher, create_notice, delete_notice, notification_content
-from .views import (coursework_exercise, coursework_exam, coursework_data,
-                    coursework_exercise_details, coursework_exam_details, coursework_details_data)
+from .views import (coursework_exercise, coursework_exam, coursework_adminexam, coursework_data,
+                    coursework_exercise_details, coursework_exam_details, coursework_adminexam_details,
+                    coursework_details_data)
 from .views import standard_report, scores_details
 
 
@@ -28,9 +29,11 @@ urlpatterns = [
     # 有关的coursework操作
     path('coursework/exercise/', coursework_exercise, name='coursework_exercise'),
     path('coursework/exam/', coursework_exam, name='coursework_exam'),
+    path('coursework/adminexam/', coursework_adminexam, name='coursework_adminexam'),
     path('coursework/data/', coursework_data, name='coursework_data'),
     path('coursework/exercise/details/<int:class_id>/', coursework_exercise_details, name='coursework_exercise_details'),
     path('coursework/exam/details/<int:class_id>/', coursework_exam_details, name='coursework_exam_details'),
+    path('coursework/adminexam/details/<int:class_id>/', coursework_adminexam_details, name='coursework_adminexam_details'),
     path('coursework/details/data/', coursework_details_data, name='coursework_details_data'),
     # 有关通知的操作
     path('notice/', notice_teacher, name='notice_teacher'),
@@ -62,6 +65,7 @@ urlpatterns = [
     # 个人中心
     path('profile/', profile_teacher, name='profile_teacher'),
     path('profile/edit/', profile_teacher_edit, name='profile_teacher_edit'),
+    path('profile/password/', profile_teacher_password, name='profile_teacher_password'),
 
     path('static/<path:path>', serve),
 
