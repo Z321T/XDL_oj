@@ -491,21 +491,21 @@
                 })
             },
             yAxis: {
-              type: 'value',
-                min: 0, // 设置y轴的最小值
-                max: 1, // 设置y轴的最大值
+                type: 'value',
+                min: 0,
+                max: 1,
                 axisLabel: {
                     formatter: function(value) {
-                        return (value * 100) + "%"; //将数值转换为百分比格式
+                        return (value * 100) + "%";
                     }
                 }
             },
             series: [{
                 data: data.map(function (item) {
-                    return item.completion_rate/100;
+                    return item.completion_rate;
                 }),
-                type: 'bar'
-                 barWidth: '0.4%'  // 柱子的宽度设置为坐标系宽度的60%
+                type: 'bar',
+                barWidth: '55'
             }]
         };
         myChart.setOption(option);
