@@ -88,15 +88,8 @@ def report_student(request, programmingexercise_id):
                 # 分析代码特征
                 code = open(temp_file.name, encoding='utf-8').read()
                 analyze_programming_code(student, code, programmingexercise_id)
-                # 使用 run_cpplint 替代 run_cppcheck
-                # run_cpplint(student, temp_file.name, programmingexercise_id)
                 # 删除临时文件
                 os.unlink(temp_file.name)
-            # 存储
-            # student.word_file = word_file
-            # student.code_file = code_file
-            # student.save()
-            # return redirect('student_app:home_student')
             return JsonResponse({'status': 'success', 'message': '提交成功'})
 
         else:

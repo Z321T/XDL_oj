@@ -1,10 +1,15 @@
+import os
+import tempfile
+import docx
 import pandas as pd
+from io import BytesIO
 from datetime import datetime, timedelta
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
+from CodeBERT_app.views import analyze_programming_report, analyze_programming_code
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from teacher_app.models import Teacher, Class
 from student_app.models import Student, Score
@@ -176,6 +181,49 @@ def problems_administrator(request):
         'programming_exercises': programming_exercises,
     }
     return render(request, 'problems_administrator.html', context)
+
+
+# 题库查重管理-导入数据
+def report_administrator(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+    programmingexercise_id = request.GET.get('exerciseId')
+
+    if request.method == 'POST':
+        student = None
+        word_file = request.FILES['wordFile']
+
+        if word_file:
+            # 读取文件内容并使用BytesIO创建一个类似文件的对象
+            word_file_bytes = BytesIO(word_file.read())
+            # 使用BytesIO对象创建docx文档对象
+            document = docx.Document(word_file_bytes)
+            full_text = []
+            for paragraph in document.paragraphs:
+                full_text.append(paragraph.text)
+            # 获得纯文本代码，去除了图片
+            report = '\n'.join(full_text)
+            # 分析报告特征
+            analyze_programming_report(student, report, programmingexercise_id)
+
+        # 读取TXT文件内容
+        code_file = request.FILES.get('txtFile')
+        if code_file:
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+            temp_file.write(code_file.read())
+            temp_file.close()
+            # 分析代码特征
+            code = open(temp_file.name, encoding='utf-8').read()
+            analyze_programming_code(student, code, programmingexercise_id)
+            os.unlink(temp_file.name)
+        return JsonResponse({'status': 'success', 'message': '提交成功'})
+
+    context = {
+        'user_id': user_id,
+    }
+    return render(request, 'report_administrator.html', context)
 
 
 # 考试
@@ -518,6 +566,4 @@ def profile_adminadministrator_password(request):
     return render(request, 'password_admin_edit.html', context)
 
 
-# about report_administrator.html
-def report_administrator(request):
-    return render(request, 'report_administrator.html')
+

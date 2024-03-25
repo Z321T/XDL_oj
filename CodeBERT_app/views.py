@@ -64,11 +64,18 @@ def analyze_programming_code(student, code, question_id):
     feature_as_json = json.dumps(reduced_features.tolist())
 
     question = ProgrammingExercise.objects.get(id=question_id)
-    ProgrammingCodeFeature.objects.update_or_create(
-        student=student,
-        programming_question=question,
-        defaults={'feature': feature_as_json}
-    )
+    if student:
+        ProgrammingCodeFeature.objects.update_or_create(
+            student=student,
+            programming_question=question,
+            defaults={'feature': feature_as_json}
+        )
+    else:
+        ProgrammingCodeFeature.objects.create(
+            student=student,
+            programming_question=question,
+            defaults={'feature': feature_as_json}
+        )
 
 
 # 分析程序设计题报告
@@ -92,11 +99,18 @@ def analyze_programming_report(student, report, question_id):
     feature_as_json = json.dumps(reduced_features.tolist())
 
     question = ProgrammingExercise.objects.get(id=question_id)
-    ProgrammingReportFeature.objects.update_or_create(
-        student=student,
-        programming_question=question,
-        defaults={'feature': feature_as_json}
-    )
+    if student:
+        ProgrammingReportFeature.objects.update_or_create(
+            student=student,
+            programming_question=question,
+            defaults={'feature': feature_as_json}
+        )
+    else:
+        ProgrammingReportFeature.objects.create(
+            student=student,
+            programming_question=question,
+            defaults={'feature': feature_as_json}
+        )
 
 
 # 计算程序设计报告&代码的相似度
@@ -104,21 +118,20 @@ def compute_cosine_similarity(feature_json1, feature_json2):
     feature1 = torch.tensor(json.loads(feature_json1)).float()
     feature2 = torch.tensor(json.loads(feature_json2)).float()
 
-    # 填充较小的张量以匹配较大的张量的维度
-    if feature1.numel() < feature2.numel():
-        # 在第二个维度填充零
-        padding = feature2.numel() - feature1.numel()
-        feature1 = torch.cat([feature1, torch.zeros(padding)], dim=0)
-    elif feature1.numel() > feature2.numel():
-        padding = feature1.numel() - feature2.numel()
-        feature2 = torch.cat([feature2, torch.zeros(padding)], dim=0)
+    # 确定填充长度，使得两个张量的第一个维度长度相同。
+    len_feature1 = feature1.size(0)
+    len_feature2 = feature2.size(0)
 
-    feature1 = feature1.view(1, -1)
-    feature2 = feature2.view(1, -1)
+    # 如果第一个张量比第二个短，那么添加零填充至第一个张量
+    if len_feature1 < len_feature2:
+        padding = len_feature2 - len_feature1
+        feature1 = torch.cat((feature1, torch.zeros(padding, feature1.size(1))), dim=0)
+    # 否则，在第二个张量上执行相同的操作
+    elif len_feature1 > len_feature2:
+        padding = len_feature1 - len_feature2
+        feature2 = torch.cat((feature2, torch.zeros(padding, feature2.size(1))), dim=0)
 
-    similarity_tensor = cosine_similarity(feature1, feature2)
-
-    similarity_score = similarity_tensor.item()
+    similarity_score = cosine_similarity(feature1, feature2).mean().item()
 
     return similarity_score
 

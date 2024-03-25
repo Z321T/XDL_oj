@@ -173,7 +173,7 @@
                     <a class="nav-link" data-toggle="collapse" href="#" onclick="redirectToProblems()"
                        aria-expanded="false" aria-controls="auth">
                         <i class="mdi mdi-source-repository menu-icon"></i>
-                        <span class="menu-title">题库查重管理</span>
+                        <span class="menu-title">查重管理</span>
                         <i class="menu-arrow"></i>
                     </a>
                 </li>
@@ -270,7 +270,7 @@
                                                         <td>{{ exercise.date_posted }}</td>
                                                         <td>{{ exercise.deadline }}</td>
                                                         <td>
-                                                            <button class="button-class delete-exercise btn-default"
+                                                            <button class="button-class update-data btn-default"
                                                                     data-exercise-id="{{ exercise.id }}">导入查重数据
                                                             </button>
                                                         </td>
@@ -286,14 +286,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {#                                    <div class="row">#}
-                            {#                                        <div class="col-sm-12 col-md-5"></div>#}
-                            {#                                        <div class="col-sm-12 col-md-7">#}
-                            {#                                            <button onclick="window.location.href='{% url 'administrator_app:programmingexercise_create' %}'"#}
-                            {#                                                class="btn-default"    style="float: right;">发布题目#}
-                            {#                                            </button>#}
-                            {#                                        </div>#}
-                            {#                                    </div>#}
                         </div>
                     </div>
                 </div>
@@ -331,26 +323,13 @@
 <script type="text/javascript" src="{% static 'administrator_app/js/dataTables.bootstrap4(1).js' %}"></script>
 <!-- End custom js for this page-->
 <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
-{#    <script>#}
-{#    $(document).ready(function () {#}
-{#        $('.delete-exercise').on('click', function () {#}
-{#            var exerciseId = $(this).data('exercise-id');#}
-{#            $.ajax({#}
-{#                url: "{% url 'administrator_app:programmingexercise_delete' %}",#}
-{#                type: 'POST',#}
-{#                data: {#}
-{#                    'exercise_id': exerciseId,#}
-{#                    'csrfmiddlewaretoken': '{{ csrf_token }}'#}
-{#                },#}
-{#                success: function (response) {#}
-{#                    window.location.href = "{% url 'administrator_app:repository_administrator' %}";#}
-{#                },#}
-{#                error: function (response) {#}
-{#                    alert(response.responseJSON.message);#}
-{#                }#}
-{#            });#}
-{#        });#}
-{#    });#}
-{#</script>#}
+<script>
+    $(document).ready(function () {
+        $('.update-data').on('click', function () {
+            var exerciseId = $(this).data('exercise-id');
+            window.location.href = "{% url 'administrator_app:report_administrator'%}" + "?exercise_id=" + exerciseId;
+        });
+    });
+</script>
 </body>
 </html>

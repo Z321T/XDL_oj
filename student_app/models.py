@@ -13,10 +13,6 @@ class Student(models.Model):
     class_assigned = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name="班级",
                                        null=True, blank=True, related_name='students')
 
-    # 存储学生提交的报告和代码
-    # word_file = models.FileField(upload_to='wordFiles/', null=True, blank=True)
-    # code_file = models.FileField(upload_to='codeFiles/', null=True, blank=True)
-
 
 class Score(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生", related_name='scores')
