@@ -13,7 +13,7 @@ from CodeBERT_app.views import analyze_programming_report, analyze_programming_c
 from administrator_app.models import Administrator, AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from teacher_app.models import Teacher, Class
 from student_app.models import Student, Score
-from CodeBERT_app.models import ReportStandardScore
+from CodeBERT_app.models import ReportStandardScore, ProgrammingCodeFeature, ProgrammingReportFeature
 from login.views import check_login
 
 
@@ -231,6 +231,28 @@ def reportdata_delete(request):
     user_id = request.session.get('user_id')
     if check_login(user_id):
         return redirect('/login/')
+
+    programmingexercise_id = request.POST.get('exerciseId')
+    if programmingexercise_id:
+        # 查询对应题目所有student为null的ProgrammingCodeFeature实例
+        programmingexercise = ProgrammingExercise.objects.filter(id=programmingexercise_id)
+
+        codefeatures_to_delete = ProgrammingCodeFeature.objects.filter(
+            programming_question=programmingexercise,
+            student__isnull=True
+        )
+        # 执行删除操作
+        codefeatures_to_delete.delete()
+
+        reportfeatures_to_delete = ProgrammingReportFeature.objects.filter(
+            programming_question=programmingexercise,
+            student__isnull=True
+        )
+        reportfeatures_to_delete.delete()
+
+        return JsonResponse({'status': 'success', 'message': '数据删除成功'})
+    else:
+        return JsonResponse({'status': 'error', 'message': '未找到对应的练习题'}, status=404)
 
 
 # 考试

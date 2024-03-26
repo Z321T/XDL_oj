@@ -316,18 +316,32 @@
     $(document).ready(function () {
         $('.update-data').on('click', function () {
             var exerciseId = $(this).data('exercise-id');
-            window.location.href = "{% url 'administrator_app:report_administrator'%}" + "?exercise_id=" + exerciseId;
+            window.location.href = "{% url 'administrator_app:report_administrator'%}" + "?exerciseId=" + exerciseId;
         });
     });
-    $(document).ready(function () {
-        $('.delete-data').on('click', function () {
+    $(document).ready(function() {
+        $('.delete-data').on('click', function() {
             var exerciseId = $(this).data('exercise-id');
             // 弹出确认对话框
             var confirmation = confirm("你确定要清除这个题目的数据吗？清除之后导入的数据将会被清除！");
             if (confirmation) {
-                window.location.href = "{% url 'administrator_app:reportdata_delete' %}" + "?exercise_id=" + exerciseId;
+                $.ajax({
+                    url: "{% url 'administrator_app:reportdata_delete' %}",
+                    type: 'POST',
+                    data: {
+                        'exerciseId': exerciseId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        window.location.reload()
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+                // 用户点击"取消"，不做任何操作
             }
-            // 用户点击"取消"，不做任何操作
         });
     });
 </script>
