@@ -213,6 +213,7 @@ def standard_report(request):
             }
         )
         return redirect('teacher_app:standard_report')
+
     return render(request, 'standard_report.html', context)
 
 

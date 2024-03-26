@@ -529,14 +529,21 @@ function updateBarChart(data) {
             })
         },
         yAxis: {
-            type: 'value'
-        },
+           type: 'value',
+                min: 0,
+                max: 1,
+                axisLabel: {
+                    formatter: function(value) {
+                        return (value * 100) + "%";
+                    }
+        }},
         series: [{
             name: '题目',
             type: 'bar',
             data: data.map(function (item) {
                 return item.scores;
-            })
+            }),
+            barWidth: '55'
         }]
     };
     barChart.setOption(option);
