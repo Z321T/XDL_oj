@@ -283,7 +283,7 @@
                                                         </td>
                                                         <td>
                                                             <button class="button-class delete-teacher btn-default"
-                                                                    data-teacher-id="{{ teacher.id }}">删除
+                                                                    data-teacher-id="{{ teacher.id }}">删除教师
                                                             </button>
                                                             <button class="button-class reset-password btn-default"
                                                                     data-teacher-id="{{ teacher.id }}">初始化密码
@@ -345,7 +345,9 @@
     $(document).ready(function () {
         $('.delete-teacher').on('click', function () {
             var teacherId = $(this).data('teacher-id');
-            $.ajax({
+            var confirmation = confirm("确定要删除这个教师吗？删除之后，该教师的所有信息将会被清除！");
+            if (confirmation) {
+                $.ajax({
                 url: "{% url 'administrator_app:delete_teacher' %}",
                 type: 'POST',
                 data: {
@@ -360,6 +362,7 @@
                     alert(response.responseJSON.message);
                 }
             });
+            }
         });
     });
     $(document).ready(function () {
