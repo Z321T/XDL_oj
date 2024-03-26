@@ -226,6 +226,13 @@ def report_administrator(request):
     return render(request, 'report_administrator.html', context)
 
 
+# 题库查重管理-删除数据
+def reportdata_delete(request):
+    user_id = request.session.get('user_id')
+    if check_login(user_id):
+        return redirect('/login/')
+
+
 # 考试
 def exam_administrator(request):
     user_id = request.session.get('user_id')

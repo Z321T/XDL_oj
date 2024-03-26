@@ -6,7 +6,7 @@ from .views import notice_administrator, create_notice, delete_notice, notificat
 from .views import profile_administrator, profile_administrator_edit, profile_adminadministrator_password
 from .views import repository_administrator, programmingexercise_delete, programmingexercise_create
 from .views import information_administrator, add_teacher, delete_teacher, reset_password
-from .views import problems_administrator, report_administrator
+from .views import problems_administrator, report_administrator, reportdata_delete
 from .views import (exam_administrator, admin_examlist_default, admin_examlist,
                     create_adminexam, adminexam_edit, adminexam_delete, adminexamquestion_delete)
 
@@ -26,6 +26,7 @@ urlpatterns = [
     # 题库查重管理
     path('problems/', problems_administrator, name='problems_administrator'),
     path('problems/report_administrator/', report_administrator, name='report_administrator'),
+    path('problems/reportdata_delete/', reportdata_delete, name='reportdata_delete'),
     # 有关考试的操作
     path('adminexam/', exam_administrator, name='exam_administrator'),
     path('adminexam/adminexam_list/', admin_examlist_default, name='admin_examlist_default'),

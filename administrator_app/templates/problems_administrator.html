@@ -22,11 +22,6 @@
     <link rel="stylesheet" href="{% static 'node_modules/MDI/@mdi/font/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/firstPage.css' %}">
 
-    <style>
-
-
-    </style>
-
     <style type="text/css">/* Chart.js */
     @keyframes chartjs-render-animation {
         from {
@@ -271,7 +266,10 @@
                                                         <td>{{ exercise.deadline }}</td>
                                                         <td>
                                                             <button class="button-class update-data btn-default"
-                                                                    data-exercise-id="{{ exercise.id }}">导入查重数据
+                                                                    data-exercise-id="{{ exercise.id }}">导入数据
+                                                            </button>
+                                                            <button class="button-class delete-data btn-default"
+                                                                    data-exercise-id="{{ exercise.id }}">清除数据
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -293,15 +291,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- partial -->
-
-<!-- main-panel ends -->
-
-<!-- page-body-wrapper ends -->
-
-<!-- container-scroller -->
 
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
@@ -328,6 +317,17 @@
         $('.update-data').on('click', function () {
             var exerciseId = $(this).data('exercise-id');
             window.location.href = "{% url 'administrator_app:report_administrator'%}" + "?exercise_id=" + exerciseId;
+        });
+    });
+    $(document).ready(function () {
+        $('.delete-data').on('click', function () {
+            var exerciseId = $(this).data('exercise-id');
+            // 弹出确认对话框
+            var confirmation = confirm("你确定要清除这个题目的数据吗？清除之后导入的数据将会被清除！");
+            if (confirmation) {
+                window.location.href = "{% url 'administrator_app:reportdata_delete' %}" + "?exercise_id=" + exerciseId;
+            }
+            // 用户点击"取消"，不做任何操作
         });
     });
 </script>
