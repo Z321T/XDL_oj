@@ -348,20 +348,20 @@
             var confirmation = confirm("确定要删除这个教师吗？删除之后，该教师的所有信息将会被清除！");
             if (confirmation) {
                 $.ajax({
-                url: "{% url 'administrator_app:delete_teacher' %}",
-                type: 'POST',
-                data: {
-                    'teacher_id': teacherId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (response) {
-                    alert(response.message);
-                    window.location.reload()
-                },
-                error: function (response) {
-                    alert(response.responseJSON.message);
-                }
-            });
+                    url: "{% url 'administrator_app:delete_teacher' %}",
+                    type: 'POST',
+                    data: {
+                        'teacher_id': teacherId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        window.location.reload()
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
             }
         });
     });

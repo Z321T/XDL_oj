@@ -408,21 +408,24 @@
     $(document).ready(function () {
         $('.delete-student').on('click', function () {
             var studentId = $(this).data('student-id');
-            $.ajax({
-                url: "{% url 'teacher_app:delete_student' %}",
-                type: 'POST',
-                data: {
-                    'student_id': studentId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (response) {
-                    alert(response.message);
-                    window.location.reload();
-                },
-                error: function (response) {
-                    alert(response.responseJSON.message);
-                }
-            });
+            var confirmation = confirm("确定要删除这个学生吗？删除之后，该学生的所有信息将会被清除！");
+            if (confirmation) {
+                $.ajax({
+                    url: "{% url 'teacher_app:delete_student' %}",
+                    type: 'POST',
+                    data: {
+                        'student_id': studentId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        window.location.reload()
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+            }
         });
     });
     $(document).ready(function () {

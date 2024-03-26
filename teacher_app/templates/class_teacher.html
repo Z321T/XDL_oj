@@ -379,21 +379,24 @@
     $(document).ready(function () {
         $('.delete-class').on('click', function () {
             var classId = $(this).data('class-id');
-            $.ajax({
-                url: "{% url 'teacher_app:delete_class' %}",
-                type: 'POST',
-                data: {
-                    'class_id': classId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (response) {
-                    alert(response.message);
-                    window.location.reload()
-                },
-                error: function (response) {
-                    alert(response.responseJSON.message);
-                }
-            });
+            var confirmation = confirm("确定要删除这个班级吗？删除之后，该班级的所有信息将会被清除！");
+            if (confirmation) {
+                $.ajax({
+                    url: "{% url 'teacher_app:delete_class' %}",
+                    type: 'POST',
+                    data: {
+                        'class_id': classId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        window.location.reload()
+                    },
+                    error: function (response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+            }
         });
     });
 </script>

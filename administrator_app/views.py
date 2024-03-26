@@ -472,12 +472,8 @@ def delete_teacher(request):
         teacher_id = request.POST.get('teacher_id')
         try:
             teacher = Teacher.objects.get(id=teacher_id)
-            classes_to_delete = teacher.classes_assigned.all()
-            if classes_to_delete:
-                for _class in classes_to_delete:
-                    _class.delete()
             teacher.delete()
-            return JsonResponse({'status': 'success', 'message': '教师及其相关班级删除成功'}, status=200)
+            return JsonResponse({'status': 'success', 'message': '教师删除成功'}, status=200)
         except Teacher.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': '教师未找到'}, status=404)
     else:
