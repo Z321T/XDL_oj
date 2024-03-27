@@ -428,13 +428,29 @@ def coding_adminexam(request, examquestion_id):
     if check_login(user_id):
         return redirect('/login/')
 
+    student = Student.objects.get(userid=user_id)
+    notifications = Notification.objects.filter(recipients=student.class_assigned).order_by('-date_posted')
+
+    context = {
+        'user_id': user_id,
+        'notifications': notifications,
+    }
+
     if request.method == 'GET':
         question = get_object_or_404(AdminExamQuestion, id=examquestion_id)
         question_set = question.exam
         types = 'adminexam'
-        return render(request, 'coding_student.html',
-                      {'question_set': question_set, 'question': question, 'types': types})
-    return render(request, 'coding_student.html')
+
+        context = {
+            'user_id': user_id,
+            'notifications': notifications,
+            'question_set': question_set,
+            'question': question,
+            'types': types,
+        }
+        return render(request, 'coding_student.html', context)
+
+    return render(request, 'coding_student.html', context)
 
 
 def call_node_api(request):

@@ -264,7 +264,26 @@
         </div>
     </div>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">通知</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="notificationModalContent">
+                <!-- 通知内容将在这里显示 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- container-scroller -->
 
 <!-- plugins:js -->
@@ -357,6 +376,31 @@
             value: 'cout << "Hello, world!" << endl;',
             language: 'cpp',
             theme: 'vs-light'
+        });
+    });
+</script>
+    <script>
+    $(document).ready(function () {
+        $('.notification-item').on('click', function () {
+            var notificationId = $(this).data('notification-id');
+            $.ajax({
+                url: "{% url 'student_app:notification_content' %}",
+                type: 'POST',
+                data: {
+                    'notification_id': notificationId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    // 更新模态框的内容
+                    $('#notificationModalLabel').text(response.title);
+                    $('#notificationModalContent').text(response.content);
+                    // 显示模态框
+                    $('#notificationModal').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseJSON.message);
+                }
+            });
         });
     });
 </script>
