@@ -335,6 +335,7 @@
                 var existingResizer = $('.resize-handle').detach();
                 $('#debugger').empty().prepend(existingResizer).append(`<p>输出: ${response.output}</p><p>错误: ${response.error}</p>`).show();
                 bindResizer();
+                alert(response.message);
             },
             error: function (error) {
                 console.error('Error:', error);

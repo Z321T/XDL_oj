@@ -557,7 +557,8 @@ def run_cpp_code(request):
                         )
                     # analyze_code(student, user_code, types, question_id)
                     # 这里仅返回了执行结果和时间，与前端代码对应
-                    return JsonResponse({'output': result.stdout, 'time': execution_time})
+                    return JsonResponse({'status': 'success', 'message': '题目作答正确',
+                                         'output': result.stdout, 'time': execution_time})
                 else:
                     return JsonResponse({'output': result.stdout, 'error': 'Wrong answer', 'time': execution_time})
             else:  # 如果编译或运行出错
