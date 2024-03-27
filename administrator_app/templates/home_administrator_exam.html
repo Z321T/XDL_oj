@@ -251,7 +251,7 @@
                                         <div class="col-md-7 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <p class="card-title">考试题目作答情况</p>
+                                                    <p class="card-title">考试题目平均分</p>
                                                     <div id="cash-deposits-chart-legend"
                                                          class="d-flex justify-content-center pt-3"></div>
                                                     <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
@@ -406,11 +406,20 @@
             series: [{
                 name: '作答平均分',
                 type: 'bar',
-                data: caverageScore
+                data: caverageScore,
+                  barWidth: '55'
             }]
         };
         myChart.setOption(option);
     }
+</script>
+<script>
+$(document).ready(function(){
+  $("table tbody tr").click(function(){
+    $("table tbody tr").css("background-color", ""); // 添加这行，恢复所有行原本的背景颜色
+    $(this).css("background-color", "#f2f2f2"); // 让点击的那一行变为灰色
+  });
+});
 </script>
 </body>
 </html>
