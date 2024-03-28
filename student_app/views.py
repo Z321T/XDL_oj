@@ -7,7 +7,7 @@ import tempfile
 from io import BytesIO
 
 from django.utils import timezone
-from django.db.models import Avg
+from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
@@ -241,28 +241,41 @@ def analyse_data(request):
         item_id = request.POST.get('id')
 
         if data_type == 'exercise':
-            # 获取所有的练习题的综合得分
+            # 计算每个练习的平均得分
             exercises = Exercise.objects.filter(classes=class_assigned)
             exercise_avg_scores = []
             for ex in exercises:
+                question_count = ex.questions.count()  # 使用 related_name 获取相关的练习题数量
                 ex_questions = ExerciseQuestion.objects.filter(exercise=ex)
-                avg_score = Score.objects.filter(student=student,
-                                                 exercise_question__in=ex_questions).aggregate(Avg('score'))
+                # 计算这次练习的所有题目的总得分
+                total_score = Score.objects.filter(
+                    student=student,
+                    exercise_question__in=ex_questions
+                ).aggregate(total_score=Sum('score'))['total_score']
+
+                if total_score is None:
+                    total_score = 0
+                avg_score = total_score / question_count  # 计算平均得分 (总得分 / 题目数量)
+
                 exercise_avg_scores.append({
                     'exercise_title': ex.title,
-                    'avg_score': avg_score['score__avg'] if avg_score['score__avg'] is not None else 0
+                    'avg_score': avg_score
                 })
+
             # 获取每个练习题的得分
             exercise = get_object_or_404(Exercise, id=item_id)
             questions = ExerciseQuestion.objects.filter(exercise=exercise)
             question_scores = []
             for question in questions:
-                scores = Score.objects.filter(student=student,
-                                              exercise_question=question).values_list('score', flat=True)
-                scores = [float(score) for score in scores]
+                try:
+                    score_obj = Score.objects.get(student=student, exercise_question=question)
+                    score = float(score_obj.score)
+                except Score.DoesNotExist:  # 如果没有找到得分，则为该题目设置得分为0
+                    score = 0.0
+
                 question_scores.append({
                     'question_title': question.title,
-                    'scores': scores
+                    'scores': score
                 })
 
             context = {
@@ -272,28 +285,40 @@ def analyse_data(request):
             return JsonResponse({'data': context})
 
         elif data_type == 'exam':
-            # 获取所有的考试题的综合得分
+            # 计算每个考试的平均得分
             exam = Exam.objects.filter(classes=class_assigned)
             exam_avg_scores = []
             for ex in exam:
+                question_count = ex.questions.count()
                 ex_questions = ExamQuestion.objects.filter(exam=ex)
-                avg_score = Score.objects.filter(student=student,
-                                                 exam_question__in=ex_questions).aggregate(Avg('score'))
+                total_score = Score.objects.filter(
+                    student=student,
+                    exam_question__in=ex_questions
+                ).aggregate(total_score=Sum('score'))['total_score']
+
+                if total_score is None:
+                    total_score = 0
+                avg_score = total_score / question_count
+
                 exam_avg_scores.append({
                     'exam_title': ex.title,
-                    'avg_score': avg_score['score__avg'] if avg_score['score__avg'] is not None else 0
+                    'avg_score': avg_score
                 })
+
             # 获取每个考试题的得分
             exam = get_object_or_404(Exam, id=item_id)
             questions = ExamQuestion.objects.filter(exam=exam)
             question_scores = []
             for question in questions:
-                scores = Score.objects.filter(student=student,
-                                              exam_question=question).values_list('score', flat=True)
-                scores = [float(score) for score in scores]
+                try:
+                    score_obj = Score.objects.get(student=student, exam_question=question)
+                    score = float(score_obj.score)
+                except Score.DoesNotExist:
+                    score = 0.0
+
                 question_scores.append({
                     'question_title': question.title,
-                    'scores': scores
+                    'scores': score
                 })
 
             context = {
