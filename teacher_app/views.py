@@ -358,7 +358,7 @@ def coursework_data(request):
                 elif data_type == 'adminexam':
                     completed_count = AdminExamCompletion.objects.filter(adminexam=adminexam, student_id__in=student_ids).count()
 
-                completion_rate = (completed_count / total_students) * 100
+                completion_rate = (completed_count / total_students)
                 response_data.append({
                     'class_name': class_group.name,
                     'completion_rate': completion_rate
@@ -429,7 +429,6 @@ def coursework_adminexam_details(request, class_id):
     adminnotifications = AdminNotification.objects.all().order_by('-date_posted')
     if request.method == 'GET':
         try:
-            # class_item = Class.objects.get(id=class_id)  # NOTICE!!!
             adminexams = AdminExam.objects.all().order_by('-published_at')
 
             context = {
@@ -466,7 +465,7 @@ def coursework_details_data(request):
             for question in questions:
                 question_completed_count = ExerciseQuestionCompletion.objects.filter(
                     exercise_question=question, student_id__in=student_ids).count()
-                question_completion_rate = (question_completed_count / total_students) * 100 \
+                question_completion_rate = (question_completed_count / total_students) \
                     if total_students > 0 else 0
                 exercisequestion_data.append({
                     'question_title': question.title,
@@ -503,7 +502,7 @@ def coursework_details_data(request):
             for question in questions:
                 question_completed_count = ExamQuestionCompletion.objects.filter(
                     exam_question=question, student_id__in=student_ids).count()
-                question_completion_rate = (question_completed_count / total_students) * 100 \
+                question_completion_rate = (question_completed_count / total_students) \
                     if total_students > 0 else 0
                 examquestion_data.append({
                     'question_title': question.title,
@@ -540,7 +539,7 @@ def coursework_details_data(request):
             for question in questions:
                 question_completed_count = AdminExamQuestionCompletion.objects.filter(
                     adminexam_question=question, student_id__in=student_ids).count()
-                question_completion_rate = (question_completed_count / total_students) * 100 \
+                question_completion_rate = (question_completed_count / total_students) \
                     if total_students > 0 else 0
                 adminexamquestion_data.append({
                     'question_title': question.title,
