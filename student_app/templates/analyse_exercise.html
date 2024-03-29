@@ -540,6 +540,14 @@ function updateBarChart(data) {
 }
 </script>
 <script>
+    $(document).ready(function(){
+        $("table tbody tr").click(function(){
+            $("table tbody tr").css("background-color", ""); // 添加这行，恢复所有行原本的背景颜色
+            $(this).css("background-color", "#f2f2f2"); // 让点击的那一行变为灰色
+        });
+    });
+</script>
+<script>
     $(document).ready(function () {
         $('.notification-item').on('click', function () {
             var notificationId = $(this).data('notification-id');

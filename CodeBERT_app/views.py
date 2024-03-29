@@ -148,44 +148,49 @@ def score_report(student, document, programmingexercise_id):
     fontsize_score = report_score.fontsize
     image_score = report_score.image
     pagenum_score = report_score.pagenum
+    # 初始化标记为False，表示尚未扣除分数
+    content_deducted = False
+    firstrow_deducted = False
+    fontsize_deducted = False
+    image_deducted = False
+    pagenum_deducted = False
 
     # 1. 检查文档是否含有目录
     for para in document.paragraphs:
         if "目录" in para.text:
             break
         else:
-            total_score += content_score
+            if not content_deducted:
+                total_score += content_score
+                content_deducted = True
 
     # 2. 检查每个段落的首行缩进
-    first_line = False
     for para in document.paragraphs:
         if not para.paragraph_format.first_line_indent or para.paragraph_format.first_line_indent.pt != 36:
-            first_line = True
-            break
-    if first_line:
-        total_score += firstrow_score
+            if not firstrow_deducted:
+                total_score += firstrow_score
+                firstrow_deducted = True  # 设置标志位
+            break  # 找到第一个错误即跳出循环
 
     # 3. 检查段落中的文字字体大小是否为12
-    font_size = False
     for para in document.paragraphs:
-        if font_size:
-            break
         for run in para.runs:
             if run.font.size and abs(run.font.size.pt - 12) > 1:
-                font_size = True
-                break
-    if font_size:
-        total_score += fontsize_score
+                if not fontsize_deducted:
+                    total_score += fontsize_score
+                    fontsize_deducted = True  # 设置标志位
+                break  # 找到第一个错误即跳出内层循环
+        if fontsize_deducted:
+            break  # 找到第一个错误即跳出外层循环
 
     # 4. 检查文档中的图像是否居中对齐
-    image_alignment = False
     for shape in document.inline_shapes:
         if shape.type == 3:
             if shape.text_frame.paragraph.alignment != 1:
-                image_alignment = True
-                break
-    if image_alignment:
-        total_score += image_score
+                if not image_deducted:
+                    total_score += image_score
+                    image_deducted = True  # 设置标志位
+                break  # 找到第一个错误即跳出循环
 
     # 5. 计算有页码的页面占比
     def score_page_numbers(doc):
@@ -201,8 +206,10 @@ def score_report(student, document, programmingexercise_id):
         if total_pages == 0:
             return True
         return False
-    if score_page_numbers(document):
+
+    if not score_page_numbers(document) and not pagenum_deducted:
         total_score += pagenum_score
+        pagenum_deducted = True  # 设置标志位
 
     # 保存分数
     ReportStandardScore.objects.update_or_create(
