@@ -156,13 +156,15 @@ def score_report(student, document, programmingexercise_id):
     pagenum_deducted = False
 
     # 1. 检查文档是否含有目录
+    has_table_of_contents = False  # 这里我们标记是否已找到目录
     for para in document.paragraphs:
         if "目录" in para.text:
+            has_table_of_contents = True  # 找到目录标记为True并中断循环
             break
-        else:
-            if not content_deducted:
-                total_score += content_score
-                content_deducted = True
+
+    if not has_table_of_contents and not content_deducted:  # 如果没有找到目录且未扣过分
+        total_score += content_score
+        content_deducted = True  # 标记为已扣过分
 
     # 2. 检查每个段落的首行缩进
     for para in document.paragraphs:
