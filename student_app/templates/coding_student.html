@@ -16,6 +16,8 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{% static 'student_app/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'student_app/css/test.css' %}">
+
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'student_app/photo/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'student_app/css/coding.css' %}">
@@ -66,32 +68,7 @@
         top: 0
     }
     </style>
-    <script>
-        function redirectToSpecificQuestion(questionId) {
-            window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
-        }
-    </script>
-    <script>
-        var types = "{{ types }}";
 
-        function redirectToSpecificQuestion(questionId) {
-            if (types === 'exercise')
-                window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
-            else if (types === 'exam')
-                window.location.href = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);
-                else
-                window.location.href = "{% url 'student_app:coding_adminexam' '123' %}".replace('123', questionId);
-        }
-
-        function redirectToList(question_setId) {
-            if (types === 'exercise')
-                window.location.href = "{% url 'student_app:practice_list' '123' %}".replace('123', question_setId);
-            else if (types === 'exam')
-                window.location.href = "{% url 'student_app:teacherexam_list' '123' %}".replace('123', question_setId);
-                else
-                window.location.href = "{% url 'student_app:adminexam_list' '123' %}".replace('123', question_setId);
-        }
-    </script>
 </head>
 <!-- 引入Monaco编辑器的静态文件 -->
 <script src="{% static 'node_modules/monaco-editor/min/vs/loader.js' %}"></script>
@@ -123,7 +100,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item dropdown mr-4">
+               <li class="nav-item dropdown mr-4">
                     <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown"
                        id="notificationDropdown" href="#" data-toggle="dropdown">
                         <i class="mdi mdi-bell mx-0"></i>
@@ -305,6 +282,8 @@
 <script type="text/javascript" src="{% static 'student_app/js/dataTables.bootstrap4(1).js' %}"></script>
 <!-- End custom js for this page-->
 <script src="{% static 'student_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
+<script src="{% static 'student_app/js/homework.js' %}"></script>
+<script src="{% static 'student_app/js/current-homework.js' %}"></script>
 <script src="{% static 'student_app/js/editor_setup.js' %}"></script>
 
 <script>
@@ -402,6 +381,59 @@
             });
         });
     });
+
 </script>
+ <script>
+        function redirectToSpecificQuestion(questionId) {
+            window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
+        }
+    </script>
+    <script>
+        var types = "{{ types }}";
+
+        function redirectToSpecificQuestion(questionId) {
+            if (types === 'exercise')
+                window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
+            else if (types === 'exam')
+                window.location.href = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);
+                else
+                window.location.href = "{% url 'student_app:coding_adminexam' '123' %}".replace('123', questionId);
+        }
+
+        function redirectToList(question_setId) {
+            if (types === 'exercise')
+                window.location.href = "{% url 'student_app:practice_list' '123' %}".replace('123', question_setId);
+            else if (types === 'exam')
+                window.location.href = "{% url 'student_app:teacherexam_list' '123' %}".replace('123', question_setId);
+                else
+                window.location.href = "{% url 'student_app:adminexam_list' '123' %}".replace('123', question_setId);
+        }
+    </script>
+  <script>
+        function redirectToSpecificQuestion(questionId) {
+            window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
+        }
+    </script>
+    <script>
+        var types = "{{ types }}";
+
+        function redirectToSpecificQuestion(questionId) {
+            if (types === 'exercise')
+                window.location.href = "{% url 'student_app:coding_exercise' '123' %}".replace('123', questionId);
+            else if (types === 'exam')
+                window.location.href = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);
+                else
+                window.location.href = "{% url 'student_app:coding_adminexam' '123' %}".replace('123', questionId);
+        }
+
+        function redirectToList(question_setId) {
+            if (types === 'exercise')
+                window.location.href = "{% url 'student_app:practice_list' '123' %}".replace('123', question_setId);
+            else if (types === 'exam')
+                window.location.href = "{% url 'student_app:teacherexam_list' '123' %}".replace('123', question_setId);
+                else
+                window.location.href = "{% url 'student_app:adminexam_list' '123' %}".replace('123', question_setId);
+        }
+    </script>
 </body>
 </html>
