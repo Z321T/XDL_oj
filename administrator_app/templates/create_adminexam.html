@@ -101,17 +101,15 @@
 </div>
 <script>
     document.querySelector('form[method="post"]').onsubmit = function (event) {
-        // Select form elements by their 'name' attribute and check for their values
+
         var title = document.querySelector('input[name="title"]').value.trim();
         var content = document.querySelector('textarea[name="content"]').value.trim();
         var memoryLimit = document.querySelector('input[name="memory_limit"]').value.trim();
         var timeLimit = document.querySelector('input[name="time_limit"]').value.trim();
         var answer = document.querySelector('textarea[name="answer"]').value.trim();
 
-        // Array to hold error messages
         var errors = [];
 
-        // Check if fields are empty and add an error message if they are
         if (!title) errors.push("标题不能为空。");
         if (!content) errors.push("题目内容不能为空。");
         if (!memoryLimit) errors.push("内存限制不能为空。");
@@ -125,7 +123,5 @@
 
     };
 </script>
-
 </body>
-
 </html>

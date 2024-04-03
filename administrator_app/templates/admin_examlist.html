@@ -361,10 +361,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- container-scroller -->
-
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
@@ -387,15 +383,13 @@
 <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
 <script>
     document.getElementById('examFrom').onsubmit = function (event) {
-        // 获取所有的输入值
         var title = document.getElementById('title').value.trim();
         var content = document.getElementById('content').value.trim();
         var deadline = document.getElementById('deadline').value.trim();
         var hasQuestions = document.getElementById('has-questions').value === '1'; // 检查隐藏字段的值
 
-        // 初始化错误信息数组
         var errorMessages = [];
-        // 对各个必填字段进行检查
+
         if (!title) errorMessages.push('“考试标题”为必填项。');
         if (!content) errorMessages.push('“考试题描述”为必填项。');
         if (!deadline) errorMessages.push('“截止时间”为必填项。');

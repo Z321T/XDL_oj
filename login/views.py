@@ -71,7 +71,7 @@ def check_login(user_id):
     for model in (Administrator, Teacher, Student):
         try:
             model.objects.get(userid=user_id)
-            return False  # A user is found
+            return False
         except ObjectDoesNotExist:
-            continue  # Try the next user model
-    return True  # No user was found
+            continue
+    return True

@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponseNotFound
 from django.contrib.auth.hashers import make_password, check_password
 
-from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, CodeStandardScore, ReportStandardScore
+from CodeBERT_app.models import ProgrammingCodeFeature, ProgrammingReportFeature, ReportStandardScore
 from CodeBERT_app.views import compute_cosine_similarity
 from administrator_app.models import AdminNotification, ProgrammingExercise, AdminExam, AdminExamQuestion
 from login.views import check_login
@@ -151,7 +151,7 @@ def repeat_code_details(request, programmingexercise_id):
                 defaults={'cosine_similarity': max_similarity, 'similar_student': sim_student}
             )
         else:
-            # 如果没有学生特征，我们将相似度设置为None
+            # 如果没有学生特征，将相似度设置为None
             student_similarities.append((student, None, None))
 
     teacher = Teacher.objects.get(userid=user_id)
@@ -234,14 +234,10 @@ def scores_details(request, programmingexercise_id):
 
     for student in students:
         try:
-            code_score = CodeStandardScore.objects.get(student=student, programming_question=programmingexercise)
-        except CodeStandardScore.DoesNotExist:
-            code_score = None
-        try:
             report_score = ReportStandardScore.objects.get(student=student, programming_question=programmingexercise)
         except ReportStandardScore.DoesNotExist:
             report_score = None
-        student_scores.append((student, code_score, report_score))
+        student_scores.append((student, report_score))
 
     context = {
         'student_scores': student_scores,
@@ -946,7 +942,6 @@ def create_class(request):
         if class_name and initial_password and file:
             teacher = Teacher.objects.get(userid=request.session.get('user_id'))
             new_class = Class.objects.create(name=class_name, teacher=teacher)
-            # teacher.classes_assigned.add(new_class)
 
             data = pd.read_excel(file)
             for index, row in data.iterrows():

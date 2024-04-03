@@ -45,13 +45,11 @@
             cursor: pointer;
         }
 
-        /* Hover effect for remove button */
         .class-tag .remove-class:hover {
-            color: red; /* Change color on hover */
+            color: red;
             transform: scale(1.2);
         }
 
-        /* Increase size on hover */
     </style>
     <style>
         .container {
@@ -60,7 +58,6 @@
             align-items: center;
             justify-content: center;
         }
-
 
         .class-list h3 {
             margin-top: 0;
@@ -87,8 +84,7 @@
             border-radius: 10px;
         }
 
-
-          /* 应用于不属于.nav-search中.input-group的样式 */
+        /* 应用于不属于.nav-search中.input-group的样式 */
         .input-group:not(.nav-search .input-group) {
             margin-bottom: 10px;
         }
@@ -296,8 +292,6 @@
              <div class="main-panel">
                 <div class="content-wrapper">
                         <div class="container">
-
-
                             <!-- 通知发布窗口 -->
                             <div class="notification-panel">
                                 <h2>发布通知</h2>
@@ -314,22 +308,12 @@
                                     <button type="submit" class="btn-default">发送</button>
                                 </form>
                             </div>
-
                         </div>
                 </div>
              </div>
         </div>
     </div>
-
-
-    <!-- partial -->
 </div>
-<!-- main-panel ends -->
-
-<!-- page-body-wrapper ends -->
-
-
-<!-- container-scroller -->
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'administrator_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
@@ -352,25 +336,20 @@
 <script src="{% static 'administrator_app/js/jquery.cookie.js' %}" type="text/javascript"></script>
 <script>
 document.getElementById('notificationForm').onsubmit = function(event) {
-    // 获取所有的输入值
+
     var title = document.getElementById('title').value.trim();
     var message = document.getElementById('message').value.trim();
 
-    // 初始化错误信息数组
     var errorMessages = [];
 
-    // 对各个必填字段进行检查
     if (!title) errorMessages.push('“标题”为必填项。');
     if (!message) errorMessages.push('“内容”为必填项。');
-    // 修改为检查隐藏字段以确定表格是否为空
 
-    // 如果存在错误信息，阻止表单提交，并弹出错误提示
     if (errorMessages.length > 0) {
       event.preventDefault(); // 阻止表单提交
       alert('请填写所有必填信息:\n' + errorMessages.join('\n'));
     }
 };
 </script>
-
 </body>
 </html>

@@ -293,9 +293,6 @@
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
-            <!-- partial -->
         </div>
         <!-- main-panel ends -->
     </div>
@@ -371,11 +368,9 @@
     $(document).ready(function () {
         $('.doing-question').on('click', function () {
             var questionId = $(this).data('question-id');
-            {#var url = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);#}
             window.location.href = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);
         });
     });
-
 </script>
 </body>
 </html>

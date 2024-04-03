@@ -293,15 +293,9 @@
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
-            <!-- partial -->
         </div>
-        <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
 </div>
-<!-- container-scroller -->
 <!-- Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
      aria-hidden="true">
@@ -371,7 +365,6 @@
     $(document).ready(function () {
         $('.doing-question').on('click', function () {
             var questionId = $(this).data('question-id');
-            {#var url = "{% url 'student_app:coding_exam' '123' %}".replace('123', questionId);#}
             window.location.href = "{% url 'student_app:coding_adminexam' '123' %}".replace('123', questionId);
         });
     });

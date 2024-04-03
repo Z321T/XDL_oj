@@ -105,7 +105,6 @@
             box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* 悬停时的立体阴影效果 */
         }
 
-        /* 添加到你的CSS文件中 */
         .form-group {
             margin-bottom: 15px;
         }
@@ -152,9 +151,6 @@
             float: right;
         }
 
-
-
-
         /* 对响应式布局的支持 */
         @media (max-width: 768px) {
             .sidebar-offcanvas {
@@ -170,7 +166,6 @@
                 right: 0;
             }
         }
-
 
     </style>
 </head>
@@ -251,7 +246,6 @@
         </div>
         </nav>
         <!-- partial -->
-
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                <ul class="nav">
@@ -400,15 +394,11 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response){
-                //Handle your success action here;
                 alert(response.message);
                 window.location.href = "{% url 'student_app:home_student' %}";
             },
             error: function(response){
                 alert(response.responseJSON.message);
-                {#console.log('Error:', error_data);#}
-                {#var error_message = error_data.responseJSON.message; // extract the error message#}
-                {#alert(error_message); // display the error message#}
             }
         });
     });

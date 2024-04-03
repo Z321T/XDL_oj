@@ -222,7 +222,6 @@
                 </button>
             </div>
         </div>
-
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
@@ -288,7 +287,6 @@
                     {% endfor %}
                 </ul>
             </div>
-
             <!-- 通知发布窗口 -->
             <div class="notification-panel">
                 <h3>发布练习</h3>
@@ -366,16 +364,9 @@
                     创建练习题
                 </button>
             </div>
-
         </div>
-
-
     </div>
 </div>
-
-
-<!-- container-scroller -->
-
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'teacher_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
@@ -406,18 +397,15 @@ document.getElementById('exerciseFrom').onsubmit = function(event) {
     var deadline = document.getElementById('deadline').value.trim();
     var hasQuestions = document.getElementById('has-questions').value === '1'; // 检查隐藏字段的值
 
-    // 初始化错误信息数组
     var errorMessages = [];
 
-    // 对各个必填字段进行检查
     if (!recipientIds) errorMessages.push('“接收班级”是必选项。');
     if (!title) errorMessages.push('“练习标题”为必填项。');
     if (!content) errorMessages.push('“练习题描述”为必填项。');
     if (!deadline) errorMessages.push('“截止时间”为必填项。');
-    // 修改为检查隐藏字段以确定表格是否为空
+
     if (!hasQuestions) errorMessages.push('“练习列表”不能为空，请添加至少一个练习题目。');
 
-    // 如果存在错误信息，阻止表单提交，并弹出错误提示
     if (errorMessages.length > 0) {
       event.preventDefault(); // 阻止表单提交
       alert('请填写所有必填信息:\n' + errorMessages.join('\n'));

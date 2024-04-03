@@ -194,7 +194,6 @@
             </ul>
         </nav>
         <!-- partial -->
-        <!-- partial -->
         <div class="main-panel">
             <div class="container-flex">
                 <!-- Left side (Problem Info and Submission Record) -->
@@ -207,7 +206,6 @@
                     <!-- Problem Info Panel -->
                     <div id="problem-info" class="panel">
                         <!-- 题目信息内容 -->
-                        {#              <p>题目信息</p>#}
                         <p>题目内容: </p>
                         <p>{{ question.content }}</p>
                         <p>内存限制: {{ question.memory_limit }} MB</p>
@@ -235,7 +233,6 @@
                         <p>运行信息</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -260,8 +257,6 @@
         </div>
     </div>
 </div>
-<!-- container-scroller -->
-
 <!-- plugins:js -->
 <script type="text/javascript" src="{% static 'student_app/js/vendor.bundle.base.js' %}"></script>
 <!-- endinject -->
@@ -315,18 +310,18 @@
     // 表单提交事件
     $('#codeForm').on('submit', function (event) {
         event.preventDefault(); // 阻止表单的默认提交行为
-        var code = editor.getValue(); // 获取代码编辑器中的内容，假定您已经定义了编辑器实例变量
+        var code = editor.getValue(); // 获取代码编辑器中的内容
         var types = "{{ types }}";
         var questionId = {{ question.id }};
         // AJAX请求
         $.ajax({
-            url: "{% url 'student_app:run-cpp' %}", // 确保Django模板标签解析正确
+            url: "{% url 'student_app:run-cpp' %}",
             type: 'POST',
             data: {
                 'code': code,
                 'types': types,
                 'questionId': questionId,
-                'csrfmiddlewaretoken': '{{ csrf_token }}' // Django CSRF令牌
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function (response) {
                 var existingResizer = $('.resize-handle').detach();

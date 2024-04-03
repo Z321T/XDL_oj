@@ -91,8 +91,6 @@
         }
 
     </script>
-
-
     <!-- 引入Echarts -->
     <script src="{% static 'node_modules/echarts/dist/echarts.min.js' %}"></script>
 </head>
@@ -221,7 +219,6 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-
                 <div class="row d-flex" id="proBanner">
                     <div class="col-md-12 grid-margin">
                         <div class="card bg-gradient-primary border-0">
@@ -302,7 +299,6 @@
                                                 </table>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -341,27 +337,15 @@
                                                             <th class="sorting" tabindex="0"
                                                             aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
                                                             aria-label="Office: activate to sort column ascending"
-                                                            style="width: 155.6px;">代码规范性得分
-                                                            </th>
-                                                            <th class="sorting" tabindex="0"
-                                                            aria-controls="recent-purchases-listing" rowspan="1" colspan="1"
-                                                            aria-label="Office: activate to sort column ascending"
                                                             style="width: 155.6px;">报告规范性得分
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {% for student, code_score, report_score in student_scores %}
+                                                            {% for student, report_score in student_scores %}
                                                                 <tr role="row" class="{{ forloop.counter|divisibleby:2|yesno:'even,odd' }}">
                                                                     <td class="sorting_1">{{ student.name }}</td>
                                                                     <td>{{ student.userid }}</td>
-                                                                    <td>
-                                                                        {% if code_score %}
-                                                                            {{ code_score.standard_score }}
-                                                                        {% else %}
-                                                                            未评分
-                                                                        {% endif %}
-                                                                    </td>
                                                                     <td>
                                                                         {% if report_score %}
                                                                             {{ report_score.standard_score }}
@@ -385,10 +369,6 @@
                             </div>
                         </div>
                     </div>
-                <!-- content-wrapper ends -->
-                <!-- partial:partials/_footer.html -->
-
-                <!-- partial -->
             </div>
             <!-- main-panel ends -->
         </div>
