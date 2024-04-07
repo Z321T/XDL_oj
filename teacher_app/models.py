@@ -33,8 +33,8 @@ class Teacher(models.Model):
 
 
 class Exercise(models.Model):
-    title = models.CharField(verbose_name="练习题标题", max_length=255)
-    content = models.TextField(verbose_name="练习题描述")
+    title = models.CharField(verbose_name="练习标题", max_length=255)
+    content = models.TextField(verbose_name="练习描述")
     published_at = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
     deadline = models.DateTimeField(verbose_name="截止时间")
 

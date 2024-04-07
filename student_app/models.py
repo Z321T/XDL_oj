@@ -21,7 +21,7 @@ class Score(models.Model):
     exam_question = models.ForeignKey(ExamQuestion, on_delete=models.CASCADE,
                                       verbose_name="考试题", null=True, blank=True, related_name='scores')
     adminexam_question = models.ForeignKey(AdminExamQuestion, on_delete=models.CASCADE,
-                                           verbose_name="Admin考试题", null=True, blank=True, related_name='scores')
+                                           verbose_name="年级考试题", null=True, blank=True, related_name='scores')
     score = models.DecimalField(verbose_name="得分", max_digits=6, decimal_places=2)
 
     def __str__(self):
