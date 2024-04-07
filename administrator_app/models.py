@@ -10,7 +10,7 @@ class Administrator(models.Model):
     password = models.CharField(verbose_name="密码", max_length=128)
     email = models.EmailField(verbose_name="邮箱", unique=True, null=True, blank=True)
     phone_num = models.CharField(verbose_name="电话号码", max_length=12, null=True)
-    last_login = models.DateTimeField(verbose_name='上次登录时间', null=True, blank=True)
+    last_login = models.DateTimeField(verbose_name='登录时间', null=True, blank=True)
 
 
 class AdminNotification(models.Model):
